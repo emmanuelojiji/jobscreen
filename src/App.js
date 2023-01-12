@@ -26,9 +26,11 @@ function App() {
     useState(AwaitingTrackingArray);
   const [inboundArrayCurrent, setInboundCurrent] = useState(inboundArray);
 
+  const [layout, setLayout] = useState("extended");
+
   return (
     <div className="App">
-      <Sidebar/>
+      <Sidebar />
       <header>
         <div className="header-wrap page-width">
           <h2>Jobs</h2>
@@ -89,6 +91,8 @@ function App() {
               <JobCard
                 job_number={job.jobNumber}
                 time={job.time}
+                height={layout === 'extended' ? '150px' : '50px'}
+                layout={layout}
                 backgroundColor={job.late && "#D64045"}
                 displayLateIcon={job.late && "block"}
               />

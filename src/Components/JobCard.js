@@ -3,6 +3,8 @@ import "./JobCard.scss";
 import clock from "../snoozed.svg";
 
 const JobCard = ({
+  layout,
+  height,
   backgroundColor,
   displayLateIcon,
   tooltipDisplay,
@@ -12,7 +14,10 @@ const JobCard = ({
   const [showTooltip, setShowTooltip] = useState(false);
 
   return (
-    <div className="JobCard" style={{ backgroundColor: backgroundColor }}>
+    <div
+      className="JobCard"
+      style={{ backgroundColor: backgroundColor, height: height }}
+    >
       <div
         className="late-icon"
         style={{ display: displayLateIcon }}
@@ -22,7 +27,7 @@ const JobCard = ({
         <img src={clock} />
       </div>
       <span className="job-number">{job_number}</span>
-      <span className="time">{time}</span>
+      {layout === "extended" && <span className="time">{time}</span>}
       <div
         className="tooltip"
         style={{ display: showTooltip ? "block" : "none" }}
