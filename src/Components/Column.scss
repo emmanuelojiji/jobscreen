@@ -24,6 +24,7 @@
   padding-left: 30px;
   padding-right: 30px;
   position: relative;
+  overflow-y: scroll;
 
   @media only screen and (max-width: 600px) {
     width: 100%;
