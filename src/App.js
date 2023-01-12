@@ -106,12 +106,14 @@ function App() {
           amount_in_category={orderedArrayCurrent.length}
         >
           <>
+          {orderedArrayCurrent.length == 0 && <p className="no-jobs">No jobs to show</p>}
             {orderedArrayCurrent.map((job, index) => (
               <JobCard
                 job_number={job.jobNumber}
                 time={job.time}
                 backgroundColor={job.late && "#D64045"}
                 displayLateIcon={job.late && "block"}
+                layout={layout}
               />
             ))}
           </>
@@ -129,6 +131,7 @@ function App() {
                 time={job.time}
                 backgroundColor={job.late && "#D64045"}
                 displayLateIcon={job.late && "block"}
+                layout={layout}
               />
             ))}
           </>
@@ -138,6 +141,7 @@ function App() {
           borderTopColor="#77C135"
           amount_in_category={inboundArrayCurrent.length}
         >
+
           <>
             {inboundArrayCurrent.map((job, index) => (
               <JobCard
@@ -145,6 +149,7 @@ function App() {
                 time={job.time}
                 backgroundColor={job.late && "#D64045"}
                 displayLateIcon={job.late && "block"}
+                layout={layout}
               />
             ))}
           </>
