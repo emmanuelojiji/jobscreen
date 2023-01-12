@@ -1,0 +1,34 @@
+.column-container {
+  display: flex;
+  justify-content: space-between;
+  padding-left: 5%;
+  padding-right: 5%;
+  padding-top: 25px;
+  gap: 20px;
+  max-width: 1500px;
+  margin: 0 auto;
+}
+
+.Column {
+  background: #262c3f;
+  height: 900px;
+  width: 25%;
+  border-top: solid 6px;
+  border-radius: 5px;
+  padding-top: 30px;
+  padding-left: 30px;
+  padding-right: 30px;
+  position: relative;
+}
+
+.column-header {
+  display: flex;
+  justify-content: space-between;
+  color: white;
+}
+
+.category-title {
+  font-weight: bold;
+  margin-bottom: 30px;
+  display: block;
+}
