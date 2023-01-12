@@ -91,7 +91,7 @@ function App() {
               <JobCard
                 job_number={job.jobNumber}
                 time={job.time}
-                height={layout === 'extended' ? '150px' : '50px'}
+                height={layout === "extended" ? "150px" : "50px"}
                 layout={layout}
                 backgroundColor={job.late && "#D64045"}
                 displayLateIcon={job.late && "block"}
@@ -103,10 +103,13 @@ function App() {
         <Column
           category="Ordered"
           borderTopColor="#1B90E6"
+          opacity={orderedArrayCurrent.length === 0 && '0.5'}
           amount_in_category={orderedArrayCurrent.length}
         >
           <>
-          {orderedArrayCurrent.length == 0 && <p className="no-jobs">No jobs to show</p>}
+            {orderedArrayCurrent.length == 0 && (
+              <p className="no-jobs">No jobs to show</p>
+            )}
             {orderedArrayCurrent.map((job, index) => (
               <JobCard
                 job_number={job.jobNumber}
@@ -141,7 +144,6 @@ function App() {
           borderTopColor="#77C135"
           amount_in_category={inboundArrayCurrent.length}
         >
-
           <>
             {inboundArrayCurrent.map((job, index) => (
               <JobCard
