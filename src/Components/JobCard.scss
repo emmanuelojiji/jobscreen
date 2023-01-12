@@ -9,7 +9,7 @@
   display: flex;
   flex-direction: column;
   position: relative;
-  transition: 0.3s ease-in-out;
+  transition: 0.2s ease-in-out;
 }
 
 .job-number {
@@ -30,9 +30,11 @@
   top: -5px;
   display: none;
 
+
   img {
     height: 25px;
     width: 25px;
+    transition: 0.2s ease-in-out;
   }
 }
 
