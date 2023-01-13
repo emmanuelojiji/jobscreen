@@ -31,7 +31,12 @@ function App() {
 
   return (
     <div className="App">
-      <Sidebar sidebarVisible={sidebarVisible} />
+      <Sidebar
+        sidebarVisible={sidebarVisible}
+        setExtended={() => setLayout("extended")}
+        setCondensed={() => setLayout("condensed")}
+        layout={layout}
+      />
       <header>
         <div className="header-wrap page-width">
           <h2>Jobs</h2>
@@ -130,6 +135,7 @@ function App() {
                 backgroundColor={job.late && "#D64045"}
                 displayLateIcon={job.late && "block"}
                 layout={layout}
+                height={layout === "extended" ? "150px" : "50px"}
               />
             ))}
           </>
@@ -148,6 +154,7 @@ function App() {
                 backgroundColor={job.late && "#D64045"}
                 displayLateIcon={job.late && "block"}
                 layout={layout}
+                height={layout === "extended" ? "150px" : "50px"}
               />
             ))}
           </>
@@ -165,6 +172,7 @@ function App() {
                 backgroundColor={job.late && "#D64045"}
                 displayLateIcon={job.late && "block"}
                 layout={layout}
+                height={layout === "extended" ? "150px" : "50px"}
               />
             ))}
           </>
