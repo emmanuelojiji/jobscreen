@@ -61,6 +61,11 @@ header {
   border-radius: 3px;
   font-weight: bold;
   box-shadow: 0 4px 8px 0 rgba(21, 21, 24, 0.3);
+  cursor: pointer;
+
+  &:hover{
+    background: #124cb7;
+  }
 }
 
 

@@ -27,10 +27,11 @@ function App() {
   const [inboundArrayCurrent, setInboundCurrent] = useState(inboundArray);
 
   const [layout, setLayout] = useState("extended");
+  const [sidebarVisible, setSidebarVisible] = useState(false);
 
   return (
     <div className="App">
-      <Sidebar />
+      <Sidebar sidebarVisible={sidebarVisible} />
       <header>
         <div className="header-wrap page-width">
           <h2>Jobs</h2>
@@ -76,7 +77,19 @@ function App() {
             <span className="controls-label">Sort by</span>
             <Dropdown />
           </div>
-          <button className="options-button">Options</button>
+          <button
+            className="options-button"
+            onClick={() => {
+              if (sidebarVisible) {
+                setSidebarVisible(false);
+              } else {
+                setSidebarVisible(true);
+              }
+              console.log("clicked");
+            }}
+          >
+            Options
+          </button>
         </div>
       </div>
 
@@ -103,7 +116,7 @@ function App() {
         <Column
           category="Ordered"
           borderTopColor="#1B90E6"
-          opacity={orderedArrayCurrent.length === 0 && '0.5'}
+          opacity={orderedArrayCurrent.length === 0 && "0.5"}
           amount_in_category={orderedArrayCurrent.length}
         >
           <>

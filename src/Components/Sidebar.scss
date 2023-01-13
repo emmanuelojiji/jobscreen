@@ -1,10 +1,21 @@
-.Sidebar{
-    height: 100vh;
-    width: 300px;
-    background: #1f2435;
-    position: fixed;
-    right: 0;
-    z-index: 1;
-    display: none;
-  
+.Sidebar {
+  height: 100vh;
+  width: 300px;
+  background: #11141e;
+
+  position: fixed;
+  right: 0;
+  z-index: 1;
+  transform: translateX(100%);
+  transition: 0.3s ease-in-out;
 }
+
+.slideIn {
+    transform: translateX(0%);
+}
+
+.slideOut {
+    transform: translateX(100%);
+}
+
+
