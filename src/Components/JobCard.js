@@ -4,7 +4,7 @@ import clock from "../snoozed.svg";
 
 const JobCard = ({
   layout,
-  height,
+  cardHeight,
   backgroundColor,
   displayLateIcon,
   tooltipDisplay,
@@ -13,10 +13,22 @@ const JobCard = ({
 }) => {
   const [showTooltip, setShowTooltip] = useState(false);
 
+  const [cardOpen, setCardOpen] = useState(false);
+
   return (
     <div
       className="JobCard"
-      style={{ backgroundColor: backgroundColor, height: height }}
+      style={{
+        backgroundColor: backgroundColor,
+        height: cardOpen ? "150px" : cardHeight,
+      }}
+      onClick={() => {
+        if (!cardOpen && layout === "condensed") {
+          setCardOpen(true);
+        } else {
+          setCardOpen(false);
+        }
+      }}
     >
       <div
         className="late-icon"
@@ -27,7 +39,9 @@ const JobCard = ({
         <img src={clock} />
       </div>
       <span className="job-number">{job_number}</span>
-      {layout === "extended" && <span className="time">{time}</span>}
+      {(layout === "extended" || cardOpen) && (
+        <span className="time">{time}</span>
+      )}
       <div
         className="tooltip"
         style={{ display: showTooltip ? "block" : "none" }}

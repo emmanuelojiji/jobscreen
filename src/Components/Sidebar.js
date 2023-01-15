@@ -1,5 +1,6 @@
 import "./Sidebar.scss";
 import { useEffect, useState } from "react";
+import Toggle from "react-toggle";
 
 const Sidebar = ({ sidebarVisible, layout, setExtended, setCondensed }) => {
   const [temporaryHide, setTemporaryHide] = useState(true);
@@ -48,6 +49,23 @@ const Sidebar = ({ sidebarVisible, layout, setExtended, setCondensed }) => {
         >
           Condensed
         </span>
+      </div>
+
+      <div className="toggle-wrap">
+        <Toggle />
+        <span>To Order</span>
+      </div>
+      <div className="toggle-wrap">
+        <Toggle />
+        <span>Ordered</span>
+      </div>
+      <div className="toggle-wrap">
+        <Toggle />
+        <span>Awaiting Tracking</span>
+      </div>
+      <div className="toggle-wrap">
+        <Toggle />
+        <span>Inbound</span>
       </div>
     </div>
   );

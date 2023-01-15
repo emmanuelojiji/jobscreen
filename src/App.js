@@ -29,6 +29,11 @@ function App() {
   const [layout, setLayout] = useState("extended");
   const [sidebarVisible, setSidebarVisible] = useState(false);
 
+  const [toOrderVisible, setToOrderVisible] = useState(true);
+  const [orderedVisible, setOrderedVisible] = useState(true);
+  const [awaitingTrackingVisible, setAwaitingTrackingVisible] = useState(true);
+  const [inboundVisible, setInboundVisible] = useState(true);
+
   return (
     <div className="App">
       <Sidebar
@@ -109,7 +114,7 @@ function App() {
               <JobCard
                 job_number={job.jobNumber}
                 time={job.time}
-                height={layout === "extended" ? "150px" : "50px"}
+                cardHeight={layout === "extended" ? "150px" : "50px"}
                 layout={layout}
                 backgroundColor={job.late && "#D64045"}
                 displayLateIcon={job.late && "block"}
@@ -135,7 +140,7 @@ function App() {
                 backgroundColor={job.late && "#D64045"}
                 displayLateIcon={job.late && "block"}
                 layout={layout}
-                height={layout === "extended" ? "150px" : "50px"}
+                cardHeight={layout === "extended" ? "150px" : "50px"}
               />
             ))}
           </>
@@ -154,7 +159,7 @@ function App() {
                 backgroundColor={job.late && "#D64045"}
                 displayLateIcon={job.late && "block"}
                 layout={layout}
-                height={layout === "extended" ? "150px" : "50px"}
+                cardHeight={layout === "extended" ? "150px" : "50px"}
               />
             ))}
           </>
@@ -172,7 +177,7 @@ function App() {
                 backgroundColor={job.late && "#D64045"}
                 displayLateIcon={job.late && "block"}
                 layout={layout}
-                height={layout === "extended" ? "150px" : "50px"}
+                cardHeight={layout === "extended" ? "150px" : "50px"}
               />
             ))}
           </>
