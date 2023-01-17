@@ -2,6 +2,7 @@ import "./Sidebar.scss";
 import { useEffect, useState } from "react";
 import Toggle from "react-toggle";
 import AwaitingTracking from "../AwaitingTracking";
+import Dropdown from "../Dropdown";
 
 const Sidebar = ({
   sidebarVisible,
@@ -25,7 +26,13 @@ const Sidebar = ({
           visiblity: temporaryHide ? "hidden" : "visible",
         }}
       >
-          <p onClick={closeSidebar} className="close">close</p>
+        <p onClick={closeSidebar} className="close">
+          close
+        </p>
+        <Dropdown marginBottom="15px" />
+        <Dropdown marginBottom="15px" />
+        <Dropdown marginBottom="15px" />
+        <Dropdown marginBottom="15px" />
         <div className="layout-container" onClick={setExtended}>
           <div
             className="extended-container layout-outer"

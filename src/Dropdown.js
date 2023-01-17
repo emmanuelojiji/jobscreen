@@ -3,12 +3,16 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 
-const Dropdown = () => {
+const Dropdown = ({marginBottom}) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   return (
     <div className="dropdown-container">
       <div
         className="dropdown-closed"
+        style={{
+          border: dropdownOpen && "solid 1px #3378CD",
+          marginBottom: marginBottom,
+        }}
         onClick={() =>
           dropdownOpen ? setDropdownOpen(false) : setDropdownOpen(true)
         }
