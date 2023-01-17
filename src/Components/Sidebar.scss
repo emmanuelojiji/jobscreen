@@ -29,6 +29,7 @@
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  margin-bottom: 50px;
 
   &:hover{
     .layout-outer{
@@ -77,4 +78,8 @@
         color: white;
         margin-left: 10px;
     }
+}
+
+.close{
+  color: white;
 }
