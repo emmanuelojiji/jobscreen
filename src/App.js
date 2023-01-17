@@ -34,6 +34,8 @@ function App() {
   const [awaitingTrackingVisible, setAwaitingTrackingVisible] = useState(true);
   const [inboundVisible, setInboundVisible] = useState(true);
 
+  const [noJobs, setNoJobs] = useState(false);
+
   return (
     <div className="App">
       <Sidebar
@@ -121,91 +123,97 @@ function App() {
       </div>
 
       <div className="column-container">
-        {toOrderVisible && (
-          <Column
-            category="To Order"
-            borderTopColor="#DC6942"
-            amount_in_category={toOrderArrayCurrent.length}
-          >
-            <>
-              {toOrderArrayCurrent.map((job, index) => (
-                <JobCard
-                  job_number={job.jobNumber}
-                  time={job.time}
-                  cardHeight={layout === "extended" ? "150px" : "50px"}
-                  layout={layout}
-                  backgroundColor={job.late && "#D64045"}
-                  displayLateIcon={job.late && "block"}
-                />
-              ))}
-            </>
-          </Column>
-        )}
+        {!noJobs ? (
+          <>
+            {toOrderVisible && (
+              <Column
+                category="To Order"
+                borderTopColor="#DC6942"
+                amount_in_category={toOrderArrayCurrent.length}
+              >
+                <>
+                  {toOrderArrayCurrent.map((job, index) => (
+                    <JobCard
+                      job_number={job.jobNumber}
+                      time={job.time}
+                      cardHeight={layout === "extended" ? "150px" : "50px"}
+                      layout={layout}
+                      backgroundColor={job.late && "#D64045"}
+                      displayLateIcon={job.late && "block"}
+                    />
+                  ))}
+                </>
+              </Column>
+            )}
 
-        {orderedVisible && (
-          <Column
-            category="Ordered"
-            borderTopColor="#1B90E6"
-            opacity={orderedArrayCurrent.length === 0 && "0.5"}
-            amount_in_category={orderedArrayCurrent.length}
-          >
-            <>
-              {orderedArrayCurrent.length == 0 && (
-                <p className="no-jobs">No jobs to show</p>
-              )}
-              {orderedArrayCurrent.map((job, index) => (
-                <JobCard
-                  job_number={job.jobNumber}
-                  time={job.time}
-                  backgroundColor={job.late && "#D64045"}
-                  displayLateIcon={job.late && "block"}
-                  layout={layout}
-                  cardHeight={layout === "extended" ? "150px" : "50px"}
-                />
-              ))}
-            </>
-          </Column>
-        )}
+            {orderedVisible && (
+              <Column
+                category="Ordered"
+                borderTopColor="#1B90E6"
+                opacity={orderedArrayCurrent.length === 0 && "0.5"}
+                amount_in_category={orderedArrayCurrent.length}
+              >
+                <>
+                  {orderedArrayCurrent.length == 0 && (
+                    <p className="no-jobs">No jobs to show</p>
+                  )}
+                  {orderedArrayCurrent.map((job, index) => (
+                    <JobCard
+                      job_number={job.jobNumber}
+                      time={job.time}
+                      backgroundColor={job.late && "#D64045"}
+                      displayLateIcon={job.late && "block"}
+                      layout={layout}
+                      cardHeight={layout === "extended" ? "150px" : "50px"}
+                    />
+                  ))}
+                </>
+              </Column>
+            )}
 
-        {awaitingTrackingVisible && (
-          <Column
-            category="Awaiting Tracking Number"
-            borderTopColor="#1B90E6"
-            amount_in_category={awaitingTrackingArrayCurrent.length}
-          >
-            <>
-              {awaitingTrackingArrayCurrent.map((job, index) => (
-                <JobCard
-                  job_number={job.jobNumber}
-                  time={job.time}
-                  backgroundColor={job.late && "#D64045"}
-                  displayLateIcon={job.late && "block"}
-                  layout={layout}
-                  cardHeight={layout === "extended" ? "150px" : "50px"}
-                />
-              ))}
-            </>
-          </Column>
-        )}
-        {inboundVisible && (
-          <Column
-            category="Inbound"
-            borderTopColor="#77C135"
-            amount_in_category={inboundArrayCurrent.length}
-          >
-            <>
-              {inboundArrayCurrent.map((job, index) => (
-                <JobCard
-                  job_number={job.jobNumber}
-                  time={job.time}
-                  backgroundColor={job.late && "#D64045"}
-                  displayLateIcon={job.late && "block"}
-                  layout={layout}
-                  cardHeight={layout === "extended" ? "150px" : "50px"}
-                />
-              ))}
-            </>
-          </Column>
+            {awaitingTrackingVisible && (
+              <Column
+                category="Awaiting Tracking Number"
+                borderTopColor="#1B90E6"
+                amount_in_category={awaitingTrackingArrayCurrent.length}
+              >
+                <>
+                  {awaitingTrackingArrayCurrent.map((job, index) => (
+                    <JobCard
+                      job_number={job.jobNumber}
+                      time={job.time}
+                      backgroundColor={job.late && "#D64045"}
+                      displayLateIcon={job.late && "block"}
+                      layout={layout}
+                      cardHeight={layout === "extended" ? "150px" : "50px"}
+                    />
+                  ))}
+                </>
+              </Column>
+            )}
+            {inboundVisible && (
+              <Column
+                category="Inbound"
+                borderTopColor="#77C135"
+                amount_in_category={inboundArrayCurrent.length}
+              >
+                <>
+                  {inboundArrayCurrent.map((job, index) => (
+                    <JobCard
+                      job_number={job.jobNumber}
+                      time={job.time}
+                      backgroundColor={job.late && "#D64045"}
+                      displayLateIcon={job.late && "block"}
+                      layout={layout}
+                      cardHeight={layout === "extended" ? "150px" : "50px"}
+                    />
+                  ))}
+                </>
+              </Column>
+            )}
+          </>
+        ) : (
+          <h1>"hey"</h1>
         )}
       </div>
     </div>
