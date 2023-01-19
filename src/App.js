@@ -42,6 +42,7 @@ function App() {
     <div className="App">
       <Sidebar
         sidebarVisible={sidebarVisible}
+        setSidebarVisible={setSidebarVisible}
         closeSidebar={() => setSidebarVisible(false)}
         setExtended={() => setLayout("extended")}
         setCondensed={() => {

@@ -3,9 +3,11 @@ import { useEffect, useState } from "react";
 import Toggle from "react-toggle";
 import AwaitingTracking from "../AwaitingTracking";
 import Dropdown from "../Dropdown";
+import { useRef } from "react";
 
 const Sidebar = ({
   sidebarVisible,
+  setSidebarVisible,
   closeSidebar,
   layout,
   setExtended,
@@ -21,7 +23,21 @@ const Sidebar = ({
   department,
   setDepartment,
 }) => {
-  const [temporaryHide, setTemporaryHide] = useState(true);
+  const sidebarRef = useRef(null);
+
+  const closeSidebarOutsideClick = (e) => {
+    if (
+      sidebarVisible &&
+      sidebarRef.current &&
+      !sidebarRef.current.contains(e.target)
+    ) {
+      setSidebarVisible(false);
+    }
+  };
+
+  document.onmousedown = (e) => {
+    closeSidebarOutsideClick(e);
+  };
 
   return (
     <>
@@ -29,8 +45,8 @@ const Sidebar = ({
         className={`Sidebar ${sidebarVisible ? "slideIn" : "slideOut"}`}
         style={{
           display: sidebarVisible,
-          visiblity: temporaryHide ? "hidden" : "visible",
         }}
+        ref={sidebarRef}
       >
         <p onClick={closeSidebar} className="close">
           close
