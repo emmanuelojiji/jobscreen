@@ -62,9 +62,9 @@ function App() {
         inboundVisible={() =>
           inboundVisible ? setInboundVisible(false) : setInboundVisible(true)
         }
-        customerSupportDepartment={() => setDepartment("customer_support")}
-        defaultDepartment={() => setDepartment("default")}
-        globalTradeDepartment={() => setDepartment("global_trade")}
+        customerSupportDepartment={() => setDepartment("Customer Support")}
+        defaultDepartment={() => setDepartment("Default")}
+        globalTradeDepartment={() => setDepartment("Global Trade")}
         department={department}
       />
       <header>
@@ -128,7 +128,7 @@ function App() {
       <div className="column-container">
         {!noJobs ? (
           <>
-            {toOrderVisible && department != "customer_support" && (
+            {toOrderVisible && department != "Customer Support" && (
               <Column
                 category="To Order"
                 borderTopColor="#DC6942"

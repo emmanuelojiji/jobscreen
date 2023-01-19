@@ -1,7 +1,8 @@
 import "./Dropdown.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import { faChevronDown, faL } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
+import { useRef } from "react";
 
 const Dropdown = ({
   dropdownLabel,
@@ -15,9 +16,22 @@ const Dropdown = ({
 }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
+  const menuRef = useRef(null);
+
+  const closeOpenMenus = (e) => {
+    if (
+      menuRef.current &&
+      dropdownOpen &&
+      !menuRef.current.contains(e.target)
+    ) {
+      setDropdownOpen(false);
+    }
+  };
+
+  document.addEventListener('mousedown',closeOpenMenus)
   return (
     <>
-      <div className="dropdown-container">
+      <div className="dropdown-container" ref={menuRef}>
         <div
           className="dropdown-closed"
           style={{

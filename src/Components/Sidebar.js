@@ -19,7 +19,7 @@ const Sidebar = ({
   customerSupportDepartment,
   dropdownLabel,
   department,
-  setDepartment
+  setDepartment,
 }) => {
   const [temporaryHide, setTemporaryHide] = useState(true);
 
