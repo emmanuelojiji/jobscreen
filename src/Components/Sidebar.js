@@ -35,8 +35,8 @@ const Sidebar = ({
         </p>
 
         <div className="filters">
-          <span className="dropdown-label">Department</span>
           <Dropdown
+            placeholder="Department"
             dropdownMarginBottom="15px"
             dropdownBackground="#1D2131"
             dropdownLabel="Department"
@@ -55,15 +55,51 @@ const Sidebar = ({
               </>
             }
           />
-          <span className="dropdown-label">Zone</span>
-          <Dropdown dropdownMarginBottom="15px" dropdownBackground="#1D2131" />
-          <span className="dropdown-label">Trader</span>
-          <Dropdown dropdownMarginBottom="15px" dropdownBackground="#1D2131" />
-          <span className="dropdown-label">Purchasing</span>
-          <Dropdown dropdownMarginBottom="15px" dropdownBackground="#1D2131" />
-          <span className="dropdown-label">CEX</span>
-          <Dropdown dropdownMarginBottom="15px" dropdownBackground="#1D2131" />
+
+          <Dropdown
+            placeholder="Zone"
+            dropdownMarginBottom="15px"
+            dropdownBackground="#1D2131"
+          />
+
+          <Dropdown
+            placeholder="Trader"
+            dropdownMarginBottom="15px"
+            dropdownBackground="#1D2131"
+          />
+
+          <Dropdown
+            placeholder="Purchasing"
+            dropdownMarginBottom="15px"
+            dropdownBackground="#1D2131"
+          />
+
+          <Dropdown
+            placeholder="CEX"
+            dropdownMarginBottom="15px"
+            dropdownBackground="#1D2131"
+          />
         </div>
+
+        <div className="toggle-container">
+          <div className="toggle-wrap">
+            <Toggle defaultChecked={true} onChange={toOrderVisible} />
+            <span>To Order</span>
+          </div>
+          <div className="toggle-wrap">
+            <Toggle defaultChecked={true} onChange={orderedVisible} />
+            <span>Ordered</span>
+          </div>
+          <div className="toggle-wrap">
+            <Toggle defaultChecked={true} onChange={awaitingTrackingVisible} />
+            <span>Awaiting Tracking</span>
+          </div>
+          <div className="toggle-wrap">
+            <Toggle defaultChecked={true} onChange={inboundVisible} />
+            <span>Inbound</span>
+          </div>
+        </div>
+
         <div className="layout-container" onClick={setExtended}>
           <div
             className="extended-container layout-outer"
@@ -98,23 +134,6 @@ const Sidebar = ({
           >
             Condensed
           </span>
-        </div>
-
-        <div className="toggle-wrap">
-          <Toggle defaultChecked={true} onChange={toOrderVisible} />
-          <span>To Order</span>
-        </div>
-        <div className="toggle-wrap">
-          <Toggle defaultChecked={true} onChange={orderedVisible} />
-          <span>Ordered</span>
-        </div>
-        <div className="toggle-wrap">
-          <Toggle defaultChecked={true} onChange={awaitingTrackingVisible} />
-          <span>Awaiting Tracking</span>
-        </div>
-        <div className="toggle-wrap">
-          <Toggle defaultChecked={true} onChange={inboundVisible} />
-          <span>Inbound</span>
         </div>
       </div>
     </>

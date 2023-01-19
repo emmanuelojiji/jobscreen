@@ -10,7 +10,8 @@ const Dropdown = ({
   dropdownState,
   menuMarginTop,
   dropdownMarginBottom,
-  dropdownBackground
+  dropdownBackground,
+  placeholder
 }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
@@ -28,7 +29,7 @@ const Dropdown = ({
             dropdownOpen ? setDropdownOpen(false) : setDropdownOpen(true)
           }
         >
-          <span>Default </span>
+          <span>{placeholder}</span>
           <FontAwesomeIcon icon={faChevronDown} />
         </div>
 

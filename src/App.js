@@ -106,7 +106,7 @@ function App() {
           ></input>
           <div className="controls-option-wrap">
             <span className="controls-label">Sort by</span>
-            <Dropdown menuMarginTop="15px" />
+            <Dropdown placeholder="Default" menuMarginTop="15px" />
           </div>
           <button
             className="options-button"

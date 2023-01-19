@@ -44,7 +44,7 @@ const JobCard = ({
       )}
       <div
         className="tooltip"
-        style={{ display: showTooltip ? "block" : "none" }}
+        style={{ visibility: showTooltip ? "visible" : "hidden" }}
       >
         <p>
           This job is <span className="tooltip-bold">2 days</span> and{" "}

@@ -8,6 +8,8 @@
   display: flex;
   flex-direction: column;
   position: relative;
+  
+
 
   transition: 0.2s ease-in-out;
 
@@ -55,7 +57,9 @@
   right: -120px;
   top: 30px;
   line-height: 1.7;
-  display: none;
+  visibility: hidden;
+  z-index:1;
+
 
   .tooltip-bold {
     font-weight: bold;
