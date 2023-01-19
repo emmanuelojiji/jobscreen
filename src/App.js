@@ -36,6 +36,8 @@ function App() {
 
   const [noJobs, setNoJobs] = useState(false);
 
+  const [department, setDepartment] = useState("default");
+
   return (
     <div className="App">
       <Sidebar
@@ -60,6 +62,9 @@ function App() {
         inboundVisible={() =>
           inboundVisible ? setInboundVisible(false) : setInboundVisible(true)
         }
+        customerSupportDepartment={() => setDepartment("customer_support")}
+        defaultDepartment={() => setDepartment("default")}
+        globalTradeDepartment={() => setDepartment("global_trade")}
       />
       <header>
         <div className="header-wrap page-width">
@@ -93,10 +98,7 @@ function App() {
             </label>
           </div>
 
-          <div className="controls-option-wrap">
-            <span className="controls-label">Department</span>
-            <Dropdown />
-          </div>
+          <div className="controls-option-wrap"></div>
           <input
             type="text"
             className="search"
@@ -104,7 +106,7 @@ function App() {
           ></input>
           <div className="controls-option-wrap">
             <span className="controls-label">Sort by</span>
-            <Dropdown />
+            <Dropdown menuMarginTop="15px" />
           </div>
           <button
             className="options-button"
@@ -125,7 +127,7 @@ function App() {
       <div className="column-container">
         {!noJobs ? (
           <>
-            {toOrderVisible && (
+            {toOrderVisible && department != "customer_support" && (
               <Column
                 category="To Order"
                 borderTopColor="#DC6942"

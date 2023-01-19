@@ -3,29 +3,46 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 
-const Dropdown = ({marginBottom}) => {
+const Dropdown = ({
+  dropdownLabel,
+  marginBottom,
+  menuItem,
+  dropdownState,
+  menuMarginTop,
+  dropdownMarginBottom,
+  dropdownBackground
+}) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  return (
-    <div className="dropdown-container">
-      <div
-        className="dropdown-closed"
-        style={{
-          border: dropdownOpen && "solid 1px #3378CD",
-          marginBottom: marginBottom,
-        }}
-        onClick={() =>
-          dropdownOpen ? setDropdownOpen(false) : setDropdownOpen(true)
-        }
-      >
-        <span>Default </span>
-        <FontAwesomeIcon icon={faChevronDown} />
-      </div>
 
-      <div
-        className="dropdown-menu"
-        style={{ display: dropdownOpen ? "block" : "none" }}
-      ></div>
-    </div>
+  return (
+    <>
+      <div className="dropdown-container">
+        <div
+          className="dropdown-closed"
+          style={{
+            border: dropdownOpen && "solid 1px #3378CD",
+            marginBottom: dropdownMarginBottom,
+            background: dropdownBackground,
+          }}
+          onClick={() =>
+            dropdownOpen ? setDropdownOpen(false) : setDropdownOpen(true)
+          }
+        >
+          <span>Default </span>
+          <FontAwesomeIcon icon={faChevronDown} />
+        </div>
+
+        <div
+          className="dropdown-menu"
+          style={{
+            display: dropdownOpen ? "block" : "none",
+            marginTop: menuMarginTop,
+          }}
+        >
+          {menuItem}
+        </div>
+      </div>
+    </>
   );
 };
 

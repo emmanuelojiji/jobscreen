@@ -14,6 +14,10 @@ const Sidebar = ({
   orderedVisible,
   awaitingTrackingVisible,
   inboundVisible,
+  defaultDepartment,
+  globalTradeDepartment,
+  customerSupportDepartment,
+  dropdownLabel,
 }) => {
   const [temporaryHide, setTemporaryHide] = useState(true);
 
@@ -29,10 +33,37 @@ const Sidebar = ({
         <p onClick={closeSidebar} className="close">
           close
         </p>
-        <Dropdown marginBottom="15px" />
-        <Dropdown marginBottom="15px" />
-        <Dropdown marginBottom="15px" />
-        <Dropdown marginBottom="15px" />
+
+        <div className="filters">
+          <span className="dropdown-label">Department</span>
+          <Dropdown
+            dropdownMarginBottom="15px"
+            dropdownBackground="#1D2131"
+            dropdownLabel="Department"
+            menuItem={
+              <>
+                <span className="menu-item" onClick={defaultDepartment}>
+                  Default
+                </span>
+                <span className="menu-item" onClick={customerSupportDepartment}>
+                  Customer Support
+                </span>
+
+                <span className="menu-item" onClick={globalTradeDepartment}>
+                  Global Trade
+                </span>
+              </>
+            }
+          />
+          <span className="dropdown-label">Zone</span>
+          <Dropdown dropdownMarginBottom="15px" dropdownBackground="#1D2131" />
+          <span className="dropdown-label">Trader</span>
+          <Dropdown dropdownMarginBottom="15px" dropdownBackground="#1D2131" />
+          <span className="dropdown-label">Purchasing</span>
+          <Dropdown dropdownMarginBottom="15px" dropdownBackground="#1D2131" />
+          <span className="dropdown-label">CEX</span>
+          <Dropdown dropdownMarginBottom="15px" dropdownBackground="#1D2131" />
+        </div>
         <div className="layout-container" onClick={setExtended}>
           <div
             className="extended-container layout-outer"
