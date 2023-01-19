@@ -23,7 +23,7 @@ header {
   }
 }
 
-.name{
+.name {
   color: white;
 }
 
@@ -42,13 +42,11 @@ header {
   }
 }
 
-
 .controls-label {
   margin-bottom: 15px;
   color: white;
   opacity: 50%;
   font-size: 14px;
-
 }
 
 .options-button {
@@ -63,11 +61,10 @@ header {
   box-shadow: 0 4px 8px 0 rgba(21, 21, 24, 0.3);
   cursor: pointer;
 
-  &:hover{
+  &:hover {
     background: #124cb7;
   }
 }
-
 
 .controls-option-wrap {
   display: flex;
@@ -88,16 +85,15 @@ header {
   padding-left: 20px;
   color: white;
 
-  &::placeholder{
+  &::placeholder {
     color: white;
     opacity: 25%;
   }
 }
 
-.no-jobs{
+.no-jobs {
   width: 100%;
-  color: #B5B5B5;
+  color: #b5b5b5;
   text-align: center;
   margin-top: 50px;
- 
 }

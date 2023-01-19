@@ -11,7 +11,7 @@ const Dropdown = ({
   menuMarginTop,
   dropdownMarginBottom,
   dropdownBackground,
-  placeholder
+  placeholder,
 }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
@@ -39,6 +39,7 @@ const Dropdown = ({
             display: dropdownOpen ? "block" : "none",
             marginTop: menuMarginTop,
           }}
+          onClick={() => setDropdownOpen(false)}
         >
           {menuItem}
         </div>

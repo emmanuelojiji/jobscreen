@@ -36,7 +36,7 @@ function App() {
 
   const [noJobs, setNoJobs] = useState(false);
 
-  const [department, setDepartment] = useState("default");
+  const [department, setDepartment] = useState("Default");
 
   return (
     <div className="App">
@@ -65,6 +65,7 @@ function App() {
         customerSupportDepartment={() => setDepartment("customer_support")}
         defaultDepartment={() => setDepartment("default")}
         globalTradeDepartment={() => setDepartment("global_trade")}
+        department={department}
       />
       <header>
         <div className="header-wrap page-width">

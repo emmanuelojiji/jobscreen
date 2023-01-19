@@ -18,6 +18,8 @@ const Sidebar = ({
   globalTradeDepartment,
   customerSupportDepartment,
   dropdownLabel,
+  department,
+  setDepartment
 }) => {
   const [temporaryHide, setTemporaryHide] = useState(true);
 
@@ -36,7 +38,7 @@ const Sidebar = ({
 
         <div className="filters">
           <Dropdown
-            placeholder="Department"
+            placeholder={department}
             dropdownMarginBottom="15px"
             dropdownBackground="#1D2131"
             dropdownLabel="Department"
