@@ -75,19 +75,54 @@ header {
   width: 100%;
 }
 
+.search-container {
+  width: 100%;
+  max-width: 400px;
+  position: relative;
+}
+
 .search {
   background: #262c3f;
   border: 0;
   border-radius: 5px;
   height: 40px;
   width: 100%;
-  max-width: 400px;
   padding-left: 20px;
   color: white;
 
   &::placeholder {
     color: white;
     opacity: 25%;
+  }
+}
+
+.search-results-container {
+  width: 100%;
+  z-index: 1;
+  overflow-y: scroll;
+  background: brown;
+  position: absolute;
+  margin-top: 15px;
+  border-radius: 5px;
+  display: none;
+  flex-direction: column;
+
+  .search-result {
+    display: flex;
+    justify-content: space-between;
+    background: #262c3f;
+    padding: 20px;
+    width: 100%;
+    cursor: pointer;
+    transition: 0.2s ease-in-out;
+    max-height: 300px;
+    height: 100%;
+    color: white;
+
+
+    &:hover {
+      background: rgb(27, 14, 143);
+    }
   }
 }
 

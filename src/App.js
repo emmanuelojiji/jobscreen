@@ -3,7 +3,7 @@ import "./App.scss";
 import Column from "./Components/Column";
 import JobCard from "./Components/JobCard";
 import "./Toggle.scss";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Dropdown from "./Dropdown";
 import ToOrder from "./ToOrder.js";
 import Ordered from "./Ordered";
@@ -37,6 +37,12 @@ function App() {
   const [noJobs, setNoJobs] = useState(false);
 
   const [department, setDepartment] = useState("Default");
+
+  const [search, setSearch] = useState("");
+
+  const searchQuery = TestArray.filter((query) =>
+    query.jobNumber.includes(search)
+  );
 
   return (
     <div className="App">
@@ -101,11 +107,38 @@ function App() {
           </div>
 
           <div className="controls-option-wrap"></div>
-          <input
-            type="text"
-            className="search"
-            placeholder="Search for job.."
-          ></input>
+          <div className="search-container">
+            <input
+              type="text"
+              className="search"
+              placeholder="Search for job.."
+              onChange={(e) => {
+                setSearch(e.target.value);
+              }}
+            ></input>
+
+            <div
+              className="search-results-container"
+              style={{
+                display: search ? "flex" : "none",
+              }}
+            >
+              {searchQuery.map((query) => (
+                <div className="search-result">
+                  {searchQuery.length >= 1 && (
+                    <div>
+                      <h4>{query.jobNumber}</h4>
+                    </div>
+                  )}
+                </div>
+              ))}
+
+              {search.length > 0 && searchQuery.length === 0 && (
+                <div className="search-result">No results found</div>
+              )}
+            </div>
+          </div>
+
           <div className="controls-option-wrap">
             <span className="controls-label">Sort by</span>
             <Dropdown placeholder="Default" menuMarginTop="15px" />
