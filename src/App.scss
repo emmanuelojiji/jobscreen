@@ -89,6 +89,7 @@ header {
   width: 100%;
   padding-left: 20px;
   color: white;
+  outline: none;
 
   &::placeholder {
     color: white;
@@ -99,6 +100,7 @@ header {
 .search-results-container {
   width: 100%;
   z-index: 1;
+  max-height: 280px;
   overflow-y: scroll;
   background: brown;
   position: absolute;
@@ -106,12 +108,16 @@ header {
   border-radius: 5px;
   display: none;
   flex-direction: column;
+  border: solid 1px #23518a;
 
   .search-result {
     display: flex;
     justify-content: space-between;
     background: #262c3f;
-    padding: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 15px;
+    padding-bottom: 15px;
     width: 100%;
     cursor: pointer;
     transition: 0.2s ease-in-out;
@@ -119,9 +125,17 @@ header {
     height: 100%;
     color: white;
 
-
     &:hover {
       background: rgb(27, 14, 143);
+    }
+
+    .job_number {
+      margin-bottom: 5px;
+    }
+
+    .sub_heading {
+      color: #3378cd;
+      font-size: 14px;
     }
   }
 }
@@ -131,4 +145,8 @@ header {
   color: #b5b5b5;
   text-align: center;
   margin-top: 50px;
+}
+
+.country_flag {
+  font-size: 22px;
 }

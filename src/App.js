@@ -3,7 +3,7 @@ import "./App.scss";
 import Column from "./Components/Column";
 import JobCard from "./Components/JobCard";
 import "./Toggle.scss";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Dropdown from "./Dropdown";
 import ToOrder from "./ToOrder.js";
 import Ordered from "./Ordered";
@@ -41,8 +41,18 @@ function App() {
   const [search, setSearch] = useState("");
 
   const searchQuery = TestArray.filter((query) =>
-    query.jobNumber.includes(search)
+    query.jobNumber.toLowerCase().includes(search.toLowerCase())
   );
+
+  const searchRef = useRef(null);
+
+  const closeSearch = (e) => {
+    if (searchRef.current && search && !searchRef.current.contains(e.target)) {
+      setSearch(false);
+    }
+  };
+
+  document.addEventListener("mousedown", closeSearch);
 
   return (
     <div className="App">
@@ -122,13 +132,18 @@ function App() {
               style={{
                 display: search ? "flex" : "none",
               }}
+              ref={searchRef}
             >
               {searchQuery.map((query) => (
                 <div className="search-result">
                   {searchQuery.length >= 1 && (
-                    <div>
-                      <h4>{query.jobNumber}</h4>
-                    </div>
+                    <>
+                      <div>
+                        <h4 className="job_number">{query.jobNumber}</h4>
+                        <span className="sub_heading">Job</span>
+                      </div>
+                      <span className="country_flag">{query.country_flag}</span>
+                    </>
                   )}
                 </div>
               ))}

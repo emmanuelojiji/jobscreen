@@ -1,9 +1,12 @@
+import britain from "./britain.png";
+
 export const TestArray = [
   {
     jobNumber: "DE-J56895",
     time: "8 mins ago",
     late: true,
     category: "to_order",
+    country_flag: "🇬🇧",
   },
 
   {
@@ -11,6 +14,7 @@ export const TestArray = [
     time: "8 mins ago",
     late: false,
     category: "to_order",
+    country_flag: "🇸🇪",
   },
 
   {
@@ -18,44 +22,47 @@ export const TestArray = [
     time: "8 mins ago",
     late: false,
     category: "to_order",
+    country_flag: "🇮🇹",
   },
- 
 
   {
     jobNumber: "DE-J56555",
     time: "8 mins ago",
     late: true,
     category: "ordered",
+    country_flag: "🇪🇸",
   },
 
-  
-
   {
-    jobNumber: "DE-J5695",
+    jobNumber: "DE-J56895",
     time: "8 mins ago",
     late: false,
     category: "awaiting_tracking",
+    country_flag: "🇬🇧",
   },
 
   {
-    jobNumber: "DE-J5695",
+    jobNumber: "DE-J56895",
     time: "8 mins ago",
     late: false,
     category: "awaiting_tracking",
+    country_flag: "🇬🇧",
   },
 
   {
-    jobNumber: "DE-J5695",
+    jobNumber: "DE-J56895",
     time: "8 mins ago",
     late: false,
     category: "inbound",
+    country_flag: "🇬🇧",
   },
 
   {
-    jobNumber: "DE-J5695",
+    jobNumber: "DE-J56895",
     time: "8 mins ago",
     late: false,
     category: "inbound",
+    country_flag: "🇬🇧",
   },
 ];
 
