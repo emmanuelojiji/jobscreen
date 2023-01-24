@@ -9,14 +9,14 @@ import ToOrder from "./ToOrder.js";
 import Ordered from "./Ordered";
 import AwaitingTracking from "./AwaitingTracking";
 import Inbound from "./Inbound";
-import TestArray from "./TestArray";
+import AllJobs from "./AllJobs";
 import otherUser from "./otherUser";
 import Sidebar from "./Components/Sidebar";
 
 function App() {
-  const [hideLateJobs, sethideLateJobs] = useState();
+  const [showLateJobs, setShowLateJobs] = useState(true);
   const [user, setUser] = useState("default");
-  const multipleUsersArray = [...otherUser, ...TestArray];
+  const multipleUsersArray = [...otherUser, ...AllJobs];
 
   useEffect(() => {
     console.log(toOrderArray);
@@ -24,26 +24,24 @@ function App() {
 
   let toOrderArray =
     user === "default"
-      ? TestArray.filter(
-          (job) => job.category === "to_order" && { hideLateJobs }
-        )
+      ? AllJobs.filter((job) => job.category === "to_order")
       : multipleUsersArray.filter((job) => job.category === "to_order");
 
   const orderedArray =
     user === "default"
-      ? TestArray.filter((job) => job.category === "ordered")
+      ? AllJobs.filter((job) => job.category === "ordered")
       : multipleUsersArray.filter((job) => job.category === "ordered");
 
   const AwaitingTrackingArray =
     user === "default"
-      ? TestArray.filter((job) => job.category === "awaiting_tracking")
+      ? AllJobs.filter((job) => job.category === "awaiting_tracking")
       : multipleUsersArray.filter(
           (job) => job.category === "awaiting_tracking"
         );
 
   const inboundArray =
     user === "default"
-      ? TestArray.filter((job) => job.category === "inbound")
+      ? AllJobs.filter((job) => job.category === "inbound")
       : multipleUsersArray.filter((job) => job.category === "inbound");
 
   const [toOrderArrayCurrent, setToOrderArrayCurrent] = useState(toOrderArray);
@@ -66,7 +64,7 @@ function App() {
 
   const [search, setSearch] = useState("");
 
-  const searchQuery = TestArray.filter((query) =>
+  const searchQuery = AllJobs.filter((query) =>
     query.jobNumber.toLowerCase().includes(search.toLowerCase())
   );
 
@@ -168,7 +166,7 @@ function App() {
       />
       <header>
         <div className="header-wrap page-width">
-          <h2>Jobs</h2> 
+          <h2>Jobs</h2>
           <div className="profile-menu-container">
             <div className="avatar"></div>
 
@@ -190,8 +188,9 @@ function App() {
                 defaultChecked={true}
                 onChange={(e) => {
                   if (!e.target.checked) {
-                    sethideLateJobs()
+                    setShowLateJobs(false);
                   } else {
+                    setShowLateJobs(true);
                   }
                 }}
               />

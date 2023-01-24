@@ -1,4 +1,4 @@
-export const TestArray = [
+export const AllJobs = [
   {
     jobNumber: "DE-J56895",
     time: "8 mins ago",
@@ -64,4 +64,4 @@ export const TestArray = [
   },
 ];
 
-export default TestArray;
+export default AllJobs;

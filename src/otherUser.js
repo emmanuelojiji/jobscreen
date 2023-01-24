@@ -15,13 +15,7 @@ export const otherUser = [
     country_flag: "🇸🇳",
   },
 
-  {
-    jobNumber: "Other",
-    time: "8 mins ago",
-    late: false,
-    category: "to_order",
-    country_flag: "🇮🇳",
-  },
+
 ];
 
 export default otherUser;
