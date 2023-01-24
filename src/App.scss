@@ -23,8 +23,26 @@ header {
   }
 }
 
+.avatar {
+  height: 30px;
+  width: 30px;
+  background: rgb(219, 255, 173);
+  border-radius: 100%;
+}
+
 .name {
   color: white;
+}
+
+.profile-menu-container {
+  position: relative;
+}
+.profile-menu {
+  background: brown;
+  position: absolute;
+  width: 150px;
+  right: 0;
+  top: 40px;
 }
 
 .controls {
@@ -49,13 +67,30 @@ header {
   font-size: 14px;
 }
 
-.options-button {
+.button-filled {
   background: #1145a7;
   border: 0;
   height: 40px;
   padding-left: 30px;
   padding-right: 30px;
   color: white;
+  border-radius: 3px;
+  font-weight: bold;
+  box-shadow: 0 4px 8px 0 rgba(21, 21, 24, 0.3);
+  cursor: pointer;
+
+  &:hover {
+    background: #124cb7;
+  }
+}
+
+.button-transparent {
+  background: transparent;
+  border: solid 1px #1145a7;
+  height: 40px;
+  padding-left: 30px;
+  padding-right: 30px;
+  color: #1145a7;
   border-radius: 3px;
   font-weight: bold;
   box-shadow: 0 4px 8px 0 rgba(21, 21, 24, 0.3);
@@ -149,4 +184,64 @@ header {
 
 .country_flag {
   font-size: 22px;
+}
+
+.switch_modal_container {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 500;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .switch_modal {
+    background: #1d2131;
+    width: 100%;
+    max-width: 500px;
+    border-radius: 5px;
+    padding: 30px;
+  }
+
+  h1{
+    font-size: 20px;
+    margin-bottom: 5px;
+    color: white;
+  }
+
+  p {
+    margin-bottom: 20px;
+    color: white;
+    font-size: 14px;
+  }
+
+  .button-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 50px;
+
+    button {
+      &:nth-child(2) {
+        margin-left: 20px;
+      }
+    }
+  }
+}
+
+main{
+  padding-left: 5%;
+  padding-right: 5%;
+}
+
+.overflow-wrap{
+  position: relative;
+
+}
+
+.column-slide{
+ width: 100%; 
+ display: flex;
+
+ transition: 0.3s ease-in-out;
 }

@@ -1,5 +1,3 @@
-import britain from "./britain.png";
-
 export const TestArray = [
   {
     jobNumber: "DE-J56895",

@@ -10,15 +10,41 @@ import Ordered from "./Ordered";
 import AwaitingTracking from "./AwaitingTracking";
 import Inbound from "./Inbound";
 import TestArray from "./TestArray";
+import otherUser from "./otherUser";
 import Sidebar from "./Components/Sidebar";
 
 function App() {
-  const toOrderArray = TestArray.filter((job) => job.category === "to_order");
-  const orderedArray = TestArray.filter((job) => job.category === "ordered");
-  const AwaitingTrackingArray = TestArray.filter(
-    (job) => job.category === "awaiting_tracking"
-  );
-  const inboundArray = TestArray.filter((job) => job.category === "inbound");
+  const [hideLateJobs, sethideLateJobs] = useState();
+  const [user, setUser] = useState("default");
+  const multipleUsersArray = [...otherUser, ...TestArray];
+
+  useEffect(() => {
+    console.log(toOrderArray);
+  });
+
+  let toOrderArray =
+    user === "default"
+      ? TestArray.filter(
+          (job) => job.category === "to_order" && { hideLateJobs }
+        )
+      : multipleUsersArray.filter((job) => job.category === "to_order");
+
+  const orderedArray =
+    user === "default"
+      ? TestArray.filter((job) => job.category === "ordered")
+      : multipleUsersArray.filter((job) => job.category === "ordered");
+
+  const AwaitingTrackingArray =
+    user === "default"
+      ? TestArray.filter((job) => job.category === "awaiting_tracking")
+      : multipleUsersArray.filter(
+          (job) => job.category === "awaiting_tracking"
+        );
+
+  const inboundArray =
+    user === "default"
+      ? TestArray.filter((job) => job.category === "inbound")
+      : multipleUsersArray.filter((job) => job.category === "inbound");
 
   const [toOrderArrayCurrent, setToOrderArrayCurrent] = useState(toOrderArray);
   const [orderedArrayCurrent, setOrderedArrayCurrent] = useState(orderedArray);
@@ -54,8 +80,64 @@ function App() {
 
   document.addEventListener("mousedown", closeSearch);
 
+  const [switchModalVisible, setSwitchModalVisible] = useState(false);
+
+  const switchModalRef = useRef(null);
+  const closeSwitchModal = (e) => {
+    if (
+      switchModalRef.current &&
+      switchModalVisible &&
+      !switchModalRef.current.contains(e.target)
+    ) {
+      setSwitchModalVisible(false);
+    }
+  };
+
+  document.addEventListener("mousedown", closeSwitchModal);
+
+  const [carouselView, setCarouselView] = useState(0);
+
   return (
     <div className="App">
+      {switchModalVisible && (
+        <div className="switch_modal_container">
+          <div className="switch_modal" ref={switchModalRef}>
+            <h1>View as</h1>
+            <p>You are currently logged in as Tom Blockley </p>
+            <Dropdown
+              placeholder={user === "default" ? "Default" : user}
+              menuItem={
+                <>
+                  <span
+                    className="menu-item"
+                    onClick={() => setUser("Jack Smith")}
+                  >
+                    Default
+                  </span>
+                  <span
+                    className="menu-item"
+                    onClick={() => setUser("Jack Smith")}
+                  >
+                    Jack Smith
+                  </span>
+                  <span
+                    className="menu-item"
+                    onClick={() => setUser("Holly Jones")}
+                  >
+                    Holly Jones
+                  </span>
+                </>
+              }
+            />
+            <div className="button-container">
+              <button className="button-transparent">Cancel</button>
+              <button className="button-filled" onClick={() => setUser("yaya")}>
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       <Sidebar
         sidebarVisible={sidebarVisible}
         setSidebarVisible={setSidebarVisible}
@@ -86,9 +168,16 @@ function App() {
       />
       <header>
         <div className="header-wrap page-width">
-          <h2>Jobs</h2>
+          <h2>Jobs</h2> 
+          <div className="profile-menu-container">
+            <div className="avatar"></div>
 
-          <p className="name">Tom Blockley</p>
+            <div className="profile-menu">
+              <span onClick={() => setSwitchModalVisible(true)}>
+                Switch account
+              </span>
+            </div>
+          </div>
         </div>
       </header>
 
@@ -100,16 +189,9 @@ function App() {
               <Toggle
                 defaultChecked={true}
                 onChange={(e) => {
-                  if (e.target.checked) {
-                    setToOrderArrayCurrent(toOrderArray);
-                    setOrderedArrayCurrent(orderedArray);
+                  if (!e.target.checked) {
+                    sethideLateJobs()
                   } else {
-                    setToOrderArrayCurrent(
-                      toOrderArrayCurrent.filter((job) => job.late == false)
-                    );
-                    setOrderedArrayCurrent(
-                      orderedArrayCurrent.filter((job) => job.late == false)
-                    );
                   }
                 }}
               />
@@ -159,7 +241,7 @@ function App() {
             <Dropdown placeholder="Default" menuMarginTop="15px" />
           </div>
           <button
-            className="options-button"
+            className="button-filled"
             onClick={() => {
               if (sidebarVisible) {
                 setSidebarVisible(false);
@@ -174,100 +256,165 @@ function App() {
         </div>
       </div>
 
-      <div className="column-container">
-        {!noJobs ? (
-          <>
-            {toOrderVisible && department != "Customer Support" && (
-              <Column
-                category="To Order"
-                borderTopColor="#DC6942"
-                amount_in_category={toOrderArrayCurrent.length}
-              >
-                <>
-                  {toOrderArrayCurrent.map((job, index) => (
-                    <JobCard
-                      job_number={job.jobNumber}
-                      time={job.time}
-                      cardHeight={layout === "extended" ? "150px" : "50px"}
-                      layout={layout}
-                      backgroundColor={job.late && "#D64045"}
-                      displayLateIcon={job.late && "block"}
-                    />
-                  ))}
-                </>
-              </Column>
-            )}
+      <main>
+        <div className="overflow-wrap page-width">
+          <div className="column-carousel">
+            <div
+              className="left-button"
+              onClick={() =>
+                carouselView && setCarouselView(carouselView + 100)
+              }
+            ></div>
+            <div
+              className="right-button"
+              onClick={() =>
+                !carouselView && setCarouselView(carouselView - 100)
+              }
+            ></div>
+            {!noJobs ? (
+              <>
+                <div
+                  className="column-slide"
+                  style={{ transform: `translateX(${carouselView}%)` }}
+                >
+                  <div className="column-container">
+                    {toOrderVisible && department != "Customer Support" && (
+                      <Column
+                        category="To Order"
+                        borderTopColor="#DC6942"
+                        amount_in_category={toOrderArray.length}
+                      >
+                        <>
+                          {toOrderArray.map((job, index) => (
+                            <JobCard
+                              job_number={job.jobNumber}
+                              time={job.time}
+                              cardHeight={
+                                layout === "extended" ? "150px" : "50px"
+                              }
+                              layout={layout}
+                              backgroundColor={job.late && "#D64045"}
+                              displayLateIcon={job.late && "block"}
+                            />
+                          ))}
+                        </>
+                      </Column>
+                    )}
 
-            {orderedVisible && (
-              <Column
-                category="Ordered"
-                borderTopColor="#1B90E6"
-                opacity={orderedArrayCurrent.length === 0 && "0.5"}
-                amount_in_category={orderedArrayCurrent.length}
-              >
-                <>
-                  {orderedArrayCurrent.length == 0 && (
-                    <p className="no-jobs">No jobs to show</p>
-                  )}
-                  {orderedArrayCurrent.map((job, index) => (
-                    <JobCard
-                      job_number={job.jobNumber}
-                      time={job.time}
-                      backgroundColor={job.late && "#D64045"}
-                      displayLateIcon={job.late && "block"}
-                      layout={layout}
-                      cardHeight={layout === "extended" ? "150px" : "50px"}
-                    />
-                  ))}
-                </>
-              </Column>
-            )}
+                    {orderedVisible && (
+                      <Column
+                        category="Ordered"
+                        borderTopColor="#1B90E6"
+                        opacity={orderedArray.length === 0 && "0.5"}
+                        amount_in_category={orderedArray.length}
+                      >
+                        <>
+                          {orderedArray.length == 0 && (
+                            <p className="no-jobs">No jobs to show</p>
+                          )}
+                          {orderedArray.map((job, index) => (
+                            <JobCard
+                              job_number={job.jobNumber}
+                              time={job.time}
+                              backgroundColor={job.late && "#D64045"}
+                              displayLateIcon={job.late && "block"}
+                              layout={layout}
+                              cardHeight={
+                                layout === "extended" ? "150px" : "50px"
+                              }
+                            />
+                          ))}
+                        </>
+                      </Column>
+                    )}
 
-            {awaitingTrackingVisible && (
-              <Column
-                category="Awaiting Tracking Number"
-                borderTopColor="#1B90E6"
-                amount_in_category={awaitingTrackingArrayCurrent.length}
-              >
-                <>
-                  {awaitingTrackingArrayCurrent.map((job, index) => (
-                    <JobCard
-                      job_number={job.jobNumber}
-                      time={job.time}
-                      backgroundColor={job.late && "#D64045"}
-                      displayLateIcon={job.late && "block"}
-                      layout={layout}
-                      cardHeight={layout === "extended" ? "150px" : "50px"}
-                    />
-                  ))}
-                </>
-              </Column>
+                    {awaitingTrackingVisible && (
+                      <Column
+                        category="Awaiting Tracking Number"
+                        borderTopColor="#1B90E6"
+                        amount_in_category={AwaitingTrackingArray.length}
+                      >
+                        <>
+                          {AwaitingTrackingArray.map((job, index) => (
+                            <JobCard
+                              job_number={job.jobNumber}
+                              time={job.time}
+                              backgroundColor={job.late && "#D64045"}
+                              displayLateIcon={job.late && "block"}
+                              layout={layout}
+                              cardHeight={
+                                layout === "extended" ? "150px" : "50px"
+                              }
+                            />
+                          ))}
+                        </>
+                      </Column>
+                    )}
+                    {inboundVisible && (
+                      <Column
+                        category="Inbound"
+                        borderTopColor="#77C135"
+                        amount_in_category={inboundArray.length}
+                      >
+                        <>
+                          {inboundArray.map((job, index) => (
+                            <JobCard
+                              job_number={job.jobNumber}
+                              time={job.time}
+                              backgroundColor={job.late && "#D64045"}
+                              displayLateIcon={job.late && "block"}
+                              layout={layout}
+                              cardHeight={
+                                layout === "extended" ? "150px" : "50px"
+                              }
+                            />
+                          ))}
+                        </>
+                      </Column>
+                    )}
+                  </div>
+
+                  <div className="column-container">
+                    {toOrderVisible && department != "Customer Support" && (
+                      <Column
+                        category="To Order"
+                        borderTopColor="#DC6942"
+                        amount_in_category={toOrderArray.length}
+                      ></Column>
+                    )}
+
+                    {orderedVisible && (
+                      <Column
+                        category="Ordered"
+                        borderTopColor="#1B90E6"
+                        opacity={orderedArray.length === 0 && "0.5"}
+                        amount_in_category={orderedArray.length}
+                      ></Column>
+                    )}
+
+                    {awaitingTrackingVisible && (
+                      <Column
+                        category="Awaiting Tracking Number"
+                        borderTopColor="#1B90E6"
+                        amount_in_category={AwaitingTrackingArray.length}
+                      ></Column>
+                    )}
+                    {inboundVisible && (
+                      <Column
+                        category="Inbound"
+                        borderTopColor="#77C135"
+                        amount_in_category={inboundArray.length}
+                      ></Column>
+                    )}
+                  </div>
+                </div>
+              </>
+            ) : (
+              <h1>"hey"</h1>
             )}
-            {inboundVisible && (
-              <Column
-                category="Inbound"
-                borderTopColor="#77C135"
-                amount_in_category={inboundArrayCurrent.length}
-              >
-                <>
-                  {inboundArrayCurrent.map((job, index) => (
-                    <JobCard
-                      job_number={job.jobNumber}
-                      time={job.time}
-                      backgroundColor={job.late && "#D64045"}
-                      displayLateIcon={job.late && "block"}
-                      layout={layout}
-                      cardHeight={layout === "extended" ? "150px" : "50px"}
-                    />
-                  ))}
-                </>
-              </Column>
-            )}
-          </>
-        ) : (
-          <h1>"hey"</h1>
-        )}
-      </div>
+          </div>
+        </div>
+      </main>
     </div>
   );
 }
