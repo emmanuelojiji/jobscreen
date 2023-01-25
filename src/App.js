@@ -3,7 +3,7 @@ import "./App.scss";
 import Column from "./Components/Column";
 import JobCard from "./Components/JobCard";
 import "./Toggle.scss";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useMemo } from "react";
 import Dropdown from "./Dropdown";
 import ToOrder from "./ToOrder.js";
 import Ordered from "./Ordered";
@@ -13,19 +13,40 @@ import AllJobs from "./AllJobs";
 import otherUser from "./otherUser";
 import Sidebar from "./Components/Sidebar";
 
+const DEFAULT_USER = "default";
+const CATEGORY_FILTER = "to_order";
+const multipleUsersArray = [...otherUser, ...AllJobs];
+
 function App() {
+  // And these inside your component
   const [showLateJobs, setShowLateJobs] = useState(true);
-  const [user, setUser] = useState("default");
-  const multipleUsersArray = [...otherUser, ...AllJobs];
+  const [user, setUser] = useState(DEFAULT_USER);
 
-  useEffect(() => {
-    console.log(toOrderArray);
-  });
+  const toOrderFilter =
+    (includeLate) =>
+    ({ category, late }) =>
+      category === "to_order" && (includeLate || !late);
 
-  let toOrderArray =
-    user === "default"
-      ? AllJobs.filter((job) => job.category === "to_order")
-      : multipleUsersArray.filter((job) => job.category === "to_order");
+  const toOrderState = useMemo(
+    () =>
+      (user === DEFAULT_USER ? AllJobs : multipleUsersArray).filter(
+        toOrderFilter(showLateJobs)
+      ),
+    [user, showLateJobs] // hook dependencies
+  );
+
+  const orderedFilter =
+    (includeLate) =>
+    ({ category, late }) =>
+      category === "ordered" && (includeLate || !late);
+
+  const orderedState = useMemo(
+    () =>
+      (user === DEFAULT_USER ? AllJobs : multipleUsersArray).filter(
+        orderedFilter(showLateJobs)
+      ),
+    [user, showLateJobs] // hook dependencies
+  );
 
   const orderedArray =
     user === "default"
@@ -43,12 +64,6 @@ function App() {
     user === "default"
       ? AllJobs.filter((job) => job.category === "inbound")
       : multipleUsersArray.filter((job) => job.category === "inbound");
-
-  const [toOrderArrayCurrent, setToOrderArrayCurrent] = useState(toOrderArray);
-  const [orderedArrayCurrent, setOrderedArrayCurrent] = useState(orderedArray);
-  const [awaitingTrackingArrayCurrent, setAwaitingTrackingArrayCurrent] =
-    useState(AwaitingTrackingArray);
-  const [inboundArrayCurrent, setInboundCurrent] = useState(inboundArray);
 
   const [layout, setLayout] = useState("extended");
   const [sidebarVisible, setSidebarVisible] = useState(false);
@@ -187,10 +202,10 @@ function App() {
               <Toggle
                 defaultChecked={true}
                 onChange={(e) => {
-                  if (!e.target.checked) {
-                    setShowLateJobs(false);
-                  } else {
+                  if (e.target.checked) {
                     setShowLateJobs(true);
+                  } else {
+                    setShowLateJobs(false);
                   }
                 }}
               />
@@ -281,10 +296,10 @@ function App() {
                       <Column
                         category="To Order"
                         borderTopColor="#DC6942"
-                        amount_in_category={toOrderArray.length}
+                        amount_in_category={toOrderState.length}
                       >
                         <>
-                          {toOrderArray.map((job, index) => (
+                          {toOrderState.map((job, index) => (
                             <JobCard
                               job_number={job.jobNumber}
                               time={job.time}
@@ -304,14 +319,14 @@ function App() {
                       <Column
                         category="Ordered"
                         borderTopColor="#1B90E6"
-                        opacity={orderedArray.length === 0 && "0.5"}
+                        opacity={orderedState.length === 0 && "0.5"}
                         amount_in_category={orderedArray.length}
                       >
                         <>
-                          {orderedArray.length == 0 && (
+                          {orderedState.length == 0 && (
                             <p className="no-jobs">No jobs to show</p>
                           )}
-                          {orderedArray.map((job, index) => (
+                          {orderedState.map((job, index) => (
                             <JobCard
                               job_number={job.jobNumber}
                               time={job.time}
@@ -371,40 +386,31 @@ function App() {
                         </>
                       </Column>
                     )}
-                  </div>
 
-                  <div className="column-container">
-                    {toOrderVisible && department != "Customer Support" && (
-                      <Column
-                        category="To Order"
-                        borderTopColor="#DC6942"
-                        amount_in_category={toOrderArray.length}
-                      ></Column>
-                    )}
+                    <Column
+                      category="Column"
+                      borderTopColor="#1B90E6"
+                      amount_in_category={toOrderState.length}
+                    ></Column>
 
-                    {orderedVisible && (
-                      <Column
-                        category="Ordered"
-                        borderTopColor="#1B90E6"
-                        opacity={orderedArray.length === 0 && "0.5"}
-                        amount_in_category={orderedArray.length}
-                      ></Column>
-                    )}
+                    <Column
+                      category="Column"
+                      borderTopColor="#1B90E6"
+                      opacity={orderedArray.length === 0 && "0.5"}
+                      amount_in_category={orderedArray.length}
+                    ></Column>
 
-                    {awaitingTrackingVisible && (
-                      <Column
-                        category="Awaiting Tracking Number"
-                        borderTopColor="#1B90E6"
-                        amount_in_category={AwaitingTrackingArray.length}
-                      ></Column>
-                    )}
-                    {inboundVisible && (
-                      <Column
-                        category="Inbound"
-                        borderTopColor="#77C135"
-                        amount_in_category={inboundArray.length}
-                      ></Column>
-                    )}
+                    <Column
+                      category="Column"
+                      borderTopColor="#1B90E6"
+                      amount_in_category={AwaitingTrackingArray.length}
+                    ></Column>
+
+                    <Column
+                      category="Column"
+                      borderTopColor="#1B90E6"
+                      amount_in_category={inboundArray.length}
+                    ></Column>
                   </div>
                 </div>
               </>
