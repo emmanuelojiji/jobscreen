@@ -16,12 +16,10 @@
 .column-container {
   min-width: 100%;
   display: flex;
-
 }
 
 .Column {
   background: #262c3f;
-  height: 900px;
   min-width: calc(25% - 15px);
   border-top: solid 6px;
   border-radius: 5px;
@@ -30,10 +28,9 @@
   padding-right: 30px;
   margin-right: 20px;
 
-  &:nth-child(4){
+  &:nth-child(4) {
     margin-right: 0;
   }
-  
 
   transition: 0.2s ease-in-out;
 
@@ -55,24 +52,29 @@
   display: block;
 }
 
-.left-button{
+.left-button {
   width: 40px;
   height: 40px;
-  background: brown;
+  background: rgb(185, 185, 185);
   position: absolute;
   z-index: 3;
   top: 400px;
   left: -20px;
-  border-radius:5px;
+  border-radius: 5px;
 }
 
-.right-button{
+.right-button {
   width: 40px;
   height: 40px;
-  background: brown;
+  background: rgb(185, 185, 185);
   position: absolute;
   z-index: 3;
   top: 400px;
   right: -20px;
-  border-radius:5px;
+  border-radius: 5px;
+}
+
+.job-card-container {
+  height: 900px;
+  overflow-y: scroll;
 }

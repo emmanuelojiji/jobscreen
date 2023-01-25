@@ -123,7 +123,7 @@ function App() {
                 <>
                   <span
                     className="menu-item"
-                    onClick={() => setUser("Jack Smith")}
+                    onClick={() => setUser("default")}
                   >
                     Default
                   </span>
@@ -143,10 +143,8 @@ function App() {
               }
             />
             <div className="button-container">
-              <button className="button-transparent">Cancel</button>
-              <button className="button-filled" onClick={() => setUser("yaya")}>
-                Save
-              </button>
+              <button className="button-transparent">Close</button>
+
             </div>
           </div>
         </div>
@@ -326,6 +324,9 @@ function App() {
                           {orderedState.length == 0 && (
                             <p className="no-jobs">No jobs to show</p>
                           )}
+                          
+                          <div className="job-card-container">
+                           
                           {orderedState.map((job, index) => (
                             <JobCard
                               job_number={job.jobNumber}
@@ -338,6 +339,8 @@ function App() {
                               }
                             />
                           ))}
+                          </div>
+                        
                         </>
                       </Column>
                     )}
