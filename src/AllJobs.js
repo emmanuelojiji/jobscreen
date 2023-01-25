@@ -29,6 +29,7 @@ export const AllJobs = [
     late: true,
     category: "ordered",
     country_flag: "🇪🇸",
+    amount: "3/6"
   },
 
   {

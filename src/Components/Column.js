@@ -4,7 +4,7 @@ const Column = ({ children, category, borderTopColor, opacity, amount_in_categor
   return (
     <div className={`Column`} style={{ borderTopColor: borderTopColor, opacity: opacity }}>
       
-      <div className="column-header">
+      <div className="column-header bold">
         <span className="category-title">{category}</span>
         <span>{amount_in_category}</span>
       </div>

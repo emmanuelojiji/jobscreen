@@ -43,7 +43,7 @@ const Dropdown = ({
             dropdownOpen ? setDropdownOpen(false) : setDropdownOpen(true)
           }
         >
-          <span>{placeholder}</span>
+          <span className="light">{placeholder}</span>
           <FontAwesomeIcon icon={faChevronDown} />
         </div>
 

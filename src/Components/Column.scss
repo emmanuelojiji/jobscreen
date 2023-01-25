@@ -27,6 +27,7 @@
   padding-left: 30px;
   padding-right: 30px;
   margin-right: 20px;
+  height: 900px;
 
   &:nth-child(4) {
     margin-right: 0;
@@ -55,26 +56,27 @@
 .left-button {
   width: 40px;
   height: 40px;
-  background: rgb(185, 185, 185);
+  background: #3a4461;
   position: absolute;
   z-index: 3;
   top: 400px;
   left: -20px;
   border-radius: 5px;
+  cursor: pointer;
 }
 
 .right-button {
   width: 40px;
   height: 40px;
-  background: rgb(185, 185, 185);
+  background: #3a4461;
   position: absolute;
   z-index: 3;
   top: 400px;
   right: -20px;
   border-radius: 5px;
+  cursor: pointer;
 }
 
 .job-card-container {
-  height: 900px;
   overflow-y: scroll;
 }

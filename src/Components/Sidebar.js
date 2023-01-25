@@ -102,19 +102,19 @@ const Sidebar = ({
         <div className="toggle-container">
           <div className="toggle-wrap">
             <Toggle defaultChecked={true} onChange={toOrderVisible} />
-            <span>To Order</span>
+            <span className="toggle-text medium">To Order</span>
           </div>
           <div className="toggle-wrap">
             <Toggle defaultChecked={true} onChange={orderedVisible} />
-            <span>Ordered</span>
+            <span className="toggle-text medium">Ordered</span>
           </div>
           <div className="toggle-wrap">
             <Toggle defaultChecked={true} onChange={awaitingTrackingVisible} />
-            <span>Awaiting Tracking</span>
+            <span className="toggle-text medium">Awaiting Tracking</span>
           </div>
           <div className="toggle-wrap">
             <Toggle defaultChecked={true} onChange={inboundVisible} />
-            <span>Inbound</span>
+            <span className="toggle-text medium">Inbound</span>
           </div>
         </div>
 
@@ -128,6 +128,7 @@ const Sidebar = ({
             <div className="extended layout-inner"></div>
           </div>
           <span
+            className="medium"
             style={{
               color: layout === "extended" && "#428bca",
             }}
@@ -146,6 +147,7 @@ const Sidebar = ({
             <div className="condensed-inner layout-inner"></div>
           </div>
           <span
+            className="medium"
             style={{
               color: layout === "condensed" && "#428bca",
             }}

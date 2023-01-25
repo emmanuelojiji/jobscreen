@@ -5,7 +5,7 @@
   color: #d6deec;
   position: fixed;
   right: 0;
-  z-index: 2;
+  z-index: 5;
   transform: translateX(100%);
   transition: 0.3s ease-in-out;
   padding-left: 30px;
@@ -81,6 +81,10 @@
     color: white;
     margin-left: 10px;
   }
+}
+
+.toggle-text{
+  font-size: 14px;
 }
 
 .close {

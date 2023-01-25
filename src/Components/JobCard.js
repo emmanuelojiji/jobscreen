@@ -10,6 +10,9 @@ const JobCard = ({
   tooltipDisplay,
   job_number,
   time,
+  statusColor,
+  fraction,
+  suffix,
 }) => {
   const [showTooltip, setShowTooltip] = useState(false);
 
@@ -38,10 +41,20 @@ const JobCard = ({
       >
         <img src={clock} />
       </div>
-      <span className="job-number">{job_number}</span>
+      <span className="job-number medium">{job_number}</span>
       {(layout === "extended" || cardOpen) && (
-        <span className="time">{time}</span>
+        <>
+          <span className="time light">{time}</span>
+
+          <span className="status light" style={{ color: statusColor }}>
+            <span>
+              <span className="fraction bold">{`${fraction}`} </span>
+              {suffix}
+            </span>
+          </span>
+        </>
       )}
+
       <div
         className="tooltip"
         style={{ visibility: showTooltip ? "visible" : "hidden" }}
@@ -53,6 +66,11 @@ const JobCard = ({
       </div>
     </div>
   );
+};
+
+JobCard.defaultProps = {
+  fraction:"",
+  suffix: "",
 };
 
 export default JobCard;

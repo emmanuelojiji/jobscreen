@@ -95,6 +95,8 @@ function App() {
 
   const [switchModalVisible, setSwitchModalVisible] = useState(false);
 
+  const [profileMenuVisible, setProfileMenuVisible] = useState(false);
+
   const switchModalRef = useRef(null);
   const closeSwitchModal = (e) => {
     if (
@@ -110,6 +112,19 @@ function App() {
 
   const [carouselView, setCarouselView] = useState(0);
 
+  const profileMenuRef = useRef(null);
+
+  const closeProfileMenu = (e) => {
+    if (
+      profileMenuRef.current &&
+      profileMenuVisible &&
+      !profileMenuRef.current.contains(e.target)
+    ) {
+      setProfileMenuVisible(false);
+    }
+  };
+  document.addEventListener("mousedown", closeProfileMenu);
+
   return (
     <div className="App">
       {switchModalVisible && (
@@ -119,6 +134,7 @@ function App() {
             <p>You are currently logged in as Tom Blockley </p>
             <Dropdown
               placeholder={user === "default" ? "Default" : user}
+              menuMarginTop="15px"
               menuItem={
                 <>
                   <span
@@ -143,8 +159,12 @@ function App() {
               }
             />
             <div className="button-container">
-              <button className="button-transparent">Close</button>
-
+              <button
+                className="button-transparent"
+                onClick={() => setSwitchModalVisible(false)}
+              >
+                Close
+              </button>
             </div>
           </div>
         </div>
@@ -179,15 +199,22 @@ function App() {
       />
       <header>
         <div className="header-wrap page-width">
-          <h2>Jobs</h2>
+          <h2 className="bold">Jobs</h2>
           <div className="profile-menu-container">
-            <div className="avatar"></div>
+            <div
+              className="avatar"
+              onClick={() => !profileMenuVisible && setProfileMenuVisible(true)}
+            ></div>
 
-            <div className="profile-menu">
-              <span onClick={() => setSwitchModalVisible(true)}>
-                Switch account
-              </span>
-            </div>
+            {profileMenuVisible && (
+              <div
+                className="profile-menu"
+                ref={profileMenuRef}
+                onClick={() => setProfileMenuVisible(false)}
+              >
+                <span onClick={() => setSwitchModalVisible(true)}>View as</span>
+              </div>
+            )}
           </div>
         </div>
       </header>
@@ -195,7 +222,7 @@ function App() {
       <div className="controls">
         <div className="controls-wrap page-width">
           <div className="controls-option-wrap">
-            <span className="controls-label">Show late jobs</span>
+            <span className="controls-label normal">Show late jobs</span>
             <label>
               <Toggle
                 defaultChecked={true}
@@ -249,7 +276,7 @@ function App() {
           </div>
 
           <div className="controls-option-wrap">
-            <span className="controls-label">Sort by</span>
+            <span className="controls-label normal">Sort by</span>
             <Dropdown placeholder="Default" menuMarginTop="15px" />
           </div>
           <button
@@ -307,6 +334,8 @@ function App() {
                               layout={layout}
                               backgroundColor={job.late && "#D64045"}
                               displayLateIcon={job.late && "block"}
+                              statusColor={job.late ? "white" : "#83E884"}
+                             
                             />
                           ))}
                         </>
@@ -324,9 +353,7 @@ function App() {
                           {orderedState.length == 0 && (
                             <p className="no-jobs">No jobs to show</p>
                           )}
-                          
-                          <div className="job-card-container">
-                           
+
                           {orderedState.map((job, index) => (
                             <JobCard
                               job_number={job.jobNumber}
@@ -337,10 +364,11 @@ function App() {
                               cardHeight={
                                 layout === "extended" ? "150px" : "50px"
                               }
+                              statusColor={job.late ? "white" : "#83E884"}
+                              fraction="3/6"
+                              suffix="Ordered"
                             />
                           ))}
-                          </div>
-                        
                         </>
                       </Column>
                     )}
@@ -362,6 +390,9 @@ function App() {
                               cardHeight={
                                 layout === "extended" ? "150px" : "50px"
                               }
+                              statusColor={job.late ? "white" : "#83E884"}
+                              fraction="1/6"
+                              suffix="TRACKING NOS. RECEIVED"
                             />
                           ))}
                         </>
@@ -384,6 +415,9 @@ function App() {
                               cardHeight={
                                 layout === "extended" ? "150px" : "50px"
                               }
+                              statusColor={job.late ? "white" : "#83E884"}
+                              fraction="3/6"
+                              suffix="ARRIVED"
                             />
                           ))}
                         </>

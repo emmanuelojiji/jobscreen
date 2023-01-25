@@ -28,6 +28,7 @@ header {
   width: 30px;
   background: rgb(219, 255, 173);
   border-radius: 100%;
+  cursor: pointer;
 }
 
 .name {
@@ -38,11 +39,22 @@ header {
   position: relative;
 }
 .profile-menu {
+  background: #262c3f;
   background: brown;
   position: absolute;
-  width: 150px;
+  width: 180px;
   right: 0;
   top: 40px;
+  color: white;
+  border-radius: 5px;
+
+  span {
+    display: block;
+    padding-left: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    width: 100%;
+  }
 }
 
 .controls {
@@ -78,6 +90,7 @@ header {
   font-weight: bold;
   box-shadow: 0 4px 8px 0 rgba(21, 21, 24, 0.3);
   cursor: pointer;
+  transition: 0.2s ease-in-out;
 
   &:hover {
     background: #124cb7;
@@ -95,9 +108,11 @@ header {
   font-weight: bold;
   box-shadow: 0 4px 8px 0 rgba(21, 21, 24, 0.3);
   cursor: pointer;
+  transition: 0.2s ease-in-out;
 
   &:hover {
     background: #124cb7;
+    color: white;
   }
 }
 
@@ -125,6 +140,12 @@ header {
   padding-left: 20px;
   color: white;
   outline: none;
+  transition: 0.2s ease-in-out;
+
+  &:focus {
+    background: #2d344b;
+    cursor: pointer;
+  }
 
   &::placeholder {
     color: white;
@@ -161,7 +182,10 @@ header {
     color: white;
 
     &:hover {
-      background: rgb(27, 14, 143);
+      background: #124cb7;
+      .sub_heading {
+        color: white;
+      }
     }
 
     .job_number {
@@ -171,6 +195,7 @@ header {
     .sub_heading {
       color: #3378cd;
       font-size: 14px;
+       transition: 0.2s ease-in-out;
     }
   }
 }
@@ -204,7 +229,7 @@ header {
     padding: 30px;
   }
 
-  h1{
+  h1 {
     font-size: 20px;
     margin-bottom: 5px;
     color: white;
@@ -229,19 +254,18 @@ header {
   }
 }
 
-main{
+main {
   padding-left: 5%;
   padding-right: 5%;
 }
 
-.overflow-wrap{
+.overflow-wrap {
   position: relative;
-
 }
 
-.column-slide{
- width: 100%; 
- display: flex;
+.column-slide {
+  width: 100%;
+  display: flex;
 
- transition: 0.3s ease-in-out;
+  transition: 0.3s ease-in-out;
 }
