@@ -387,7 +387,7 @@ function App() {
                   }
                 ></div>
               )}
-              {visibleColumns > 4 && (
+              {visibleColumns > 4 && carouselView == 0 && (
                 <div
                   className="right-button"
                   onClick={() =>
