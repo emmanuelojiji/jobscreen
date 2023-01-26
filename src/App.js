@@ -83,9 +83,18 @@ function App() {
 
   const [search, setSearch] = useState("");
 
-  const searchQuery = AllJobs.filter((query) =>
-    query.jobNumber.toLowerCase().includes(search.toLowerCase())
-  );
+  const searchQuery =
+    user === DEFAULT_USER
+      ? AllJobs.filter((query) =>
+          query.jobNumber
+            .toLowerCase()
+            .includes(search.toString().toLowerCase())
+        )
+      : multipleUsersArray.filter((query) =>
+          query.jobNumber
+            .toLowerCase()
+            .includes(search.toString().toLowerCase())
+        );
 
   const searchRef = useRef(null);
 
@@ -337,8 +346,8 @@ function App() {
                   {searchQuery.length >= 1 && (
                     <>
                       <div>
-                        <h4 className="job_number">{query.jobNumber}</h4>
-                        <span className="sub_heading">Job</span>
+                        <h4 className="job_number bold">{query.jobNumber}</h4>
+                        <span className="sub_heading light">Job</span>
                       </div>
                       <span className="country_flag">{query.country_flag}</span>
                     </>
@@ -347,7 +356,7 @@ function App() {
               ))}
 
               {search.length > 0 && searchQuery.length === 0 && (
-                <div className="search-result">No results found</div>
+                <div className="search-result light">No results found</div>
               )}
             </div>
           </div>
@@ -431,7 +440,7 @@ function App() {
                           category="Ordered"
                           borderTopColor="#1B90E6"
                           opacity={orderedState.length === 0 && "0.5"}
-                          amount_in_category={orderedArray.length}
+                          amount_in_category={orderedState.length}
                         >
                           <>
                             {orderedState.length == 0 && (
