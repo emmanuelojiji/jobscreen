@@ -15,13 +15,14 @@ import {
   faChevronLeft,
   faL,
 } from "@fortawesome/free-solid-svg-icons";
+import Search from "./Components/Search";
 
 const DEFAULT_USER = "default";
 const CATEGORY_FILTER = "to_order";
 const multipleUsersArray = [...otherUser, ...AllJobs];
 
 function App() {
-  // And these inside your component
+
   const [showLateJobs, setShowLateJobs] = useState(true);
   const [user, setUser] = useState(DEFAULT_USER);
 
@@ -35,7 +36,7 @@ function App() {
       (user === DEFAULT_USER ? AllJobs : multipleUsersArray).filter(
         toOrderFilter(showLateJobs)
       ),
-    [user, showLateJobs] // hook dependencies
+    [user, showLateJobs] 
   );
 
   const orderedFilter =
@@ -96,31 +97,6 @@ function App() {
   const [noJobs, setNoJobs] = useState(false);
 
   const [department, setDepartment] = useState("Default");
-
-  const [search, setSearch] = useState("");
-
-  const searchQuery =
-    user === DEFAULT_USER
-      ? AllJobs.filter((query) =>
-          query.jobNumber
-            .toLowerCase()
-            .includes(search.toString().toLowerCase())
-        )
-      : multipleUsersArray.filter((query) =>
-          query.jobNumber
-            .toLowerCase()
-            .includes(search.toString().toLowerCase())
-        );
-
-  const searchRef = useRef(null);
-
-  const closeSearch = (e) => {
-    if (searchRef.current && search && !searchRef.current.contains(e.target)) {
-      setSearch(false);
-    }
-  };
-
-  document.addEventListener("mousedown", closeSearch);
 
   const [switchModalVisible, setSwitchModalVisible] = useState(false);
 
@@ -349,42 +325,12 @@ function App() {
           </div>
 
           <div className="controls-option-wrap"></div>
-          <div className="search-container">
-            <input
-              type="text"
-              className="search"
-              placeholder="Search for job.."
-              onChange={(e) => {
-                setSearch(e.target.value);
-              }}
-            ></input>
-
-            <div
-              className="search-results-container"
-              style={{
-                display: search ? "flex" : "none",
-              }}
-              ref={searchRef}
-            >
-              {searchQuery.map((query) => (
-                <div className="search-result">
-                  {searchQuery.length >= 1 && (
-                    <>
-                      <div>
-                        <h4 className="job_number bold">{query.jobNumber}</h4>
-                        <span className="sub_heading light">Job</span>
-                      </div>
-                      <span className="country_flag">{query.country_flag}</span>
-                    </>
-                  )}
-                </div>
-              ))}
-
-              {search.length > 0 && searchQuery.length === 0 && (
-                <div className="search-result light">No results found</div>
-              )}
-            </div>
-          </div>
+          <Search
+            user={user}
+            DEFAULT_USER={DEFAULT_USER}
+            AllJobs={AllJobs}
+            multipleUsersArray={multipleUsersArray}
+          />
 
           <div className="controls-option-wrap">
             <span className="controls-label normal">Sort by</span>
