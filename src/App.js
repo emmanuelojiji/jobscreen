@@ -12,6 +12,7 @@ import Inbound from "./Inbound";
 import AllJobs from "./AllJobs";
 import otherUser from "./otherUser";
 import Sidebar from "./Components/Sidebar";
+import avatar from "./avatar.jpg";
 
 const DEFAULT_USER = "default";
 const CATEGORY_FILTER = "to_order";
@@ -304,6 +305,7 @@ function App() {
           <div className="profile-menu-container">
             <div
               className="avatar"
+              style={{ backgroundImage: `url(${avatar})` }}
               onClick={() => !profileMenuVisible && setProfileMenuVisible(true)}
             ></div>
 

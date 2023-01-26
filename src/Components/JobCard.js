@@ -69,7 +69,7 @@ const JobCard = ({
 };
 
 JobCard.defaultProps = {
-  fraction:"",
+  fraction: "",
   suffix: "",
 };
 
