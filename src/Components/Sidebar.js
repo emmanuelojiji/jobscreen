@@ -16,6 +16,10 @@ const Sidebar = ({
   orderedVisible,
   awaitingTrackingVisible,
   inboundVisible,
+  column5Visible,
+  column6Visible,
+  column7Visible,
+  column8Visible,
   defaultDepartment,
   globalTradeDepartment,
   customerSupportDepartment,
@@ -115,6 +119,22 @@ const Sidebar = ({
           <div className="toggle-wrap">
             <Toggle defaultChecked={true} onChange={inboundVisible} />
             <span className="toggle-text medium">Inbound</span>
+          </div>
+          <div className="toggle-wrap">
+            <Toggle defaultChecked={true} onChange={column5Visible} />
+            <span className="toggle-text medium">Column 5</span>
+          </div>
+          <div className="toggle-wrap">
+            <Toggle defaultChecked={true} onChange={column6Visible} />
+            <span className="toggle-text medium">Column 6</span>
+          </div>
+          <div className="toggle-wrap">
+            <Toggle defaultChecked={true} onChange={column7Visible} />
+            <span className="toggle-text medium">Column 7</span>
+          </div>
+          <div className="toggle-wrap">
+            <Toggle defaultChecked={true} onChange={column8Visible} />
+            <span className="toggle-text medium">Column 8</span>
           </div>
         </div>
 

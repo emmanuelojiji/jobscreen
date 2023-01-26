@@ -195,7 +195,7 @@ header {
     .sub_heading {
       color: #3378cd;
       font-size: 14px;
-       transition: 0.2s ease-in-out;
+      transition: 0.2s ease-in-out;
     }
   }
 }
@@ -255,6 +255,7 @@ header {
 }
 
 main {
+  height: 100vh;
   padding-left: 5%;
   padding-right: 5%;
 }
@@ -264,8 +265,8 @@ main {
 }
 
 .column-slide {
+  height: 100%;
   width: 100%;
   display: flex;
-
   transition: 0.3s ease-in-out;
 }

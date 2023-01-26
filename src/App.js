@@ -72,6 +72,10 @@ function App() {
   const [orderedVisible, setOrderedVisible] = useState(true);
   const [awaitingTrackingVisible, setAwaitingTrackingVisible] = useState(true);
   const [inboundVisible, setInboundVisible] = useState(true);
+  const [column5Visible, setColumn5Visible] = useState(true);
+  const [column6Visible, setColumn6Visible] = useState(true);
+  const [column7Visible, setColumn7Visible] = useState(true);
+  const [column8Visible, setColumn8Visible] = useState(true);
 
   const [noJobs, setNoJobs] = useState(false);
 
@@ -124,6 +128,12 @@ function App() {
     }
   };
   document.addEventListener("mousedown", closeProfileMenu);
+
+  const [visibleColumns, setVisibleColumns] = useState(8);
+
+  useEffect(() => {
+    console.log(visibleColumns);
+  });
 
   return (
     <div className="App">
@@ -178,20 +188,86 @@ function App() {
           setLayout("condensed");
         }}
         layout={layout}
-        toOrderVisible={() =>
-          toOrderVisible ? setToOrderVisible(false) : setToOrderVisible(true)
-        }
-        orderedVisible={() =>
-          orderedVisible ? setOrderedVisible(false) : setOrderedVisible(true)
-        }
-        awaitingTrackingVisible={() =>
-          awaitingTrackingVisible
-            ? setAwaitingTrackingVisible(false)
-            : setAwaitingTrackingVisible(true)
-        }
-        inboundVisible={() =>
-          inboundVisible ? setInboundVisible(false) : setInboundVisible(true)
-        }
+        toOrderVisible={() => {
+          if (toOrderVisible) {
+            setToOrderVisible(false);
+            setVisibleColumns(visibleColumns - 1);
+            console.log("hey");
+          } else {
+            setToOrderVisible(true);
+            setVisibleColumns(visibleColumns + 1);
+          }
+        }}
+        orderedVisible={() => {
+          if (orderedVisible) {
+            setOrderedVisible(false);
+            setVisibleColumns(visibleColumns - 1);
+            console.log("hey");
+          } else {
+            setOrderedVisible(true);
+            setVisibleColumns(visibleColumns + 1);
+          }
+        }}
+        awaitingTrackingVisible={() => {
+          if (awaitingTrackingVisible) {
+            setAwaitingTrackingVisible(false);
+            setVisibleColumns(visibleColumns - 1);
+            console.log("hey");
+          } else {
+            setAwaitingTrackingVisible(true);
+            setVisibleColumns(visibleColumns + 1);
+          }
+        }}
+        inboundVisible={() => {
+          if (inboundVisible) {
+            setInboundVisible(false);
+            setVisibleColumns(visibleColumns - 1);
+            console.log("hey");
+          } else {
+            setInboundVisible(true);
+            setVisibleColumns(visibleColumns + 1);
+          }
+        }}
+        column5Visible={() => {
+          if (column5Visible) {
+            setColumn5Visible(false);
+            setVisibleColumns(visibleColumns - 1);
+            console.log("hey");
+          } else {
+            setColumn5Visible(true);
+            setVisibleColumns(visibleColumns + 1);
+          }
+        }}
+        column6Visible={() => {
+          if (column6Visible) {
+            setColumn6Visible(false);
+            setVisibleColumns(visibleColumns - 1);
+            console.log("hey");
+          } else {
+            setVisibleColumns(visibleColumns + 1);
+            setColumn6Visible(true);
+          }
+        }}
+        column7Visible={() => {
+          if (column7Visible) {
+            setColumn7Visible(false);
+            setVisibleColumns(visibleColumns - 1);
+            console.log("hey");
+          } else {
+            setColumn7Visible(true);
+            setVisibleColumns(visibleColumns + 1);
+          }
+        }}
+        column8Visible={() => {
+          if (column8Visible) {
+            setColumn8Visible(false);
+            setVisibleColumns(visibleColumns - 1);
+            console.log("hey");
+          } else {
+            setColumn8Visible(true);
+            setVisibleColumns(visibleColumns + 1);
+          }
+        }}
         customerSupportDepartment={() => setDepartment("Customer Support")}
         defaultDepartment={() => setDepartment("Default")}
         globalTradeDepartment={() => setDepartment("Global Trade")}
@@ -200,6 +276,7 @@ function App() {
       <header>
         <div className="header-wrap page-width">
           <h2 className="bold">Jobs</h2>
+
           <div className="profile-menu-container">
             <div
               className="avatar"
@@ -296,166 +373,180 @@ function App() {
       </div>
 
       <main>
-        <div className="overflow-wrap page-width">
-          <div className="column-carousel">
-            <div
-              className="left-button"
-              onClick={() =>
-                carouselView && setCarouselView(carouselView + 100)
-              }
-            ></div>
-            <div
-              className="right-button"
-              onClick={() =>
-                !carouselView && setCarouselView(carouselView - 100)
-              }
-            ></div>
-            {!noJobs ? (
-              <>
+        <>
+          {visibleColumns === 0 && (
+            <div className="no-jobs medium">There are no jobs available</div>
+          )}
+          <div className="overflow-wrap page-width">
+            <div className="column-carousel">
+              {carouselView < 0 && visibleColumns && (
                 <div
-                  className="column-slide"
-                  style={{ transform: `translateX(${carouselView}%)` }}
-                >
-                  <div className="column-container">
-                    {toOrderVisible && department != "Customer Support" && (
-                      <Column
-                        category="To Order"
-                        borderTopColor="#DC6942"
-                        amount_in_category={toOrderState.length}
-                      >
-                        <>
-                          {toOrderState.map((job, index) => (
-                            <JobCard
-                              job_number={job.jobNumber}
-                              time={job.time}
-                              cardHeight={
-                                layout === "extended" ? "150px" : "50px"
-                              }
-                              layout={layout}
-                              backgroundColor={job.late && "#D64045"}
-                              displayLateIcon={job.late && "block"}
-                              statusColor={job.late ? "white" : "#83E884"}
-                             
-                            />
-                          ))}
-                        </>
-                      </Column>
-                    )}
+                  className="left-button"
+                  onClick={() =>
+                    carouselView && setCarouselView(carouselView + 100)
+                  }
+                ></div>
+              )}
+              {visibleColumns > 4 && (
+                <div
+                  className="right-button"
+                  onClick={() =>
+                    !carouselView && setCarouselView(carouselView - 100)
+                  }
+                ></div>
+              )}
+              {!noJobs ? (
+                <>
+                  <div
+                    className="column-slide"
+                    style={{ transform: `translateX(${carouselView}%)` }}
+                  >
+                    <div className="column-container">
+                      {toOrderVisible && department != "Customer Support" && (
+                        <Column
+                          category="To Order"
+                          borderTopColor="#DC6942"
+                          amount_in_category={toOrderState.length}
+                        >
+                          <>
+                            {toOrderState.map((job, index) => (
+                              <JobCard
+                                job_number={job.jobNumber}
+                                time={job.time}
+                                cardHeight={
+                                  layout === "extended" ? "150px" : "50px"
+                                }
+                                layout={layout}
+                                backgroundColor={job.late && "#D64045"}
+                                displayLateIcon={job.late && "block"}
+                                statusColor={job.late ? "white" : "#83E884"}
+                              />
+                            ))}
+                          </>
+                        </Column>
+                      )}
 
-                    {orderedVisible && (
-                      <Column
-                        category="Ordered"
-                        borderTopColor="#1B90E6"
-                        opacity={orderedState.length === 0 && "0.5"}
-                        amount_in_category={orderedArray.length}
-                      >
-                        <>
-                          {orderedState.length == 0 && (
-                            <p className="no-jobs">No jobs to show</p>
-                          )}
+                      {orderedVisible && (
+                        <Column
+                          category="Ordered"
+                          borderTopColor="#1B90E6"
+                          opacity={orderedState.length === 0 && "0.5"}
+                          amount_in_category={orderedArray.length}
+                        >
+                          <>
+                            {orderedState.length == 0 && (
+                              <p className="no-jobs light">No jobs to show</p>
+                            )}
 
-                          {orderedState.map((job, index) => (
-                            <JobCard
-                              job_number={job.jobNumber}
-                              time={job.time}
-                              backgroundColor={job.late && "#D64045"}
-                              displayLateIcon={job.late && "block"}
-                              layout={layout}
-                              cardHeight={
-                                layout === "extended" ? "150px" : "50px"
-                              }
-                              statusColor={job.late ? "white" : "#83E884"}
-                              fraction="3/6"
-                              suffix="Ordered"
-                            />
-                          ))}
-                        </>
-                      </Column>
-                    )}
+                            {orderedState.map((job, index) => (
+                              <JobCard
+                                job_number={job.jobNumber}
+                                time={job.time}
+                                backgroundColor={job.late && "#D64045"}
+                                displayLateIcon={job.late && "block"}
+                                layout={layout}
+                                cardHeight={
+                                  layout === "extended" ? "150px" : "50px"
+                                }
+                                statusColor={job.late ? "white" : "#83E884"}
+                                fraction="3/6"
+                                suffix="Ordered"
+                              />
+                            ))}
+                          </>
+                        </Column>
+                      )}
 
-                    {awaitingTrackingVisible && (
-                      <Column
-                        category="Awaiting Tracking Number"
-                        borderTopColor="#1B90E6"
-                        amount_in_category={AwaitingTrackingArray.length}
-                      >
-                        <>
-                          {AwaitingTrackingArray.map((job, index) => (
-                            <JobCard
-                              job_number={job.jobNumber}
-                              time={job.time}
-                              backgroundColor={job.late && "#D64045"}
-                              displayLateIcon={job.late && "block"}
-                              layout={layout}
-                              cardHeight={
-                                layout === "extended" ? "150px" : "50px"
-                              }
-                              statusColor={job.late ? "white" : "#83E884"}
-                              fraction="1/6"
-                              suffix="TRACKING NOS. RECEIVED"
-                            />
-                          ))}
-                        </>
-                      </Column>
-                    )}
-                    {inboundVisible && (
-                      <Column
-                        category="Inbound"
-                        borderTopColor="#77C135"
-                        amount_in_category={inboundArray.length}
-                      >
-                        <>
-                          {inboundArray.map((job, index) => (
-                            <JobCard
-                              job_number={job.jobNumber}
-                              time={job.time}
-                              backgroundColor={job.late && "#D64045"}
-                              displayLateIcon={job.late && "block"}
-                              layout={layout}
-                              cardHeight={
-                                layout === "extended" ? "150px" : "50px"
-                              }
-                              statusColor={job.late ? "white" : "#83E884"}
-                              fraction="3/6"
-                              suffix="ARRIVED"
-                            />
-                          ))}
-                        </>
-                      </Column>
-                    )}
+                      {awaitingTrackingVisible && (
+                        <Column
+                          category="Awaiting Tracking Number"
+                          borderTopColor="#1B90E6"
+                          amount_in_category={AwaitingTrackingArray.length}
+                        >
+                          <>
+                            {AwaitingTrackingArray.map((job, index) => (
+                              <JobCard
+                                job_number={job.jobNumber}
+                                time={job.time}
+                                backgroundColor={job.late && "#D64045"}
+                                displayLateIcon={job.late && "block"}
+                                layout={layout}
+                                cardHeight={
+                                  layout === "extended" ? "150px" : "50px"
+                                }
+                                statusColor={job.late ? "white" : "#83E884"}
+                                fraction="1/6"
+                                suffix="TRACKING NOS. RECEIVED"
+                              />
+                            ))}
+                          </>
+                        </Column>
+                      )}
+                      {inboundVisible && (
+                        <Column
+                          category="Inbound"
+                          borderTopColor="#77C135"
+                          amount_in_category={inboundArray.length}
+                        >
+                          <>
+                            {inboundArray.map((job, index) => (
+                              <JobCard
+                                job_number={job.jobNumber}
+                                time={job.time}
+                                backgroundColor={job.late && "#D64045"}
+                                displayLateIcon={job.late && "block"}
+                                layout={layout}
+                                cardHeight={
+                                  layout === "extended" ? "150px" : "50px"
+                                }
+                                statusColor={job.late ? "white" : "#83E884"}
+                                fraction="3/6"
+                                suffix="ARRIVED"
+                              />
+                            ))}
+                          </>
+                        </Column>
+                      )}
 
-                    <Column
-                      category="Column"
-                      borderTopColor="#1B90E6"
-                      amount_in_category={toOrderState.length}
-                    ></Column>
+                      {column5Visible && (
+                        <Column
+                          category="Column 5"
+                          borderTopColor="#1B90E6"
+                          amount_in_category={toOrderState.length}
+                        ></Column>
+                      )}
+                      {column6Visible && (
+                        <Column
+                          category="Column 6"
+                          borderTopColor="#1B90E6"
+                          opacity={orderedArray.length === 0 && "0.5"}
+                          amount_in_category={orderedArray.length}
+                        ></Column>
+                      )}
+                      {column7Visible && (
+                        <Column
+                          category="Column 7"
+                          borderTopColor="#1B90E6"
+                          amount_in_category={AwaitingTrackingArray.length}
+                        ></Column>
+                      )}
 
-                    <Column
-                      category="Column"
-                      borderTopColor="#1B90E6"
-                      opacity={orderedArray.length === 0 && "0.5"}
-                      amount_in_category={orderedArray.length}
-                    ></Column>
-
-                    <Column
-                      category="Column"
-                      borderTopColor="#1B90E6"
-                      amount_in_category={AwaitingTrackingArray.length}
-                    ></Column>
-
-                    <Column
-                      category="Column"
-                      borderTopColor="#1B90E6"
-                      amount_in_category={inboundArray.length}
-                    ></Column>
+                      {column8Visible && (
+                        <Column
+                          category="Column 8"
+                          borderTopColor="#1B90E6"
+                          amount_in_category={inboundArray.length}
+                        ></Column>
+                      )}
+                    </div>
                   </div>
-                </div>
-              </>
-            ) : (
-              <h1>"hey"</h1>
-            )}
+                </>
+              ) : (
+                <h1>"hey"</h1>
+              )}
+            </div>
           </div>
-        </div>
+        </>
       </main>
     </div>
   );
