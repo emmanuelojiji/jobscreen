@@ -13,6 +13,8 @@ import AllJobs from "./AllJobs";
 import otherUser from "./otherUser";
 import Sidebar from "./Components/Sidebar";
 import avatar from "./avatar.jpg";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronRight, faChevronLeft, faL } from "@fortawesome/free-solid-svg-icons";
 
 const DEFAULT_USER = "default";
 const CATEGORY_FILTER = "to_order";
@@ -417,7 +419,7 @@ function App() {
                   onClick={() =>
                     carouselView && setCarouselView(carouselView + 100)
                   }
-                ></div>
+                ><FontAwesomeIcon icon={faChevronLeft} /></div>
               )}
               {visibleColumns > 4 && carouselView == 0 && (
                 <div
@@ -425,7 +427,7 @@ function App() {
                   onClick={() =>
                     !carouselView && setCarouselView(carouselView - 100)
                   }
-                ></div>
+                ><FontAwesomeIcon icon={faChevronRight} /></div>
               )}
               {!noJobs ? (
                 <>

@@ -4,6 +4,8 @@ import Toggle from "react-toggle";
 import AwaitingTracking from "../AwaitingTracking";
 import Dropdown from "../Dropdown";
 import { useRef } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
 const Sidebar = ({
   sidebarVisible,
@@ -52,9 +54,11 @@ const Sidebar = ({
         }}
         ref={sidebarRef}
       >
-        <p onClick={closeSidebar} className="close">
-          close
-        </p>
+        <FontAwesomeIcon
+          icon={faXmark}
+          onClick={closeSidebar}
+          className="close"
+        />
 
         <div className="filters">
           <Dropdown
@@ -67,11 +71,17 @@ const Sidebar = ({
                 <span className="menu-item light" onClick={defaultDepartment}>
                   Default
                 </span>
-                <span className="menu-item light" onClick={customerSupportDepartment}>
+                <span
+                  className="menu-item light"
+                  onClick={customerSupportDepartment}
+                >
                   Customer Support
                 </span>
 
-                <span className="menu-item light" onClick={globalTradeDepartment}>
+                <span
+                  className="menu-item light"
+                  onClick={globalTradeDepartment}
+                >
                   Global Trade
                 </span>
               </>
@@ -148,7 +158,7 @@ const Sidebar = ({
             <div className="extended layout-inner"></div>
           </div>
           <span
-            className="medium"
+            className="extended-text medium"
             style={{
               color: layout === "extended" && "#428bca",
             }}
@@ -167,7 +177,7 @@ const Sidebar = ({
             <div className="condensed-inner layout-inner"></div>
           </div>
           <span
-            className="medium"
+            className="condensed-text medium"
             style={{
               color: layout === "condensed" && "#428bca",
             }}
