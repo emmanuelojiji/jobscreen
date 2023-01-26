@@ -12,6 +12,11 @@
   padding-right: 30px;
   padding-top: 20px;
   overflow-y: scroll;
+
+  .heading {
+    margin-bottom: 20px;
+    display: block;
+  }
 }
 
 .slideIn {
@@ -70,7 +75,8 @@
   border-radius: 20px;
 }
 
-.extended-text,.condensed-text{
+.extended-text,
+.condensed-text {
   font-size: 14px;
 }
 
@@ -88,13 +94,17 @@
   }
 }
 
-.toggle-text{
+.toggle-text {
   font-size: 14px;
 }
 
 .close {
   color: white;
   margin-bottom: 50px;
+
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 .dropdown-label {

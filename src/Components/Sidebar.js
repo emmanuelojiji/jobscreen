@@ -60,6 +60,8 @@ const Sidebar = ({
           className="close"
         />
 
+        <span className="heading bold">Filters</span>
+
         <div className="filters">
           <Dropdown
             placeholder={department}
@@ -113,6 +115,7 @@ const Sidebar = ({
           />
         </div>
 
+        <span className="heading bold">Layout</span>
         <div className="toggle-container">
           <div className="toggle-wrap">
             <Toggle defaultChecked={true} onChange={toOrderVisible} />
