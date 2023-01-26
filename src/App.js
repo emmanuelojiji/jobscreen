@@ -48,6 +48,20 @@ function App() {
     [user, showLateJobs] // hook dependencies
   );
 
+  const awaitingTrackingFilter =
+    (includeLate) =>
+    ({ category, late }) =>
+      category === "awaiting_tracking" && (includeLate || !late);
+
+      const awaitingTrackingState = useMemo(
+        () =>
+          (user === DEFAULT_USER ? AllJobs : multipleUsersArray).filter(
+            awaitingTrackingFilter(showLateJobs)
+          ),
+        [user, showLateJobs] // hook dependencies
+      );
+    
+
   const orderedArray =
     user === "default"
       ? AllJobs.filter((job) => job.category === "ordered")
@@ -470,10 +484,10 @@ function App() {
                         <Column
                           category="Awaiting Tracking Number"
                           borderTopColor="#1B90E6"
-                          amount_in_category={AwaitingTrackingArray.length}
+                          amount_in_category={awaitingTrackingState.length}
                         >
                           <>
-                            {AwaitingTrackingArray.map((job, index) => (
+                            {awaitingTrackingState.map((job, index) => (
                               <JobCard
                                 job_number={job.jobNumber}
                                 time={job.time}
