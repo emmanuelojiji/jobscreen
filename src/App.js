@@ -16,13 +16,13 @@ import {
   faL,
 } from "@fortawesome/free-solid-svg-icons";
 import Search from "./Components/Search";
+import SwitchModal from "./Components/SwitchModal";
 
 const DEFAULT_USER = "default";
 const CATEGORY_FILTER = "to_order";
 const multipleUsersArray = [...otherUser, ...AllJobs];
 
 function App() {
-
   const [showLateJobs, setShowLateJobs] = useState(true);
   const [user, setUser] = useState(DEFAULT_USER);
 
@@ -36,7 +36,7 @@ function App() {
       (user === DEFAULT_USER ? AllJobs : multipleUsersArray).filter(
         toOrderFilter(showLateJobs)
       ),
-    [user, showLateJobs] 
+    [user, showLateJobs]
   );
 
   const orderedFilter =
@@ -98,22 +98,8 @@ function App() {
 
   const [department, setDepartment] = useState("Default");
 
-  const [switchModalVisible, setSwitchModalVisible] = useState(false);
-
   const [profileMenuVisible, setProfileMenuVisible] = useState(false);
-
-  const switchModalRef = useRef(null);
-  const closeSwitchModal = (e) => {
-    if (
-      switchModalRef.current &&
-      switchModalVisible &&
-      !switchModalRef.current.contains(e.target)
-    ) {
-      setSwitchModalVisible(false);
-    }
-  };
-
-  document.addEventListener("mousedown", closeSwitchModal);
+  const [switchModalVisible, setSwitchModalVisible] = useState(false);
 
   const [carouselView, setCarouselView] = useState(0);
 
@@ -138,50 +124,13 @@ function App() {
 
   return (
     <div className="App">
-      {switchModalVisible && (
-        <div className="switch_modal_container">
-          <div className="switch_modal" ref={switchModalRef}>
-            <h1 className="bold">View as</h1>
-            <p className="normal">
-              You are currently logged in as Tom Blockley{" "}
-            </p>
-            <Dropdown
-              placeholder={user === "default" ? "Default" : user}
-              menuMarginTop="15px"
-              menuItem={
-                <>
-                  <span
-                    className="menu-item normal"
-                    onClick={() => setUser("default")}
-                  >
-                    Default
-                  </span>
-                  <span
-                    className="menu-item normal"
-                    onClick={() => setUser("Jack Smith")}
-                  >
-                    Jack Smith
-                  </span>
-                  <span
-                    className="menu-item normal"
-                    onClick={() => setUser("Holly Jones")}
-                  >
-                    Holly Jones
-                  </span>
-                </>
-              }
-            />
-            <div className="button-container">
-              <button
-                className="button-transparent"
-                onClick={() => setSwitchModalVisible(false)}
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <SwitchModal
+        user={user}
+        setUser={setUser}
+        switchModalVisible={switchModalVisible}
+        setSwitchModalVisible={setSwitchModalVisible}
+      />
+
       <Sidebar
         sidebarVisible={sidebarVisible}
         setSidebarVisible={setSidebarVisible}
