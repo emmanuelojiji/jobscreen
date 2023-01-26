@@ -5,16 +5,16 @@ import JobCard from "./Components/JobCard";
 import "./Toggle.scss";
 import { useEffect, useState, useRef, useMemo } from "react";
 import Dropdown from "./Dropdown";
-import ToOrder from "./ToOrder.js";
-import Ordered from "./Ordered";
-import AwaitingTracking from "./AwaitingTracking";
-import Inbound from "./Inbound";
 import AllJobs from "./AllJobs";
 import otherUser from "./otherUser";
 import Sidebar from "./Components/Sidebar";
 import avatar from "./avatar.jpg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronRight, faChevronLeft, faL } from "@fortawesome/free-solid-svg-icons";
+import {
+  faChevronRight,
+  faChevronLeft,
+  faL,
+} from "@fortawesome/free-solid-svg-icons";
 
 const DEFAULT_USER = "default";
 const CATEGORY_FILTER = "to_order";
@@ -419,7 +419,9 @@ function App() {
                   onClick={() =>
                     carouselView && setCarouselView(carouselView + 100)
                   }
-                ><FontAwesomeIcon icon={faChevronLeft} /></div>
+                >
+                  <FontAwesomeIcon icon={faChevronLeft} />
+                </div>
               )}
               {visibleColumns > 4 && carouselView == 0 && (
                 <div
@@ -427,7 +429,9 @@ function App() {
                   onClick={() =>
                     !carouselView && setCarouselView(carouselView - 100)
                   }
-                ><FontAwesomeIcon icon={faChevronRight} /></div>
+                >
+                  <FontAwesomeIcon icon={faChevronRight} />
+                </div>
               )}
               {!noJobs ? (
                 <>
