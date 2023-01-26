@@ -53,14 +53,13 @@ function App() {
     ({ category, late }) =>
       category === "awaiting_tracking" && (includeLate || !late);
 
-      const awaitingTrackingState = useMemo(
-        () =>
-          (user === DEFAULT_USER ? AllJobs : multipleUsersArray).filter(
-            awaitingTrackingFilter(showLateJobs)
-          ),
-        [user, showLateJobs] // hook dependencies
-      );
-    
+  const awaitingTrackingState = useMemo(
+    () =>
+      (user === DEFAULT_USER ? AllJobs : multipleUsersArray).filter(
+        awaitingTrackingFilter(showLateJobs)
+      ),
+    [user, showLateJobs] // hook dependencies
+  );
 
   const orderedArray =
     user === "default"
@@ -163,27 +162,29 @@ function App() {
       {switchModalVisible && (
         <div className="switch_modal_container">
           <div className="switch_modal" ref={switchModalRef}>
-            <h1>View as</h1>
-            <p>You are currently logged in as Tom Blockley </p>
+            <h1 className="bold">View as</h1>
+            <p className="normal">
+              You are currently logged in as Tom Blockley{" "}
+            </p>
             <Dropdown
               placeholder={user === "default" ? "Default" : user}
               menuMarginTop="15px"
               menuItem={
                 <>
                   <span
-                    className="menu-item"
+                    className="menu-item normal"
                     onClick={() => setUser("default")}
                   >
                     Default
                   </span>
                   <span
-                    className="menu-item"
+                    className="menu-item normal"
                     onClick={() => setUser("Jack Smith")}
                   >
                     Jack Smith
                   </span>
                   <span
-                    className="menu-item"
+                    className="menu-item normal"
                     onClick={() => setUser("Holly Jones")}
                   >
                     Holly Jones
@@ -312,7 +313,13 @@ function App() {
                 ref={profileMenuRef}
                 onClick={() => setProfileMenuVisible(false)}
               >
-                <span onClick={() => setSwitchModalVisible(true)}>View as</span>
+                <span
+                  className="light"
+                  onClick={() => setSwitchModalVisible(true)}
+                >
+                  View as
+                </span>
+                <span className="light">Log out</span>
               </div>
             )}
           </div>

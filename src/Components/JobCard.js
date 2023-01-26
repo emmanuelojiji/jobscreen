@@ -59,9 +59,9 @@ const JobCard = ({
         className="tooltip"
         style={{ visibility: showTooltip ? "visible" : "hidden" }}
       >
-        <p>
-          This job is <span className="tooltip-bold">2 days</span> and{" "}
-          <span className="tooltip-bold">5 minutes late.</span>
+        <p className="normal">
+          This job is <span className="bold">2 days</span> and{" "}
+          <span className="bold">5 minutes late.</span>
         </p>
       </div>
     </div>

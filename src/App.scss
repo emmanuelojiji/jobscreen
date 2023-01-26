@@ -27,7 +27,7 @@ header {
   height: 30px;
   width: 30px;
   background: rgb(219, 255, 173);
-  border-radius: 100%;
+  border-radius: 5px;
   cursor: pointer;
 }
 
@@ -39,14 +39,14 @@ header {
   position: relative;
 }
 .profile-menu {
-  background: #262c3f;
-  background: brown;
+  background: #38415e;
   position: absolute;
-  width: 180px;
+  width: 150px;
   right: 0;
   top: 40px;
   color: white;
   border-radius: 5px;
+  z-index: 3;
 
   span {
     display: block;
@@ -54,6 +54,13 @@ header {
     padding-top: 10px;
     padding-bottom: 10px;
     width: 100%;
+    transition: 0.2s ease-in-out;
+    font-size: 14px;
+
+    &:hover {
+      background: #124cb7;
+      cursor: pointer;
+    }
   }
 }
 
@@ -144,7 +151,6 @@ header {
 
   &:focus {
     background: #2d344b;
-
   }
 
   &::placeholder {

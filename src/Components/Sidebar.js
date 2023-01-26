@@ -64,14 +64,14 @@ const Sidebar = ({
             dropdownLabel="Department"
             menuItem={
               <>
-                <span className="menu-item" onClick={defaultDepartment}>
+                <span className="menu-item light" onClick={defaultDepartment}>
                   Default
                 </span>
-                <span className="menu-item" onClick={customerSupportDepartment}>
+                <span className="menu-item light" onClick={customerSupportDepartment}>
                   Customer Support
                 </span>
 
-                <span className="menu-item" onClick={globalTradeDepartment}>
+                <span className="menu-item light" onClick={globalTradeDepartment}>
                   Global Trade
                 </span>
               </>
