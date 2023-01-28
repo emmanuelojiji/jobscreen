@@ -23,6 +23,11 @@ const CATEGORY_FILTER = "to_order";
 const multipleUsersArray = [...otherUser, ...AllJobs];
 
 function App() {
+
+  useEffect(() => {
+ console.log(carouselView)
+  })
+
   const [showLateJobs, setShowLateJobs] = useState(true);
   const [user, setUser] = useState(DEFAULT_USER);
 
@@ -93,6 +98,18 @@ function App() {
   const [column6Visible, setColumn6Visible] = useState(true);
   const [column7Visible, setColumn7Visible] = useState(true);
   const [column8Visible, setColumn8Visible] = useState(true);
+  const [column9Visible, setColumn9Visible] = useState(true);
+  const [column10Visible, setColumn10Visible] = useState(true);
+  const [column11Visible, setColumn11Visible] = useState(true);
+  const [column12Visible, setColumn12Visible] = useState(true);
+  const [column13Visible, setColumn13Visible] = useState(true);
+  const [column14Visible, setColumn14Visible] = useState(true);
+  const [column15Visible, setColumn15Visible] = useState(true);
+  const [column16Visible, setColumn16Visible] = useState(true);
+  const [column17Visible, setColumn17Visible] = useState(true);
+  const [column18Visible, setColumn18Visible] = useState(true);
+  const [column19Visible, setColumn19Visible] = useState(true);
+  const [column20Visible, setColumn20Visible] = useState(true);
 
   const [noJobs, setNoJobs] = useState(false);
 
@@ -318,12 +335,10 @@ function App() {
                   <FontAwesomeIcon icon={faChevronLeft} />
                 </div>
               )}
-              {visibleColumns > 4 && carouselView == 0 && (
+              {visibleColumns > 4 && carouselView > -400 && (
                 <div
                   className="right-button"
-                  onClick={() =>
-                    !carouselView && setCarouselView(carouselView - 100)
-                  }
+                  onClick={() => setCarouselView(carouselView - 100)}
                 >
                   <FontAwesomeIcon icon={faChevronRight} />
                 </div>
@@ -440,7 +455,9 @@ function App() {
                           </>
                         </Column>
                       )}
+                    </div>
 
+                    <div className="column-container">
                       {column5Visible && (
                         <Column
                           category="Column 5"
@@ -467,6 +484,99 @@ function App() {
                       {column8Visible && (
                         <Column
                           category="Column 8"
+                          borderTopColor="#1B90E6"
+                          amount_in_category={inboundArray.length}
+                        ></Column>
+                      )}
+                    </div>
+
+                    <div className="column-container">
+                      {column9Visible && (
+                        <Column
+                          category="Column 9"
+                          borderTopColor="#1B90E6"
+                          amount_in_category={inboundArray.length}
+                        ></Column>
+                      )}
+                      {column10Visible && (
+                        <Column
+                          category="Column 10"
+                          borderTopColor="#1B90E6"
+                          amount_in_category={inboundArray.length}
+                        ></Column>
+                      )}
+                      {column11Visible && (
+                        <Column
+                          category="Column 11"
+                          borderTopColor="#1B90E6"
+                          amount_in_category={inboundArray.length}
+                        ></Column>
+                      )}
+                      {column12Visible && (
+                        <Column
+                          category="Column 12"
+                          borderTopColor="#1B90E6"
+                          amount_in_category={inboundArray.length}
+                        ></Column>
+                      )}
+                    </div>
+
+                    <div className="column-container">
+                      {column13Visible && (
+                        <Column
+                          category="Column 13"
+                          borderTopColor="#1B90E6"
+                          amount_in_category={inboundArray.length}
+                        ></Column>
+                      )}
+                      {column14Visible && (
+                        <Column
+                          category="Column 14"
+                          borderTopColor="#1B90E6"
+                          amount_in_category={inboundArray.length}
+                        ></Column>
+                      )}
+                      {column15Visible && (
+                        <Column
+                          category="Column 15"
+                          borderTopColor="#1B90E6"
+                          amount_in_category={inboundArray.length}
+                        ></Column>
+                      )}
+                      {column16Visible && (
+                        <Column
+                          category="Column 16"
+                          borderTopColor="#1B90E6"
+                          amount_in_category={inboundArray.length}
+                        ></Column>
+                      )}
+                    </div>
+
+                    <div className="column-container">
+                      {column17Visible && (
+                        <Column
+                          category="Column 17"
+                          borderTopColor="#1B90E6"
+                          amount_in_category={inboundArray.length}
+                        ></Column>
+                      )}
+                      {column18Visible && (
+                        <Column
+                          category="Column 18"
+                          borderTopColor="#1B90E6"
+                          amount_in_category={inboundArray.length}
+                        ></Column>
+                      )}
+                      {column19Visible && (
+                        <Column
+                          category="Column 19"
+                          borderTopColor="#1B90E6"
+                          amount_in_category={inboundArray.length}
+                        ></Column>
+                      )}
+                      {column20Visible && (
+                        <Column
+                          category="Column 20"
                           borderTopColor="#1B90E6"
                           amount_in_category={inboundArray.length}
                         ></Column>
