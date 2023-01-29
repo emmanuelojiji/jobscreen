@@ -23,10 +23,9 @@ const CATEGORY_FILTER = "to_order";
 const multipleUsersArray = [...otherUser, ...AllJobs];
 
 function App() {
-
   useEffect(() => {
- console.log(carouselView)
-  })
+    console.log(carouselView);
+  });
 
   const [showLateJobs, setShowLateJobs] = useState(true);
   const [user, setUser] = useState(DEFAULT_USER);
@@ -91,6 +90,8 @@ function App() {
   const [sidebarVisible, setSidebarVisible] = useState(false);
 
   const [toOrderVisible, setToOrderVisible] = useState(true);
+  const [toOrderExtended, setToOrderExtended] = useState(false);
+
   const [orderedVisible, setOrderedVisible] = useState(true);
   const [awaitingTrackingVisible, setAwaitingTrackingVisible] = useState(true);
   const [inboundVisible, setInboundVisible] = useState(true);
@@ -355,6 +356,14 @@ function App() {
                           category="To Order"
                           borderTopColor="#DC6942"
                           amount_in_category={toOrderState.length}
+                          width={!toOrderExtended && "79px"}
+                          extendedContent={!toOrderExtended && "none"}
+                          changeSize={() =>
+                            toOrderExtended
+                              ? setToOrderExtended(false)
+                              : setToOrderExtended(true)
+                          }
+                          writingMode={!toOrderExtended && "vertical-rl"}
                         >
                           <>
                             {toOrderState.map((job, index) => (

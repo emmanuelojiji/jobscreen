@@ -1,14 +1,30 @@
 import "./Column.scss";
 
-const Column = ({ children, category, borderTopColor, opacity, amount_in_category, sidebarVisible }) => {
+const Column = ({
+  children,
+  category,
+  borderTopColor,
+  opacity,
+  width,
+  amount_in_category,
+  sidebarVisible,
+  extendedContent,
+  changeSize,
+  writingMode,
+}) => {
   return (
-    <div className={`Column`} style={{ borderTopColor: borderTopColor, opacity: opacity }}>
-      
-      <div className="column-header bold">
+    <div
+      className={`Column`}
+      style={{ borderTopColor: borderTopColor, opacity: opacity, width: width }}
+      onClick={changeSize}
+    >
+      <div className="column-header bold" style={{ writingMode: writingMode }}>
         <span className="category-title">{category}</span>
         <span>{amount_in_category}</span>
       </div>
-      {children}
+      <div className="column-content" style={{ display: extendedContent }}>
+        {children}
+      </div>
     </div>
   );
 };

@@ -25,12 +25,14 @@ const JobCard = ({
         backgroundColor: backgroundColor,
         height: cardOpen ? "150px" : cardHeight,
       }}
-      onClick={() => {
+      onClick={(e) => {
         if (!cardOpen && layout === "condensed") {
           setCardOpen(true);
         } else {
           setCardOpen(false);
         }
+
+        e.stopPropagation();
       }}
     >
       <div

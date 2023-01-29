@@ -4,7 +4,6 @@
   margin: 0 auto;
   overflow-x: scroll;
   display: flex;
-  gap: 20px;
   overflow: hidden;
   min-height: 100%;
 
@@ -22,7 +21,7 @@
 
 .Column {
   background: #262c3f;
-  min-width: calc(25% - 15px);
+  width: 100%;
   border-top: solid 6px;
   border-radius: 5px;
   padding-top: 30px;
@@ -30,12 +29,17 @@
   padding-right: 30px;
   margin-right: 20px;
   height: 900px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: 0.2s ease-in-out;
 
   &:nth-child(4) {
     margin-right: 0;
   }
 
-  transition: 0.2s ease-in-out;
+
 
   @media only screen and (max-width: 600px) {
     width: 100%;
@@ -47,6 +51,11 @@
   display: flex;
   justify-content: space-between;
   color: white;
+  width: 100%;
+}
+
+.column-content {
+  width: 100%;
 }
 
 .category-title {
