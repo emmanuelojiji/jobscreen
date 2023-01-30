@@ -348,7 +348,7 @@ function App() {
               {!noJobs ? (
                 <>
                   <div
-                  className="column-slide"
+                    className="column-slide"
                     style={{ transform: `translateX(${carouselView}%)` }}
                   >
                     <div className="column-container">
@@ -383,7 +383,6 @@ function App() {
                           </>
                         </Column>
                       )}
-                      
 
                       {orderedVisible && (
                         <Column
