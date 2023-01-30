@@ -16,6 +16,14 @@ export const AllJobs = [
   },
 
   {
+    jobNumber: "DE-J53452",
+    time: "8 mins ago",
+    late: false,
+    category: "awaiting_tracking",
+    country_flag: "🇸🇪",
+  },
+
+  {
     jobNumber: "DE-J56896",
     time: "8 mins ago",
     late: false,
