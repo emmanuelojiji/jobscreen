@@ -91,6 +91,7 @@ function App() {
 
   const [toOrderVisible, setToOrderVisible] = useState(true);
   const [toOrderExtended, setToOrderExtended] = useState(false);
+  const [orderedExtended, setOrderedExtended] = useState(false);
 
   const [orderedVisible, setOrderedVisible] = useState(true);
   const [awaitingTrackingVisible, setAwaitingTrackingVisible] = useState(true);
@@ -347,7 +348,7 @@ function App() {
               {!noJobs ? (
                 <>
                   <div
-                    className="column-slide"
+                  className="column-slide"
                     style={{ transform: `translateX(${carouselView}%)` }}
                   >
                     <div className="column-container">
@@ -389,6 +390,14 @@ function App() {
                           borderTopColor="#1B90E6"
                           opacity={orderedState.length === 0 && "0.5"}
                           amount_in_category={orderedState.length}
+                          width={!orderedExtended && "79px"}
+                          extendedContent={!orderedExtended && "none"}
+                          changeSize={() =>
+                            orderedExtended
+                              ? setOrderedExtended(false)
+                              : setOrderedExtended(true)
+                          }
+                          writingMode={!orderedExtended && "vertical-rl"}
                         >
                           <>
                             {orderedState.length == 0 && (
