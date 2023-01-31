@@ -13,7 +13,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronRight,
   faChevronLeft,
-  faL,
 } from "@fortawesome/free-solid-svg-icons";
 import Search from "./Components/Search";
 import SwitchModal from "./Components/SwitchModal";
@@ -22,11 +21,7 @@ const DEFAULT_USER = "default";
 const CATEGORY_FILTER = "to_order";
 const multipleUsersArray = [...otherUser, ...AllJobs];
 
-function App() {
-  useEffect(() => {
-    console.log(carouselView);
-  });
-
+const App = () => {
   const [showLateJobs, setShowLateJobs] = useState(true);
   const [user, setUser] = useState(DEFAULT_USER);
 
@@ -89,29 +84,50 @@ function App() {
   const [layout, setLayout] = useState("extended");
   const [sidebarVisible, setSidebarVisible] = useState(false);
 
-  const [toOrderVisible, setToOrderVisible] = useState(true);
   const [toOrderExtended, setToOrderExtended] = useState(false);
   const [orderedExtended, setOrderedExtended] = useState(false);
 
-  const [orderedVisible, setOrderedVisible] = useState(true);
-  const [awaitingTrackingVisible, setAwaitingTrackingVisible] = useState(true);
-  const [inboundVisible, setInboundVisible] = useState(true);
-  const [column5Visible, setColumn5Visible] = useState(true);
-  const [column6Visible, setColumn6Visible] = useState(true);
-  const [column7Visible, setColumn7Visible] = useState(true);
-  const [column8Visible, setColumn8Visible] = useState(true);
-  const [column9Visible, setColumn9Visible] = useState(true);
-  const [column10Visible, setColumn10Visible] = useState(true);
-  const [column11Visible, setColumn11Visible] = useState(true);
-  const [column12Visible, setColumn12Visible] = useState(true);
-  const [column13Visible, setColumn13Visible] = useState(true);
-  const [column14Visible, setColumn14Visible] = useState(true);
-  const [column15Visible, setColumn15Visible] = useState(true);
-  const [column16Visible, setColumn16Visible] = useState(true);
-  const [column17Visible, setColumn17Visible] = useState(true);
-  const [column18Visible, setColumn18Visible] = useState(true);
-  const [column19Visible, setColumn19Visible] = useState(true);
-  const [column20Visible, setColumn20Visible] = useState(true);
+  const [columns, setColumns] = useState({
+    to_order: { visible: true },
+    commercial_invoice_req: { visible: true },
+    export_docs_req: { visible: true },
+    ior_required: { visible: true },
+    awaiting_confirmation: { visible: true },
+    awaiting_tracking_number: { visible: true },
+    due_in_to_warehouse: { visible: true },
+    arrived: { visible: true },
+    inbounding: { visible: true },
+    awaiting_parts: { visible: true },
+    transit_pallet: { visible: true },
+    problem_shelf: { visible: true },
+    preparing_to_ship: { visible: true },
+    buy_shipping_label: { visible: true },
+    customer_collection: { visible: true },
+    pack_and_hold: { visible: true },
+    to_send_tracking_label: { visible: true },
+    in_transit: { visible: true },
+    non_trackable_courier: { visible: true },
+    exception: { visible: true },
+    to_send_pod: { visible: true },
+    still_to_action: { visible: true },
+    last_column: { visible: true },
+  });
+
+  const changeColumnVisibility = (column) => {
+    setColumns((prevState) => {
+      return {
+        ...prevState,
+        [column]: {
+          ...(prevState[column] || { visible: true }),
+          visible: !(prevState[column] ? prevState[column].visible : true),
+        },
+      };
+    });
+  };
+
+  const toggleVisibility = (column) => () => {
+    changeColumnVisibility(column);
+  };
 
   const [noJobs, setNoJobs] = useState(false);
 
@@ -159,91 +175,34 @@ function App() {
           setLayout("condensed");
         }}
         layout={layout}
-        toOrderVisible={() => {
-          if (toOrderVisible) {
-            setToOrderVisible(false);
-            setVisibleColumns(visibleColumns - 1);
-            console.log("hey");
-          } else {
-            setToOrderVisible(true);
-            setVisibleColumns(visibleColumns + 1);
-          }
-        }}
-        orderedVisible={() => {
-          if (orderedVisible) {
-            setOrderedVisible(false);
-            setVisibleColumns(visibleColumns - 1);
-            console.log("hey");
-          } else {
-            setOrderedVisible(true);
-            setVisibleColumns(visibleColumns + 1);
-          }
-        }}
-        awaitingTrackingVisible={() => {
-          if (awaitingTrackingVisible) {
-            setAwaitingTrackingVisible(false);
-            setVisibleColumns(visibleColumns - 1);
-            console.log("hey");
-          } else {
-            setAwaitingTrackingVisible(true);
-            setVisibleColumns(visibleColumns + 1);
-          }
-        }}
-        inboundVisible={() => {
-          if (inboundVisible) {
-            setInboundVisible(false);
-            setVisibleColumns(visibleColumns - 1);
-            console.log("hey");
-          } else {
-            setInboundVisible(true);
-            setVisibleColumns(visibleColumns + 1);
-          }
-        }}
-        column5Visible={() => {
-          if (column5Visible) {
-            setColumn5Visible(false);
-            setVisibleColumns(visibleColumns - 1);
-            console.log("hey");
-          } else {
-            setColumn5Visible(true);
-            setVisibleColumns(visibleColumns + 1);
-          }
-        }}
-        column6Visible={() => {
-          if (column6Visible) {
-            setColumn6Visible(false);
-            setVisibleColumns(visibleColumns - 1);
-            console.log("hey");
-          } else {
-            setVisibleColumns(visibleColumns + 1);
-            setColumn6Visible(true);
-          }
-        }}
-        column7Visible={() => {
-          if (column7Visible) {
-            setColumn7Visible(false);
-            setVisibleColumns(visibleColumns - 1);
-            console.log("hey");
-          } else {
-            setColumn7Visible(true);
-            setVisibleColumns(visibleColumns + 1);
-          }
-        }}
-        column8Visible={() => {
-          if (column8Visible) {
-            setColumn8Visible(false);
-            setVisibleColumns(visibleColumns - 1);
-            console.log("hey");
-          } else {
-            setColumn8Visible(true);
-            setVisibleColumns(visibleColumns + 1);
-          }
-        }}
-        customerSupportDepartment={() => setDepartment("Customer Support")}
-        defaultDepartment={() => setDepartment("Default")}
-        globalTradeDepartment={() => setDepartment("Global Trade")}
+        toOrderToggle={toggleVisibility("to_order")}
+        commercialInvoiceReqToggle={toggleVisibility("commercial_invoice_req")}
+        exportDocsToggle={toggleVisibility("export_docs_req")}
+        IORToggle={toggleVisibility("ior_required")}
+        awaitingConfirmationToggle={toggleVisibility("awaiting_confirmation")}
+        awaitingTrackingNumberToggle={toggleVisibility(
+          "awaiting_tracking_number"
+        )}
+        dueInToWarehouseToggle={toggleVisibility("due_in_to_warehouse")}
+        arrivedToggle={toggleVisibility("arrived")}
+        inboundingToggle={toggleVisibility("inbounding")}
+        awaitingPartsToggle={toggleVisibility("awaiting_parts")}
+        transitPalletToggle={toggleVisibility("transit_pallet")}
+        problemShelfToggle={toggleVisibility("problem_shelf")}
+        preparingToShipToggle={toggleVisibility("preparing_to_ship")}
+        buyShippingLabelToggle={toggleVisibility("buy_shipping_label")}
+        customerCollectionToggle={toggleVisibility("customer_collection")}
+        packAndHoldToggle={toggleVisibility("pack_and_hold")}
+        toSendTrackingToggle={toggleVisibility("to_send_tracking_label")}
+        inTransitToggle={toggleVisibility("in_transit")}
+        nonTrackableCourierToggle={toggleVisibility("non_trackable_courier")}
+        exceptionToggle={toggleVisibility("exception")}
+        toSendPODToggle={toggleVisibility("to_send_pod")}
+        stillToActionToggle={toggleVisibility("still_to_action")}
+        lastColumnToggle={toggleVisibility("last_column")}
         department={department}
       />
+
       <header>
         <div className="header-wrap page-width">
           <h2 className="bold">Jobs</h2>
@@ -337,7 +296,7 @@ function App() {
                   <FontAwesomeIcon icon={faChevronLeft} />
                 </div>
               )}
-              {visibleColumns > 4 && carouselView > -400 && (
+              {visibleColumns > 4 && carouselView > -500 && (
                 <div
                   className="right-button"
                   onClick={() => setCarouselView(carouselView - 100)}
@@ -352,42 +311,43 @@ function App() {
                     style={{ transform: `translateX(${carouselView}%)` }}
                   >
                     <div className="column-container">
-                      {toOrderVisible && department != "Customer Support" && (
-                        <Column
-                          category="To Order"
-                          borderTopColor="#DC6942"
-                          amount_in_category={toOrderState.length}
-                          width={!toOrderExtended && "79px"}
-                          extendedContent={!toOrderExtended && "none"}
-                          changeSize={() =>
-                            toOrderExtended
-                              ? setToOrderExtended(false)
-                              : setToOrderExtended(true)
-                          }
-                          writingMode={!toOrderExtended && "vertical-rl"}
-                        >
-                          <>
-                            {toOrderState.map((job, index) => (
-                              <JobCard
-                                job_number={job.jobNumber}
-                                time={job.time}
-                                cardHeight={
-                                  layout === "extended" ? "150px" : "50px"
-                                }
-                                layout={layout}
-                                backgroundColor={job.late && "#D64045"}
-                                displayLateIcon={job.late && "block"}
-                                statusColor={job.late ? "white" : "#83E884"}
-                                cetaDisplay="none"
-                              />
-                            ))}
-                          </>
-                        </Column>
-                      )}
+                      {columns.to_order.visible &&
+                        department != "Customer Support" && (
+                          <Column
+                            category="To Order"
+                            borderTopColor="#DC6942"
+                            amount_in_category={toOrderState.length}
+                            width={!toOrderExtended && "79px"}
+                            extendedContent={!toOrderExtended && "none"}
+                            changeSize={() =>
+                              toOrderExtended
+                                ? setToOrderExtended(false)
+                                : setToOrderExtended(true)
+                            }
+                            writingMode={!toOrderExtended && "vertical-rl"}
+                          >
+                            <>
+                              {toOrderState.map((job, index) => (
+                                <JobCard
+                                  job_number={job.jobNumber}
+                                  time={job.time}
+                                  cardHeight={
+                                    layout === "extended" ? "150px" : "50px"
+                                  }
+                                  layout={layout}
+                                  backgroundColor={job.late && "#D64045"}
+                                  displayLateIcon={job.late && "block"}
+                                  statusColor={job.late ? "white" : "#83E884"}
+                                  cetaDisplay="none"
+                                />
+                              ))}
+                            </>
+                          </Column>
+                        )}
 
-                      {orderedVisible && (
+                      {columns.commercial_invoice_req.visible && (
                         <Column
-                          category="Ordered"
+                          category="Commercial Invoice Required"
                           borderTopColor="#1B90E6"
                           opacity={orderedState.length === 0 && "0.5"}
                           amount_in_category={orderedState.length}
@@ -425,9 +385,9 @@ function App() {
                         </Column>
                       )}
 
-                      {awaitingTrackingVisible && (
+                      {columns.export_docs_req.visible && (
                         <Column
-                          category="Awaiting Tracking Number"
+                          category="Export Docs Required"
                           borderTopColor="#1B90E6"
                           amount_in_category={awaitingTrackingState.length}
                         >
@@ -451,9 +411,9 @@ function App() {
                           </>
                         </Column>
                       )}
-                      {inboundVisible && (
+                      {columns.ior_required.visible && (
                         <Column
-                          category="Inbound"
+                          category="IOR Required"
                           borderTopColor="#77C135"
                           amount_in_category={inboundArray.length}
                         >
@@ -480,128 +440,525 @@ function App() {
                     </div>
 
                     <div className="column-container">
-                      {column5Visible && (
+                      {columns.awaiting_confirmation.visible && (
                         <Column
-                          category="Column 5"
-                          borderTopColor="#1B90E6"
-                          amount_in_category={toOrderState.length}
-                        ></Column>
-                      )}
-                      {column6Visible && (
-                        <Column
-                          category="Column 6"
-                          borderTopColor="#1B90E6"
-                          opacity={orderedArray.length === 0 && "0.5"}
-                          amount_in_category={orderedArray.length}
-                        ></Column>
-                      )}
-                      {column7Visible && (
-                        <Column
-                          category="Column 7"
-                          borderTopColor="#1B90E6"
-                          amount_in_category={AwaitingTrackingArray.length}
-                        ></Column>
+                          category="Awaiting Confirmation"
+                          borderTopColor="#77C135"
+                          amount_in_category={inboundArray.length}
+                        >
+                          <>
+                            {inboundArray.map((job, index) => (
+                              <JobCard
+                                job_number={job.jobNumber}
+                                time={job.time}
+                                backgroundColor={job.late && "#D64045"}
+                                displayLateIcon={job.late && "block"}
+                                layout={layout}
+                                cardHeight={
+                                  layout === "extended" ? "150px" : "50px"
+                                }
+                                ceta="12 August 2022"
+                                statusColor={job.late ? "white" : "#83E884"}
+                                fraction="3/6"
+                                suffix="ARRIVED"
+                              />
+                            ))}
+                          </>
+                        </Column>
                       )}
 
-                      {column8Visible && (
+                      {columns.awaiting_tracking_number.visible && (
                         <Column
-                          category="Column 8"
-                          borderTopColor="#1B90E6"
+                          category="Awaiting Tracking Number"
+                          borderTopColor="#77C135"
                           amount_in_category={inboundArray.length}
-                        ></Column>
+                        >
+                          <>
+                            {inboundArray.map((job, index) => (
+                              <JobCard
+                                job_number={job.jobNumber}
+                                time={job.time}
+                                backgroundColor={job.late && "#D64045"}
+                                displayLateIcon={job.late && "block"}
+                                layout={layout}
+                                cardHeight={
+                                  layout === "extended" ? "150px" : "50px"
+                                }
+                                ceta="12 August 2022"
+                                statusColor={job.late ? "white" : "#83E884"}
+                                fraction="3/6"
+                                suffix="ARRIVED"
+                              />
+                            ))}
+                          </>
+                        </Column>
+                      )}
+
+                      {columns.due_in_to_warehouse.visible && (
+                        <Column
+                          category="Due in to Warehouse"
+                          borderTopColor="#77C135"
+                          amount_in_category={inboundArray.length}
+                        >
+                          <>
+                            {inboundArray.map((job, index) => (
+                              <JobCard
+                                job_number={job.jobNumber}
+                                time={job.time}
+                                backgroundColor={job.late && "#D64045"}
+                                displayLateIcon={job.late && "block"}
+                                layout={layout}
+                                cardHeight={
+                                  layout === "extended" ? "150px" : "50px"
+                                }
+                                ceta="12 August 2022"
+                                statusColor={job.late ? "white" : "#83E884"}
+                                fraction="3/6"
+                                suffix="ARRIVED"
+                              />
+                            ))}
+                          </>
+                        </Column>
+                      )}
+
+                      {columns.arrived.visible && (
+                        <Column
+                          category="Arrived"
+                          borderTopColor="#77C135"
+                          amount_in_category={inboundArray.length}
+                        >
+                          <>
+                            {inboundArray.map((job, index) => (
+                              <JobCard
+                                job_number={job.jobNumber}
+                                time={job.time}
+                                backgroundColor={job.late && "#D64045"}
+                                displayLateIcon={job.late && "block"}
+                                layout={layout}
+                                cardHeight={
+                                  layout === "extended" ? "150px" : "50px"
+                                }
+                                ceta="12 August 2022"
+                                statusColor={job.late ? "white" : "#83E884"}
+                                fraction="3/6"
+                                suffix="ARRIVED"
+                              />
+                            ))}
+                          </>
+                        </Column>
                       )}
                     </div>
 
                     <div className="column-container">
-                      {column9Visible && (
+                      {columns.inbounding.visible && (
                         <Column
-                          category="Column 9"
-                          borderTopColor="#1B90E6"
+                          category="Inbound"
+                          borderTopColor="#77C135"
                           amount_in_category={inboundArray.length}
-                        ></Column>
+                        >
+                          <>
+                            {inboundArray.map((job, index) => (
+                              <JobCard
+                                job_number={job.jobNumber}
+                                time={job.time}
+                                backgroundColor={job.late && "#D64045"}
+                                displayLateIcon={job.late && "block"}
+                                layout={layout}
+                                cardHeight={
+                                  layout === "extended" ? "150px" : "50px"
+                                }
+                                ceta="12 August 2022"
+                                statusColor={job.late ? "white" : "#83E884"}
+                                fraction="3/6"
+                                suffix="ARRIVED"
+                              />
+                            ))}
+                          </>
+                        </Column>
                       )}
-                      {column10Visible && (
+
+                      {columns.awaiting_parts.visible && (
                         <Column
-                          category="Column 10"
-                          borderTopColor="#1B90E6"
+                          category="Awaiting Parts"
+                          borderTopColor="#77C135"
                           amount_in_category={inboundArray.length}
-                        ></Column>
+                        >
+                          <>
+                            {inboundArray.map((job, index) => (
+                              <JobCard
+                                job_number={job.jobNumber}
+                                time={job.time}
+                                backgroundColor={job.late && "#D64045"}
+                                displayLateIcon={job.late && "block"}
+                                layout={layout}
+                                cardHeight={
+                                  layout === "extended" ? "150px" : "50px"
+                                }
+                                ceta="12 August 2022"
+                                statusColor={job.late ? "white" : "#83E884"}
+                                fraction="3/6"
+                                suffix="ARRIVED"
+                              />
+                            ))}
+                          </>
+                        </Column>
                       )}
-                      {column11Visible && (
+
+                      {columns.transit_pallet.visible && (
                         <Column
-                          category="Column 11"
-                          borderTopColor="#1B90E6"
+                          category="Transit Pallet"
+                          borderTopColor="#77C135"
                           amount_in_category={inboundArray.length}
-                        ></Column>
+                        >
+                          <>
+                            {inboundArray.map((job, index) => (
+                              <JobCard
+                                job_number={job.jobNumber}
+                                time={job.time}
+                                backgroundColor={job.late && "#D64045"}
+                                displayLateIcon={job.late && "block"}
+                                layout={layout}
+                                cardHeight={
+                                  layout === "extended" ? "150px" : "50px"
+                                }
+                                ceta="12 August 2022"
+                                statusColor={job.late ? "white" : "#83E884"}
+                                fraction="3/6"
+                                suffix="ARRIVED"
+                              />
+                            ))}
+                          </>
+                        </Column>
                       )}
-                      {column12Visible && (
+
+                      {columns.problem_shelf.visible && (
                         <Column
-                          category="Column 12"
-                          borderTopColor="#1B90E6"
+                          category="Problem Shelf"
+                          borderTopColor="#77C135"
                           amount_in_category={inboundArray.length}
-                        ></Column>
+                        >
+                          <>
+                            {inboundArray.map((job, index) => (
+                              <JobCard
+                                job_number={job.jobNumber}
+                                time={job.time}
+                                backgroundColor={job.late && "#D64045"}
+                                displayLateIcon={job.late && "block"}
+                                layout={layout}
+                                cardHeight={
+                                  layout === "extended" ? "150px" : "50px"
+                                }
+                                ceta="12 August 2022"
+                                statusColor={job.late ? "white" : "#83E884"}
+                                fraction="3/6"
+                                suffix="ARRIVED"
+                              />
+                            ))}
+                          </>
+                        </Column>
                       )}
                     </div>
 
                     <div className="column-container">
-                      {column13Visible && (
+                      {columns.preparing_to_ship.visible && (
                         <Column
-                          category="Column 13"
-                          borderTopColor="#1B90E6"
+                          category="Preparing to ship"
+                          borderTopColor="#77C135"
                           amount_in_category={inboundArray.length}
-                        ></Column>
+                        >
+                          <>
+                            {inboundArray.map((job, index) => (
+                              <JobCard
+                                job_number={job.jobNumber}
+                                time={job.time}
+                                backgroundColor={job.late && "#D64045"}
+                                displayLateIcon={job.late && "block"}
+                                layout={layout}
+                                cardHeight={
+                                  layout === "extended" ? "150px" : "50px"
+                                }
+                                ceta="12 August 2022"
+                                statusColor={job.late ? "white" : "#83E884"}
+                                fraction="3/6"
+                                suffix="ARRIVED"
+                              />
+                            ))}
+                          </>
+                        </Column>
                       )}
-                      {column14Visible && (
+
+                      {columns.buy_shipping_label.visible && (
                         <Column
-                          category="Column 14"
-                          borderTopColor="#1B90E6"
+                          category="Buy Shipping Label"
+                          borderTopColor="#77C135"
                           amount_in_category={inboundArray.length}
-                        ></Column>
+                        >
+                          <>
+                            {inboundArray.map((job, index) => (
+                              <JobCard
+                                job_number={job.jobNumber}
+                                time={job.time}
+                                backgroundColor={job.late && "#D64045"}
+                                displayLateIcon={job.late && "block"}
+                                layout={layout}
+                                cardHeight={
+                                  layout === "extended" ? "150px" : "50px"
+                                }
+                                ceta="12 August 2022"
+                                statusColor={job.late ? "white" : "#83E884"}
+                                fraction="3/6"
+                                suffix="ARRIVED"
+                              />
+                            ))}
+                          </>
+                        </Column>
                       )}
-                      {column15Visible && (
+
+                      {columns.customer_collection.visible && (
                         <Column
-                          category="Column 15"
-                          borderTopColor="#1B90E6"
+                          category="Customer Collection"
+                          borderTopColor="#77C135"
                           amount_in_category={inboundArray.length}
-                        ></Column>
+                        >
+                          <>
+                            {inboundArray.map((job, index) => (
+                              <JobCard
+                                job_number={job.jobNumber}
+                                time={job.time}
+                                backgroundColor={job.late && "#D64045"}
+                                displayLateIcon={job.late && "block"}
+                                layout={layout}
+                                cardHeight={
+                                  layout === "extended" ? "150px" : "50px"
+                                }
+                                ceta="12 August 2022"
+                                statusColor={job.late ? "white" : "#83E884"}
+                                fraction="3/6"
+                                suffix="ARRIVED"
+                              />
+                            ))}
+                          </>
+                        </Column>
                       )}
-                      {column16Visible && (
+
+                      {columns.pack_and_hold.visible && (
                         <Column
-                          category="Column 16"
-                          borderTopColor="#1B90E6"
+                          category="Pack and Hold"
+                          borderTopColor="#77C135"
                           amount_in_category={inboundArray.length}
-                        ></Column>
+                        >
+                          <>
+                            {inboundArray.map((job, index) => (
+                              <JobCard
+                                job_number={job.jobNumber}
+                                time={job.time}
+                                backgroundColor={job.late && "#D64045"}
+                                displayLateIcon={job.late && "block"}
+                                layout={layout}
+                                cardHeight={
+                                  layout === "extended" ? "150px" : "50px"
+                                }
+                                ceta="12 August 2022"
+                                statusColor={job.late ? "white" : "#83E884"}
+                                fraction="3/6"
+                                suffix="ARRIVED"
+                              />
+                            ))}
+                          </>
+                        </Column>
                       )}
                     </div>
 
                     <div className="column-container">
-                      {column17Visible && (
+                      {columns.to_send_tracking_label.visible && (
                         <Column
-                          category="Column 17"
-                          borderTopColor="#1B90E6"
+                          category="To Send Tracking Label"
+                          borderTopColor="#77C135"
                           amount_in_category={inboundArray.length}
-                        ></Column>
+                        >
+                          <>
+                            {inboundArray.map((job, index) => (
+                              <JobCard
+                                job_number={job.jobNumber}
+                                time={job.time}
+                                backgroundColor={job.late && "#D64045"}
+                                displayLateIcon={job.late && "block"}
+                                layout={layout}
+                                cardHeight={
+                                  layout === "extended" ? "150px" : "50px"
+                                }
+                                ceta="12 August 2022"
+                                statusColor={job.late ? "white" : "#83E884"}
+                                fraction="3/6"
+                                suffix="ARRIVED"
+                              />
+                            ))}
+                          </>
+                        </Column>
                       )}
-                      {column18Visible && (
+
+                      {columns.in_transit.visible && (
                         <Column
-                          category="Column 18"
-                          borderTopColor="#1B90E6"
+                          category="In Transit"
+                          borderTopColor="#77C135"
                           amount_in_category={inboundArray.length}
-                        ></Column>
+                        >
+                          <>
+                            {inboundArray.map((job, index) => (
+                              <JobCard
+                                job_number={job.jobNumber}
+                                time={job.time}
+                                backgroundColor={job.late && "#D64045"}
+                                displayLateIcon={job.late && "block"}
+                                layout={layout}
+                                cardHeight={
+                                  layout === "extended" ? "150px" : "50px"
+                                }
+                                ceta="12 August 2022"
+                                statusColor={job.late ? "white" : "#83E884"}
+                                fraction="3/6"
+                                suffix="ARRIVED"
+                              />
+                            ))}
+                          </>
+                        </Column>
                       )}
-                      {column19Visible && (
+
+                      {columns.non_trackable_courier.visible && (
                         <Column
-                          category="Column 19"
-                          borderTopColor="#1B90E6"
+                          category="Non Trackable Courier"
+                          borderTopColor="#77C135"
                           amount_in_category={inboundArray.length}
-                        ></Column>
+                        >
+                          <>
+                            {inboundArray.map((job, index) => (
+                              <JobCard
+                                job_number={job.jobNumber}
+                                time={job.time}
+                                backgroundColor={job.late && "#D64045"}
+                                displayLateIcon={job.late && "block"}
+                                layout={layout}
+                                cardHeight={
+                                  layout === "extended" ? "150px" : "50px"
+                                }
+                                ceta="12 August 2022"
+                                statusColor={job.late ? "white" : "#83E884"}
+                                fraction="3/6"
+                                suffix="ARRIVED"
+                              />
+                            ))}
+                          </>
+                        </Column>
                       )}
-                      {column20Visible && (
+
+                      {columns.exception.visible && (
                         <Column
-                          category="Column 20"
-                          borderTopColor="#1B90E6"
+                          category="Exception"
+                          borderTopColor="#77C135"
                           amount_in_category={inboundArray.length}
-                        ></Column>
+                        >
+                          <>
+                            {inboundArray.map((job, index) => (
+                              <JobCard
+                                job_number={job.jobNumber}
+                                time={job.time}
+                                backgroundColor={job.late && "#D64045"}
+                                displayLateIcon={job.late && "block"}
+                                layout={layout}
+                                cardHeight={
+                                  layout === "extended" ? "150px" : "50px"
+                                }
+                                ceta="12 August 2022"
+                                statusColor={job.late ? "white" : "#83E884"}
+                                fraction="3/6"
+                                suffix="ARRIVED"
+                              />
+                            ))}
+                          </>
+                        </Column>
+                      )}
+                    </div>
+
+                    <div className="column-container">
+                      {columns.to_send_pod.visible && (
+                        <Column
+                          category="To Send POD"
+                          borderTopColor="#77C135"
+                          amount_in_category={inboundArray.length}
+                        >
+                          <>
+                            {inboundArray.map((job, index) => (
+                              <JobCard
+                                job_number={job.jobNumber}
+                                time={job.time}
+                                backgroundColor={job.late && "#D64045"}
+                                displayLateIcon={job.late && "block"}
+                                layout={layout}
+                                cardHeight={
+                                  layout === "extended" ? "150px" : "50px"
+                                }
+                                ceta="12 August 2022"
+                                statusColor={job.late ? "white" : "#83E884"}
+                                fraction="3/6"
+                                suffix="ARRIVED"
+                              />
+                            ))}
+                          </>
+                        </Column>
+                      )}
+
+                      {columns.still_to_action.visible && (
+                        <Column
+                          category="Still to Action"
+                          borderTopColor="#77C135"
+                          amount_in_category={inboundArray.length}
+                        >
+                          <>
+                            {inboundArray.map((job, index) => (
+                              <JobCard
+                                job_number={job.jobNumber}
+                                time={job.time}
+                                backgroundColor={job.late && "#D64045"}
+                                displayLateIcon={job.late && "block"}
+                                layout={layout}
+                                cardHeight={
+                                  layout === "extended" ? "150px" : "50px"
+                                }
+                                ceta="12 August 2022"
+                                statusColor={job.late ? "white" : "#83E884"}
+                                fraction="3/6"
+                                suffix="ARRIVED"
+                              />
+                            ))}
+                          </>
+                        </Column>
+                      )}
+
+                      {columns.last_column.visible && (
+                        <Column
+                          category="Last Column"
+                          borderTopColor="#77C135"
+                          amount_in_category={inboundArray.length}
+                        >
+                          <>
+                            {inboundArray.map((job, index) => (
+                              <JobCard
+                                job_number={job.jobNumber}
+                                time={job.time}
+                                backgroundColor={job.late && "#D64045"}
+                                displayLateIcon={job.late && "block"}
+                                layout={layout}
+                                cardHeight={
+                                  layout === "extended" ? "150px" : "50px"
+                                }
+                                ceta="12 August 2022"
+                                statusColor={job.late ? "white" : "#83E884"}
+                                fraction="3/6"
+                                suffix="ARRIVED"
+                              />
+                            ))}
+                          </>
+                        </Column>
                       )}
                     </div>
                   </div>
@@ -615,6 +972,6 @@ function App() {
       </main>
     </div>
   );
-}
+};
 
 export default App;

@@ -14,14 +14,31 @@ const Sidebar = ({
   layout,
   setExtended,
   setCondensed,
-  toOrderVisible,
-  orderedVisible,
-  awaitingTrackingVisible,
-  inboundVisible,
-  column5Visible,
-  column6Visible,
-  column7Visible,
-  column8Visible,
+
+  toOrderToggle,
+  commercialInvoiceReqToggle,
+  exportDocsToggle,
+  IORToggle,
+  awaitingConfirmationToggle,
+  awaitingTrackingNumberToggle,
+  dueInToWarehouseToggle,
+  arrivedToggle,
+  inboundingToggle,
+  awaitingPartsToggle,
+  transitPalletToggle,
+  problemShelfToggle,
+  preparingToShipToggle,
+  buyShippingLabelToggle,
+  customerCollectionToggle,
+  packAndHoldToggle,
+  toSendTrackingToggle,
+  inTransitToggle,
+  nonTrackableCourierToggle,
+  exceptionToggle,
+  toSendPODToggle,
+  stillToActionToggle,
+  lastColumnToggle,
+
   defaultDepartment,
   globalTradeDepartment,
   customerSupportDepartment,
@@ -118,37 +135,127 @@ const Sidebar = ({
         <span className="heading bold">Layout</span>
         <div className="toggle-container">
           <div className="toggle-wrap">
-            <Toggle defaultChecked={true} onChange={toOrderVisible} />
+            <Toggle
+              defaultChecked={true}
+              onChange={toOrderToggle}
+              value="to_order"
+            />
             <span className="toggle-text medium">To Order</span>
           </div>
           <div className="toggle-wrap">
-            <Toggle defaultChecked={true} onChange={orderedVisible} />
-            <span className="toggle-text medium">Ordered</span>
+            <Toggle
+              defaultChecked={true}
+              onChange={commercialInvoiceReqToggle}
+            />
+            <span className="toggle-text medium">
+              Commecial Invoice Required
+            </span>
           </div>
           <div className="toggle-wrap">
-            <Toggle defaultChecked={true} onChange={awaitingTrackingVisible} />
-            <span className="toggle-text medium">Awaiting Tracking</span>
+            <Toggle defaultChecked={true} onChange={exportDocsToggle} />
+            <span className="toggle-text medium">Export Docs Required</span>
           </div>
           <div className="toggle-wrap">
-            <Toggle defaultChecked={true} onChange={inboundVisible} />
-            <span className="toggle-text medium">Inbound</span>
+            <Toggle defaultChecked={true} onChange={IORToggle} />
+            <span className="toggle-text medium">IOR Required</span>
           </div>
           <div className="toggle-wrap">
-            <Toggle defaultChecked={true} onChange={column5Visible} />
-            <span className="toggle-text medium">Column 5</span>
+            <Toggle
+              defaultChecked={true}
+              onChange={awaitingConfirmationToggle}
+            />
+            <span className="toggle-text medium">Awaiting Confirmation</span>
           </div>
           <div className="toggle-wrap">
-            <Toggle defaultChecked={true} onChange={column6Visible} />
-            <span className="toggle-text medium">Column 6</span>
+            <Toggle
+              defaultChecked={true}
+              onChange={awaitingTrackingNumberToggle}
+            />
+            <span className="toggle-text medium">Awaiting Tracking Number</span>
           </div>
           <div className="toggle-wrap">
-            <Toggle defaultChecked={true} onChange={column7Visible} />
-            <span className="toggle-text medium">Column 7</span>
+            <Toggle defaultChecked={true} onChange={dueInToWarehouseToggle} />
+            <span className="toggle-text medium">Due in to Warehouse</span>
           </div>
           <div className="toggle-wrap">
-            <Toggle defaultChecked={true} onChange={column8Visible} />
-            <span className="toggle-text medium">Column 8</span>
+            <Toggle defaultChecked={true} onChange={arrivedToggle} />
+            <span className="toggle-text medium">Arrived</span>
           </div>
+
+          <div className="toggle-wrap">
+            <Toggle defaultChecked={true} onChange={inboundingToggle} />
+            <span className="toggle-text medium">Inbounding</span>
+          </div>
+
+          <div className="toggle-wrap">
+            <Toggle defaultChecked={true} onChange={awaitingPartsToggle} />
+            <span className="toggle-text medium">Awaiting Parts</span>
+          </div>
+
+          <div className="toggle-wrap">
+            <Toggle defaultChecked={true} onChange={transitPalletToggle} />
+            <span className="toggle-text medium">Transit Pallet</span>
+          </div>
+
+          <div className="toggle-wrap">
+            <Toggle defaultChecked={true} onChange={problemShelfToggle} />
+            <span className="toggle-text medium">Problem Shelf</span>
+          </div>
+
+          <div className="toggle-wrap">
+            <Toggle defaultChecked={true} onChange={preparingToShipToggle} />
+            <span className="toggle-text medium">Preparing to Ship</span>
+          </div>
+
+          <div className="toggle-wrap">
+            <Toggle defaultChecked={true} onChange={buyShippingLabelToggle} />
+            <span className="toggle-text medium">Buy Shipping Label</span>
+          </div>
+
+          <div className="toggle-wrap">
+            <Toggle defaultChecked={true} onChange={customerCollectionToggle} />
+            <span className="toggle-text medium">Customer Collection</span>
+          </div>
+
+          <div className="toggle-wrap">
+            <Toggle defaultChecked={true} onChange={packAndHoldToggle} />
+            <span className="toggle-text medium">Pack and Hold</span>
+          </div>
+
+          <div className="toggle-wrap">
+            <Toggle defaultChecked={true} onChange={toSendTrackingToggle} />
+            <span className="toggle-text medium">To Send Tracking</span>
+          </div>
+        </div>
+
+        <div className="toggle-wrap">
+          <Toggle defaultChecked={true} onChange={inTransitToggle} />
+          <span className="toggle-text medium">In Transit</span>
+        </div>
+
+        <div className="toggle-wrap">
+          <Toggle defaultChecked={true} onChange={nonTrackableCourierToggle} />
+          <span className="toggle-text medium">Non-Trackable Courier </span>
+        </div>
+
+        <div className="toggle-wrap">
+          <Toggle defaultChecked={true} onChange={exceptionToggle} />
+          <span className="toggle-text medium">Exception</span>
+        </div>
+
+        <div className="toggle-wrap">
+          <Toggle defaultChecked={true} onChange={toSendPODToggle} />
+          <span className="toggle-text medium">To Send POD</span>
+        </div>
+
+        <div className="toggle-wrap">
+          <Toggle defaultChecked={true} onChange={stillToActionToggle} />
+          <span className="toggle-text medium">Still To Action</span>
+        </div>
+
+        <div className="toggle-wrap">
+          <Toggle defaultChecked={true} onChange={lastColumnToggle} />
+          <span className="toggle-text medium">Last Column</span>
         </div>
 
         <div className="layout-container" onClick={setExtended}>
