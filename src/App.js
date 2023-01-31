@@ -88,29 +88,29 @@ const App = () => {
   const [orderedExtended, setOrderedExtended] = useState(false);
 
   const [columns, setColumns] = useState({
-    to_order: { visible: true },
-    commercial_invoice_req: { visible: true },
-    export_docs_req: { visible: true },
-    ior_required: { visible: true },
-    awaiting_confirmation: { visible: true },
-    awaiting_tracking_number: { visible: true },
-    due_in_to_warehouse: { visible: true },
-    arrived: { visible: true },
-    inbounding: { visible: true },
-    awaiting_parts: { visible: true },
-    transit_pallet: { visible: true },
-    problem_shelf: { visible: true },
-    preparing_to_ship: { visible: true },
-    buy_shipping_label: { visible: true },
-    customer_collection: { visible: true },
-    pack_and_hold: { visible: true },
-    to_send_tracking_label: { visible: true },
-    in_transit: { visible: true },
-    non_trackable_courier: { visible: true },
-    exception: { visible: true },
-    to_send_pod: { visible: true },
-    still_to_action: { visible: true },
-    last_column: { visible: true },
+    to_order: { visible: true, extended: true },
+    commercial_invoice_req: { visible: true, extended: true },
+    export_docs_req: { visible: true, extended: true },
+    ior_required: { visible: true, extended: true },
+    awaiting_confirmation: { visible: true, extended: true },
+    awaiting_tracking_number: { visible: true, extended: true },
+    due_in_to_warehouse: { visible: true, extended: true },
+    arrived: { visible: true, extended: true },
+    inbounding: { visible: true, extended: true },
+    awaiting_parts: { visible: true, extended: true },
+    transit_pallet: { visible: true, extended: true },
+    problem_shelf: { visible: true, extended: true },
+    preparing_to_ship: { visible: true, extended: true },
+    buy_shipping_label: { visible: true, extended: true },
+    customer_collection: { visible: true, extended: true },
+    pack_and_hold: { visible: true, extended: true },
+    to_send_tracking_label: { visible: true, extended: true },
+    in_transit: { visible: true, extended: true },
+    non_trackable_courier: { visible: true, extended: true },
+    exception: { visible: true, extended: true },
+    to_send_pod: { visible: true, extended: true },
+    still_to_action: { visible: true, extended: true },
+    last_column: { visible: true, extended: true },
   });
 
   const changeColumnVisibility = (column) => {
@@ -127,6 +127,18 @@ const App = () => {
 
   const toggleVisibility = (column) => () => {
     changeColumnVisibility(column);
+  };
+
+  const toggleColumnSize = (column) => {
+    setColumns((prevState) => {
+      return {
+        ...prevState,
+        [column]: {
+          ...(prevState[column] || { extended: true }),
+          extended: !(prevState[column] ? prevState[column].extended : true),
+        },
+      };
+    });
   };
 
   const [noJobs, setNoJobs] = useState(false);
@@ -317,14 +329,14 @@ const App = () => {
                             category="To Order"
                             borderTopColor="#DC6942"
                             amount_in_category={toOrderState.length}
-                            width={!toOrderExtended && "79px"}
-                            extendedContent={!toOrderExtended && "none"}
-                            changeSize={() =>
-                              toOrderExtended
-                                ? setToOrderExtended(false)
-                                : setToOrderExtended(true)
+                            width={!columns.to_order.extended && "79px"}
+                            extendedContent={
+                              !columns.to_order.extended && "none"
                             }
-                            writingMode={!toOrderExtended && "vertical-rl"}
+                            changeSize={() => toggleColumnSize("to_order")}
+                            writingMode={
+                              !columns.to_order.extended && "vertical-rl"
+                            }
                           >
                             <>
                               {toOrderState.map((job, index) => (
@@ -351,14 +363,19 @@ const App = () => {
                           borderTopColor="#1B90E6"
                           opacity={orderedState.length === 0 && "0.5"}
                           amount_in_category={orderedState.length}
-                          width={!orderedExtended && "79px"}
-                          extendedContent={!orderedExtended && "none"}
-                          changeSize={() =>
-                            orderedExtended
-                              ? setOrderedExtended(false)
-                              : setOrderedExtended(true)
+                          width={
+                            !columns.commercial_invoice_req.extended && "79px"
                           }
-                          writingMode={!orderedExtended && "vertical-rl"}
+                          extendedContent={
+                            !columns.commercial_invoice_req.extended && "none"
+                          }
+                          changeSize={() =>
+                            toggleColumnSize("commercial_invoice_req")
+                          }
+                          writingMode={
+                            !columns.commercial_invoice_req.extended &&
+                            "vertical-rl"
+                          }
                         >
                           <>
                             {orderedState.length == 0 && (
@@ -390,6 +407,14 @@ const App = () => {
                           category="Export Docs Required"
                           borderTopColor="#1B90E6"
                           amount_in_category={awaitingTrackingState.length}
+                          width={!columns.export_docs_req.extended && "79px"}
+                          extendedContent={
+                            !columns.export_docs_req.extended && "none"
+                          }
+                          changeSize={() => toggleColumnSize("export_docs_req")}
+                          writingMode={
+                            !columns.export_docs_req.extended && "vertical-rl"
+                          }
                         >
                           <>
                             {awaitingTrackingState.map((job, index) => (
@@ -416,6 +441,14 @@ const App = () => {
                           category="IOR Required"
                           borderTopColor="#77C135"
                           amount_in_category={inboundArray.length}
+                          width={!columns.ior_required.extended && "79px"}
+                          extendedContent={
+                            !columns.ior_required.extended && "none"
+                          }
+                          changeSize={() => toggleColumnSize("ior_required")}
+                          writingMode={
+                            !columns.ior_required.extended && "vertical-rl"
+                          }
                         >
                           <>
                             {inboundArray.map((job, index) => (
