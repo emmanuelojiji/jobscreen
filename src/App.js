@@ -378,6 +378,7 @@ function App() {
                                 backgroundColor={job.late && "#D64045"}
                                 displayLateIcon={job.late && "block"}
                                 statusColor={job.late ? "white" : "#83E884"}
+                                cetaDisplay="none"
                               />
                             ))}
                           </>
@@ -415,6 +416,7 @@ function App() {
                                   layout === "extended" ? "150px" : "50px"
                                 }
                                 statusColor={job.late ? "white" : "#83E884"}
+                                ceta="12 August 2022"
                                 fraction="3/6"
                                 suffix="Ordered"
                               />
@@ -440,6 +442,7 @@ function App() {
                                 cardHeight={
                                   layout === "extended" ? "150px" : "50px"
                                 }
+                                ceta="12 August 2022"
                                 statusColor={job.late ? "white" : "#83E884"}
                                 fraction="1/6"
                                 suffix="TRACKING NOS. RECEIVED"
@@ -465,6 +468,7 @@ function App() {
                                 cardHeight={
                                   layout === "extended" ? "150px" : "50px"
                                 }
+                                ceta="12 August 2022"
                                 statusColor={job.late ? "white" : "#83E884"}
                                 fraction="3/6"
                                 suffix="ARRIVED"

@@ -10,6 +10,8 @@ const JobCard = ({
   tooltipDisplay,
   job_number,
   time,
+  ceta,
+  cetaDisplay,
   statusColor,
   fraction,
   suffix,
@@ -47,6 +49,10 @@ const JobCard = ({
       {(layout === "extended" || cardOpen) && (
         <>
           <span className="time light">{time}</span>
+
+          <span className="ceta" style={{ display: cetaDisplay }}>
+            CETA <span className="ceta-bold">{ceta}</span>
+          </span>
 
           <span className="status light" style={{ color: statusColor }}>
             <span>

@@ -21,6 +21,7 @@ export const AllJobs = [
     late: false,
     category: "awaiting_tracking",
     country_flag: "🇸🇪",
+    ceta: "12 August 2022",
   },
 
   {
@@ -37,7 +38,8 @@ export const AllJobs = [
     late: true,
     category: "ordered",
     country_flag: "🇪🇸",
-    amount: "3/6"
+    amount: "3/6",
+    ceta: "12 August 2022",
   },
 
   {
@@ -46,6 +48,7 @@ export const AllJobs = [
     late: false,
     category: "awaiting_tracking",
     country_flag: "🇬🇧",
+    ceta: "12 August 2022",
   },
 
   {
@@ -54,6 +57,7 @@ export const AllJobs = [
     late: false,
     category: "awaiting_tracking",
     country_flag: "🇬🇧",
+    ceta: "12 August 2022",
   },
 
   {
@@ -62,6 +66,7 @@ export const AllJobs = [
     late: false,
     category: "inbound",
     country_flag: "🇬🇧",
+    ceta: "12 August 2022",
   },
 
   {
@@ -70,6 +75,7 @@ export const AllJobs = [
     late: false,
     category: "inbound",
     country_flag: "🇬🇧",
+    ceta: "12 August 2022",
   },
 ];
 
