@@ -1,19 +1,19 @@
-import Toggle from "react-toggle";
 import "./App.scss";
-import Column from "./Components/Column";
-import JobCard from "./Components/JobCard";
 import "./Toggle.scss";
 import { useEffect, useState, useRef, useMemo } from "react";
-import Dropdown from "./Dropdown";
-import AllJobs from "./AllJobs";
-import otherUser from "./otherUser";
-import Sidebar from "./Components/Sidebar";
-import avatar from "./avatar.jpg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronRight,
   faChevronLeft,
 } from "@fortawesome/free-solid-svg-icons";
+import Column from "./Components/Column";
+import JobCard from "./Components/JobCard";
+import Toggle from "react-toggle";
+import Dropdown from "./Dropdown";
+import AllJobs from "./AllJobs";
+import otherUser from "./otherUser";
+import Sidebar from "./Components/Sidebar";
+import avatar from "./avatar.jpg";
 import Search from "./Components/Search";
 import SwitchModal from "./Components/SwitchModal";
 
@@ -24,6 +24,7 @@ const multipleUsersArray = [...otherUser, ...AllJobs];
 const App = () => {
   const [showLateJobs, setShowLateJobs] = useState(true);
   const [user, setUser] = useState(DEFAULT_USER);
+  const [carouselView, setCarouselView] = useState(0);
 
   const toOrderFilter =
     (includeLate) =>
@@ -145,11 +146,9 @@ const App = () => {
 
   const [department, setDepartment] = useState("Default");
 
-  const [profileMenuVisible, setProfileMenuVisible] = useState(false);
   const [switchModalVisible, setSwitchModalVisible] = useState(false);
 
-  const [carouselView, setCarouselView] = useState(0);
-
+  const [profileMenuVisible, setProfileMenuVisible] = useState(false);
   const profileMenuRef = useRef(null);
 
   const closeProfileMenu = (e) => {
@@ -293,9 +292,6 @@ const App = () => {
 
       <main>
         <>
-          {visibleColumns === 0 && (
-            <div className="no-jobs medium">There are no jobs available</div>
-          )}
           <div className="overflow-wrap page-width">
             <div className="column-carousel">
               {carouselView < 0 && visibleColumns && (

@@ -39,9 +39,13 @@ const Sidebar = ({
   stillToActionToggle,
   lastColumnToggle,
 
-  defaultDepartment,
+  allDepartments,
+  orderFulfilmentDepartment,
   globalTradeDepartment,
-  customerSupportDepartment,
+  warehouseDepartment,
+  problemResolutionDepartment,
+  inboundDepartment,
+  outboundDepartment,
   dropdownLabel,
   department,
   setDepartment,
@@ -87,14 +91,34 @@ const Sidebar = ({
             dropdownLabel="Department"
             menuItem={
               <>
-                <span className="menu-item light" onClick={defaultDepartment}>
-                  Default
+                <span className="menu-item light" onClick={allDepartments}>
+                  All
                 </span>
+
                 <span
                   className="menu-item light"
-                  onClick={customerSupportDepartment}
+                  onClick={orderFulfilmentDepartment}
                 >
-                  Customer Support
+                  Order Fulfilment
+                </span>
+
+                <span className="menu-item light" onClick={warehouseDepartment}>
+                  Warehouse
+                </span>
+
+                <span
+                  className="menu-item light"
+                  onClick={problemResolutionDepartment}
+                >
+                  Warehouse - Problem Resolution
+                </span>
+
+                <span className="menu-item light" onClick={inboundDepartment}>
+                  Inbound
+                </span>
+
+                <span className="menu-item light" onClick={outboundDepartment}>
+                  Outbound
                 </span>
 
                 <span
