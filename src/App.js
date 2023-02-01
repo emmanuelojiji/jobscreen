@@ -483,7 +483,9 @@ const App = () => {
                             </>
                           </Column>
                         )}
+                    </div>
 
+                    <div className="column-container">
                       {columns.awaiting_confirmation.visible &&
                         department === "all" && (
                           <Column
@@ -601,8 +603,9 @@ const App = () => {
                             </>
                           </Column>
                         )}
-                 
+                    </div>
 
+                    <div className="column-container">
                       {columns.inbounding.visible &&
                         (department === "all" ||
                           department === "warehouse_all" ||
@@ -724,7 +727,9 @@ const App = () => {
                             </>
                           </Column>
                         )}
+                    </div>
 
+                    <div className="column-container">
                       {columns.preparing_to_ship.visible &&
                         (department === "all" ||
                           department === "warehouse_all" ||
@@ -845,9 +850,9 @@ const App = () => {
                             </>
                           </Column>
                         )}
-                 
+                    </div>
 
-                
+                    <div className="column-container">
                       {columns.to_send_tracking_label.visible &&
                         department === "all" && (
                           <Column
@@ -959,7 +964,9 @@ const App = () => {
                             </>
                           </Column>
                         )}
+                    </div>
 
+                    <div className="column-container">
                       {columns.to_send_pod.visible && department === "all" && (
                         <Column
                           category="To Send POD"
