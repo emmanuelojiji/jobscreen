@@ -40,12 +40,12 @@ const Sidebar = ({
   lastColumnToggle,
 
   allDepartments,
-  orderFulfilmentDepartment,
   globalTradeDepartment,
-  warehouseDepartment,
+  orderFulfilmentDepartment,
+  warehouseAllDepartment,
   problemResolutionDepartment,
-  inboundDepartment,
-  outboundDepartment,
+  warehouseInboundDepartment,
+  warehouseOutboundDepartment,
   dropdownLabel,
   department,
   setDepartment,
@@ -102,7 +102,10 @@ const Sidebar = ({
                   Order Fulfilment
                 </span>
 
-                <span className="menu-item light" onClick={warehouseDepartment}>
+                <span
+                  className="menu-item light"
+                  onClick={warehouseAllDepartment}
+                >
                   Warehouse
                 </span>
 
@@ -113,11 +116,17 @@ const Sidebar = ({
                   Warehouse - Problem Resolution
                 </span>
 
-                <span className="menu-item light" onClick={inboundDepartment}>
+                <span
+                  className="menu-item light"
+                  onClick={warehouseInboundDepartment}
+                >
                   Inbound
                 </span>
 
-                <span className="menu-item light" onClick={outboundDepartment}>
+                <span
+                  className="menu-item light"
+                  onClick={warehouseOutboundDepartment}
+                >
                   Outbound
                 </span>
 

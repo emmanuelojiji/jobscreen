@@ -144,7 +144,7 @@ const App = () => {
 
   const [noJobs, setNoJobs] = useState(false);
 
-  const [department, setDepartment] = useState("Default");
+  const [department, setDepartment] = useState("all");
 
   const [switchModalVisible, setSwitchModalVisible] = useState(false);
 
@@ -212,6 +212,12 @@ const App = () => {
         stillToActionToggle={toggleVisibility("still_to_action")}
         lastColumnToggle={toggleVisibility("last_column")}
         department={department}
+        allDepartments={() => setDepartment("all")}
+        orderFulfilmentDepartment={() => setDepartment("all")}
+        globalTradeDepartment={() => setDepartment("global_trade")}
+        warehouseAllDepartment={() => setDepartment("warehouse_all")}
+        warehouseInboundDepartment={() => setDepartment("warehouse_inbound")}
+        warehouseOutboundDepartment={() => setDepartment("warehouse_outbound")}
       />
 
       <header>
@@ -320,7 +326,8 @@ const App = () => {
                   >
                     <div className="column-container">
                       {columns.to_order.visible &&
-                        department != "Customer Support" && (
+                        (department == "all" ||
+                          department == "order_fulfilment") && (
                           <Column
                             category="To Order"
                             borderTopColor="#DC6942"
@@ -353,480 +360,528 @@ const App = () => {
                           </Column>
                         )}
 
-                      {columns.commercial_invoice_req.visible && (
-                        <Column
-                          category="Commercial Invoice Required"
-                          borderTopColor="#1B90E6"
-                          opacity={orderedState.length === 0 && "0.5"}
-                          amount_in_category={orderedState.length}
-                          width={
-                            !columns.commercial_invoice_req.extended && "79px"
-                          }
-                          extendedContent={
-                            !columns.commercial_invoice_req.extended && "none"
-                          }
-                          changeSize={() =>
-                            toggleColumnSize("commercial_invoice_req")
-                          }
-                          writingMode={
-                            !columns.commercial_invoice_req.extended &&
-                            "vertical-rl"
-                          }
-                        >
-                          <>
-                            {orderedState.length == 0 && (
-                              <p className="no-jobs light">No jobs to show</p>
-                            )}
+                      {columns.commercial_invoice_req.visible &&
+                        (department === "all" ||
+                          department === "order_fulfilment" ||
+                          department === "global_trade") && (
+                          <Column
+                            category="Commercial Invoice Required"
+                            borderTopColor="#1B90E6"
+                            opacity={orderedState.length === 0 && "0.5"}
+                            amount_in_category={orderedState.length}
+                            width={
+                              !columns.commercial_invoice_req.extended && "79px"
+                            }
+                            extendedContent={
+                              !columns.commercial_invoice_req.extended && "none"
+                            }
+                            changeSize={() =>
+                              toggleColumnSize("commercial_invoice_req")
+                            }
+                            writingMode={
+                              !columns.commercial_invoice_req.extended &&
+                              "vertical-rl"
+                            }
+                          >
+                            <>
+                              {orderedState.length == 0 && (
+                                <p className="no-jobs light">No jobs to show</p>
+                              )}
 
-                            {orderedState.map((job, index) => (
-                              <JobCard
-                                job_number={job.jobNumber}
-                                time={job.time}
-                                backgroundColor={job.late && "#D64045"}
-                                displayLateIcon={job.late && "block"}
-                                layout={layout}
-                                cardHeight={
-                                  layout === "extended" ? "150px" : "50px"
-                                }
-                                statusColor={job.late ? "white" : "#83E884"}
-                                ceta="12 August 2022"
-                                fraction="3/6"
-                                suffix="Ordered"
-                              />
-                            ))}
-                          </>
-                        </Column>
-                      )}
+                              {orderedState.map((job, index) => (
+                                <JobCard
+                                  job_number={job.jobNumber}
+                                  time={job.time}
+                                  backgroundColor={job.late && "#D64045"}
+                                  displayLateIcon={job.late && "block"}
+                                  layout={layout}
+                                  cardHeight={
+                                    layout === "extended" ? "150px" : "50px"
+                                  }
+                                  statusColor={job.late ? "white" : "#83E884"}
+                                  ceta="12 August 2022"
+                                  fraction="3/6"
+                                  suffix="Ordered"
+                                />
+                              ))}
+                            </>
+                          </Column>
+                        )}
 
-                      {columns.export_docs_req.visible && (
-                        <Column
-                          category="Export Docs Required"
-                          borderTopColor="#1B90E6"
-                          amount_in_category={awaitingTrackingState.length}
-                          width={!columns.export_docs_req.extended && "79px"}
-                          extendedContent={
-                            !columns.export_docs_req.extended && "none"
-                          }
-                          changeSize={() => toggleColumnSize("export_docs_req")}
-                          writingMode={
-                            !columns.export_docs_req.extended && "vertical-rl"
-                          }
-                        >
-                          <>
-                            {awaitingTrackingState.map((job, index) => (
-                              <JobCard
-                                job_number={job.jobNumber}
-                                time={job.time}
-                                backgroundColor={job.late && "#D64045"}
-                                displayLateIcon={job.late && "block"}
-                                layout={layout}
-                                cardHeight={
-                                  layout === "extended" ? "150px" : "50px"
-                                }
-                                ceta="12 August 2022"
-                                statusColor={job.late ? "white" : "#83E884"}
-                                fraction="1/6"
-                                suffix="TRACKING NOS. RECEIVED"
-                              />
-                            ))}
-                          </>
-                        </Column>
-                      )}
-                      {columns.ior_required.visible && (
-                        <Column
-                          category="IOR Required"
-                          borderTopColor="#77C135"
-                          amount_in_category={inboundArray.length}
-                          width={!columns.ior_required.extended && "79px"}
-                          extendedContent={
-                            !columns.ior_required.extended && "none"
-                          }
-                          changeSize={() => toggleColumnSize("ior_required")}
-                          writingMode={
-                            !columns.ior_required.extended && "vertical-rl"
-                          }
-                        >
-                          <>
-                            {inboundArray.map((job, index) => (
-                              <JobCard
-                                job_number={job.jobNumber}
-                                time={job.time}
-                                backgroundColor={job.late && "#D64045"}
-                                displayLateIcon={job.late && "block"}
-                                layout={layout}
-                                cardHeight={
-                                  layout === "extended" ? "150px" : "50px"
-                                }
-                                ceta="12 August 2022"
-                                statusColor={job.late ? "white" : "#83E884"}
-                                fraction="3/6"
-                                suffix="ARRIVED"
-                              />
-                            ))}
-                          </>
-                        </Column>
-                      )}
+                      {columns.export_docs_req.visible &&
+                        (department === "all" ||
+                          department === "order_fulfilment" ||
+                          department === "global_trade") && (
+                          <Column
+                            category="Export Docs Required"
+                            borderTopColor="#1B90E6"
+                            amount_in_category={awaitingTrackingState.length}
+                            width={!columns.export_docs_req.extended && "79px"}
+                            extendedContent={
+                              !columns.export_docs_req.extended && "none"
+                            }
+                            changeSize={() =>
+                              toggleColumnSize("export_docs_req")
+                            }
+                            writingMode={
+                              !columns.export_docs_req.extended && "vertical-rl"
+                            }
+                          >
+                            <>
+                              {awaitingTrackingState.map((job, index) => (
+                                <JobCard
+                                  job_number={job.jobNumber}
+                                  time={job.time}
+                                  backgroundColor={job.late && "#D64045"}
+                                  displayLateIcon={job.late && "block"}
+                                  layout={layout}
+                                  cardHeight={
+                                    layout === "extended" ? "150px" : "50px"
+                                  }
+                                  ceta="12 August 2022"
+                                  statusColor={job.late ? "white" : "#83E884"}
+                                  fraction="1/6"
+                                  suffix="TRACKING NOS. RECEIVED"
+                                />
+                              ))}
+                            </>
+                          </Column>
+                        )}
+                      {columns.ior_required.visible &&
+                        (department === "all" ||
+                          department === "global_trade") && (
+                          <Column
+                            category="IOR Required"
+                            borderTopColor="#77C135"
+                            amount_in_category={inboundArray.length}
+                            width={!columns.ior_required.extended && "79px"}
+                            extendedContent={
+                              !columns.ior_required.extended && "none"
+                            }
+                            changeSize={() => toggleColumnSize("ior_required")}
+                            writingMode={
+                              !columns.ior_required.extended && "vertical-rl"
+                            }
+                          >
+                            <>
+                              {inboundArray.map((job, index) => (
+                                <JobCard
+                                  job_number={job.jobNumber}
+                                  time={job.time}
+                                  backgroundColor={job.late && "#D64045"}
+                                  displayLateIcon={job.late && "block"}
+                                  layout={layout}
+                                  cardHeight={
+                                    layout === "extended" ? "150px" : "50px"
+                                  }
+                                  ceta="12 August 2022"
+                                  statusColor={job.late ? "white" : "#83E884"}
+                                  fraction="3/6"
+                                  suffix="ARRIVED"
+                                />
+                              ))}
+                            </>
+                          </Column>
+                        )}
                     </div>
 
                     <div className="column-container">
-                      {columns.awaiting_confirmation.visible && (
-                        <Column
-                          category="Awaiting Confirmation"
-                          borderTopColor="#77C135"
-                          amount_in_category={inboundArray.length}
-                        >
-                          <>
-                            {inboundArray.map((job, index) => (
-                              <JobCard
-                                job_number={job.jobNumber}
-                                time={job.time}
-                                backgroundColor={job.late && "#D64045"}
-                                displayLateIcon={job.late && "block"}
-                                layout={layout}
-                                cardHeight={
-                                  layout === "extended" ? "150px" : "50px"
-                                }
-                                ceta="12 August 2022"
-                                statusColor={job.late ? "white" : "#83E884"}
-                                fraction="3/6"
-                                suffix="ARRIVED"
-                              />
-                            ))}
-                          </>
-                        </Column>
-                      )}
+                      {columns.awaiting_confirmation.visible &&
+                        department === "all" && (
+                          <Column
+                            category="Awaiting Confirmation"
+                            borderTopColor="#77C135"
+                            amount_in_category={inboundArray.length}
+                          >
+                            <>
+                              {inboundArray.map((job, index) => (
+                                <JobCard
+                                  job_number={job.jobNumber}
+                                  time={job.time}
+                                  backgroundColor={job.late && "#D64045"}
+                                  displayLateIcon={job.late && "block"}
+                                  layout={layout}
+                                  cardHeight={
+                                    layout === "extended" ? "150px" : "50px"
+                                  }
+                                  ceta="12 August 2022"
+                                  statusColor={job.late ? "white" : "#83E884"}
+                                  fraction="3/6"
+                                  suffix="ARRIVED"
+                                />
+                              ))}
+                            </>
+                          </Column>
+                        )}
 
-                      {columns.awaiting_tracking_number.visible && (
-                        <Column
-                          category="Awaiting Tracking Number"
-                          borderTopColor="#77C135"
-                          amount_in_category={inboundArray.length}
-                        >
-                          <>
-                            {inboundArray.map((job, index) => (
-                              <JobCard
-                                job_number={job.jobNumber}
-                                time={job.time}
-                                backgroundColor={job.late && "#D64045"}
-                                displayLateIcon={job.late && "block"}
-                                layout={layout}
-                                cardHeight={
-                                  layout === "extended" ? "150px" : "50px"
-                                }
-                                ceta="12 August 2022"
-                                statusColor={job.late ? "white" : "#83E884"}
-                                fraction="3/6"
-                                suffix="ARRIVED"
-                              />
-                            ))}
-                          </>
-                        </Column>
-                      )}
+                      {columns.awaiting_tracking_number.visible &&
+                        department === "all" && (
+                          <Column
+                            category="Awaiting Tracking Number"
+                            borderTopColor="#77C135"
+                            amount_in_category={inboundArray.length}
+                          >
+                            <>
+                              {inboundArray.map((job, index) => (
+                                <JobCard
+                                  job_number={job.jobNumber}
+                                  time={job.time}
+                                  backgroundColor={job.late && "#D64045"}
+                                  displayLateIcon={job.late && "block"}
+                                  layout={layout}
+                                  cardHeight={
+                                    layout === "extended" ? "150px" : "50px"
+                                  }
+                                  ceta="12 August 2022"
+                                  statusColor={job.late ? "white" : "#83E884"}
+                                  fraction="3/6"
+                                  suffix="ARRIVED"
+                                />
+                              ))}
+                            </>
+                          </Column>
+                        )}
 
-                      {columns.due_in_to_warehouse.visible && (
-                        <Column
-                          category="Due in to Warehouse"
-                          borderTopColor="#77C135"
-                          amount_in_category={inboundArray.length}
-                        >
-                          <>
-                            {inboundArray.map((job, index) => (
-                              <JobCard
-                                job_number={job.jobNumber}
-                                time={job.time}
-                                backgroundColor={job.late && "#D64045"}
-                                displayLateIcon={job.late && "block"}
-                                layout={layout}
-                                cardHeight={
-                                  layout === "extended" ? "150px" : "50px"
-                                }
-                                ceta="12 August 2022"
-                                statusColor={job.late ? "white" : "#83E884"}
-                                fraction="3/6"
-                                suffix="ARRIVED"
-                              />
-                            ))}
-                          </>
-                        </Column>
-                      )}
+                      {columns.due_in_to_warehouse.visible &&
+                        (department === "all" ||
+                          department === "warehouse" ||
+                          department === "inbound" ||
+                          department === "warehouse_problem_resolution") && (
+                          <Column
+                            category="Due in to Warehouse"
+                            borderTopColor="#77C135"
+                            amount_in_category={inboundArray.length}
+                          >
+                            <>
+                              {inboundArray.map((job, index) => (
+                                <JobCard
+                                  job_number={job.jobNumber}
+                                  time={job.time}
+                                  backgroundColor={job.late && "#D64045"}
+                                  displayLateIcon={job.late && "block"}
+                                  layout={layout}
+                                  cardHeight={
+                                    layout === "extended" ? "150px" : "50px"
+                                  }
+                                  ceta="12 August 2022"
+                                  statusColor={job.late ? "white" : "#83E884"}
+                                  fraction="3/6"
+                                  suffix="ARRIVED"
+                                />
+                              ))}
+                            </>
+                          </Column>
+                        )}
 
-                      {columns.arrived.visible && (
-                        <Column
-                          category="Arrived"
-                          borderTopColor="#77C135"
-                          amount_in_category={inboundArray.length}
-                        >
-                          <>
-                            {inboundArray.map((job, index) => (
-                              <JobCard
-                                job_number={job.jobNumber}
-                                time={job.time}
-                                backgroundColor={job.late && "#D64045"}
-                                displayLateIcon={job.late && "block"}
-                                layout={layout}
-                                cardHeight={
-                                  layout === "extended" ? "150px" : "50px"
-                                }
-                                ceta="12 August 2022"
-                                statusColor={job.late ? "white" : "#83E884"}
-                                fraction="3/6"
-                                suffix="ARRIVED"
-                              />
-                            ))}
-                          </>
-                        </Column>
-                      )}
+                      {columns.arrived.visible &&
+                        (department === "all" ||
+                          department === "warehouse_all" ||
+                          department === "warehouse_inbound" ||
+                          department === "warehouse_problem_resolution") && (
+                          <Column
+                            category="Arrived"
+                            borderTopColor="#77C135"
+                            amount_in_category={inboundArray.length}
+                          >
+                            <>
+                              {inboundArray.map((job, index) => (
+                                <JobCard
+                                  job_number={job.jobNumber}
+                                  time={job.time}
+                                  backgroundColor={job.late && "#D64045"}
+                                  displayLateIcon={job.late && "block"}
+                                  layout={layout}
+                                  cardHeight={
+                                    layout === "extended" ? "150px" : "50px"
+                                  }
+                                  ceta="12 August 2022"
+                                  statusColor={job.late ? "white" : "#83E884"}
+                                  fraction="3/6"
+                                  suffix="ARRIVED"
+                                />
+                              ))}
+                            </>
+                          </Column>
+                        )}
                     </div>
 
                     <div className="column-container">
-                      {columns.inbounding.visible && (
-                        <Column
-                          category="Inbound"
-                          borderTopColor="#77C135"
-                          amount_in_category={inboundArray.length}
-                        >
-                          <>
-                            {inboundArray.map((job, index) => (
-                              <JobCard
-                                job_number={job.jobNumber}
-                                time={job.time}
-                                backgroundColor={job.late && "#D64045"}
-                                displayLateIcon={job.late && "block"}
-                                layout={layout}
-                                cardHeight={
-                                  layout === "extended" ? "150px" : "50px"
-                                }
-                                ceta="12 August 2022"
-                                statusColor={job.late ? "white" : "#83E884"}
-                                fraction="3/6"
-                                suffix="ARRIVED"
-                              />
-                            ))}
-                          </>
-                        </Column>
-                      )}
+                      {columns.inbounding.visible &&
+                        (department === "all" ||
+                          department === "warehouse_all" ||
+                          department === "warehouse_inbound" ||
+                          department === "warehouse_problem_resolution") && (
+                          <Column
+                            category="Inbound"
+                            borderTopColor="#77C135"
+                            amount_in_category={inboundArray.length}
+                          >
+                            <>
+                              {inboundArray.map((job, index) => (
+                                <JobCard
+                                  job_number={job.jobNumber}
+                                  time={job.time}
+                                  backgroundColor={job.late && "#D64045"}
+                                  displayLateIcon={job.late && "block"}
+                                  layout={layout}
+                                  cardHeight={
+                                    layout === "extended" ? "150px" : "50px"
+                                  }
+                                  ceta="12 August 2022"
+                                  statusColor={job.late ? "white" : "#83E884"}
+                                  fraction="3/6"
+                                  suffix="ARRIVED"
+                                />
+                              ))}
+                            </>
+                          </Column>
+                        )}
 
-                      {columns.awaiting_parts.visible && (
-                        <Column
-                          category="Awaiting Parts"
-                          borderTopColor="#77C135"
-                          amount_in_category={inboundArray.length}
-                        >
-                          <>
-                            {inboundArray.map((job, index) => (
-                              <JobCard
-                                job_number={job.jobNumber}
-                                time={job.time}
-                                backgroundColor={job.late && "#D64045"}
-                                displayLateIcon={job.late && "block"}
-                                layout={layout}
-                                cardHeight={
-                                  layout === "extended" ? "150px" : "50px"
-                                }
-                                ceta="12 August 2022"
-                                statusColor={job.late ? "white" : "#83E884"}
-                                fraction="3/6"
-                                suffix="ARRIVED"
-                              />
-                            ))}
-                          </>
-                        </Column>
-                      )}
+                      {columns.awaiting_parts.visible &&
+                        (department === "all" ||
+                          department === "warehouse_all" ||
+                          department === "warehouse_inbound") && (
+                          <Column
+                            category="Awaiting Parts"
+                            borderTopColor="#77C135"
+                            amount_in_category={inboundArray.length}
+                          >
+                            <>
+                              {inboundArray.map((job, index) => (
+                                <JobCard
+                                  job_number={job.jobNumber}
+                                  time={job.time}
+                                  backgroundColor={job.late && "#D64045"}
+                                  displayLateIcon={job.late && "block"}
+                                  layout={layout}
+                                  cardHeight={
+                                    layout === "extended" ? "150px" : "50px"
+                                  }
+                                  ceta="12 August 2022"
+                                  statusColor={job.late ? "white" : "#83E884"}
+                                  fraction="3/6"
+                                  suffix="ARRIVED"
+                                />
+                              ))}
+                            </>
+                          </Column>
+                        )}
 
-                      {columns.transit_pallet.visible && (
-                        <Column
-                          category="Transit Pallet"
-                          borderTopColor="#77C135"
-                          amount_in_category={inboundArray.length}
-                        >
-                          <>
-                            {inboundArray.map((job, index) => (
-                              <JobCard
-                                job_number={job.jobNumber}
-                                time={job.time}
-                                backgroundColor={job.late && "#D64045"}
-                                displayLateIcon={job.late && "block"}
-                                layout={layout}
-                                cardHeight={
-                                  layout === "extended" ? "150px" : "50px"
-                                }
-                                ceta="12 August 2022"
-                                statusColor={job.late ? "white" : "#83E884"}
-                                fraction="3/6"
-                                suffix="ARRIVED"
-                              />
-                            ))}
-                          </>
-                        </Column>
-                      )}
+                      {columns.transit_pallet.visible &&
+                        (department === "all" ||
+                          department === "warehouse_all" ||
+                          department === "warehouse_inbound" ||
+                          department === "warehouse_outbound") && (
+                          <Column
+                            category="Transit Pallet"
+                            borderTopColor="#77C135"
+                            amount_in_category={inboundArray.length}
+                          >
+                            <>
+                              {inboundArray.map((job, index) => (
+                                <JobCard
+                                  job_number={job.jobNumber}
+                                  time={job.time}
+                                  backgroundColor={job.late && "#D64045"}
+                                  displayLateIcon={job.late && "block"}
+                                  layout={layout}
+                                  cardHeight={
+                                    layout === "extended" ? "150px" : "50px"
+                                  }
+                                  ceta="12 August 2022"
+                                  statusColor={job.late ? "white" : "#83E884"}
+                                  fraction="3/6"
+                                  suffix="ARRIVED"
+                                />
+                              ))}
+                            </>
+                          </Column>
+                        )}
 
-                      {columns.problem_shelf.visible && (
-                        <Column
-                          category="Problem Shelf"
-                          borderTopColor="#77C135"
-                          amount_in_category={inboundArray.length}
-                        >
-                          <>
-                            {inboundArray.map((job, index) => (
-                              <JobCard
-                                job_number={job.jobNumber}
-                                time={job.time}
-                                backgroundColor={job.late && "#D64045"}
-                                displayLateIcon={job.late && "block"}
-                                layout={layout}
-                                cardHeight={
-                                  layout === "extended" ? "150px" : "50px"
-                                }
-                                ceta="12 August 2022"
-                                statusColor={job.late ? "white" : "#83E884"}
-                                fraction="3/6"
-                                suffix="ARRIVED"
-                              />
-                            ))}
-                          </>
-                        </Column>
-                      )}
+                      {columns.problem_shelf.visible &&
+                        (department === "all" ||
+                          department === "warehouse_all" ||
+                          department === "warehouse_outbound") && (
+                          <Column
+                            category="Problem Shelf"
+                            borderTopColor="#77C135"
+                            amount_in_category={inboundArray.length}
+                          >
+                            <>
+                              {inboundArray.map((job, index) => (
+                                <JobCard
+                                  job_number={job.jobNumber}
+                                  time={job.time}
+                                  backgroundColor={job.late && "#D64045"}
+                                  displayLateIcon={job.late && "block"}
+                                  layout={layout}
+                                  cardHeight={
+                                    layout === "extended" ? "150px" : "50px"
+                                  }
+                                  ceta="12 August 2022"
+                                  statusColor={job.late ? "white" : "#83E884"}
+                                  fraction="3/6"
+                                  suffix="ARRIVED"
+                                />
+                              ))}
+                            </>
+                          </Column>
+                        )}
                     </div>
 
                     <div className="column-container">
-                      {columns.preparing_to_ship.visible && (
-                        <Column
-                          category="Preparing to ship"
-                          borderTopColor="#77C135"
-                          amount_in_category={inboundArray.length}
-                        >
-                          <>
-                            {inboundArray.map((job, index) => (
-                              <JobCard
-                                job_number={job.jobNumber}
-                                time={job.time}
-                                backgroundColor={job.late && "#D64045"}
-                                displayLateIcon={job.late && "block"}
-                                layout={layout}
-                                cardHeight={
-                                  layout === "extended" ? "150px" : "50px"
-                                }
-                                ceta="12 August 2022"
-                                statusColor={job.late ? "white" : "#83E884"}
-                                fraction="3/6"
-                                suffix="ARRIVED"
-                              />
-                            ))}
-                          </>
-                        </Column>
-                      )}
+                      {columns.preparing_to_ship.visible &&
+                        (department === "all" ||
+                          department === "warehouse_all" ||
+                          department === "warehouse_outbound") && (
+                          <Column
+                            category="Preparing to ship"
+                            borderTopColor="#77C135"
+                            amount_in_category={inboundArray.length}
+                          >
+                            <>
+                              {inboundArray.map((job, index) => (
+                                <JobCard
+                                  job_number={job.jobNumber}
+                                  time={job.time}
+                                  backgroundColor={job.late && "#D64045"}
+                                  displayLateIcon={job.late && "block"}
+                                  layout={layout}
+                                  cardHeight={
+                                    layout === "extended" ? "150px" : "50px"
+                                  }
+                                  ceta="12 August 2022"
+                                  statusColor={job.late ? "white" : "#83E884"}
+                                  fraction="3/6"
+                                  suffix="ARRIVED"
+                                />
+                              ))}
+                            </>
+                          </Column>
+                        )}
 
-                      {columns.buy_shipping_label.visible && (
-                        <Column
-                          category="Buy Shipping Label"
-                          borderTopColor="#77C135"
-                          amount_in_category={inboundArray.length}
-                        >
-                          <>
-                            {inboundArray.map((job, index) => (
-                              <JobCard
-                                job_number={job.jobNumber}
-                                time={job.time}
-                                backgroundColor={job.late && "#D64045"}
-                                displayLateIcon={job.late && "block"}
-                                layout={layout}
-                                cardHeight={
-                                  layout === "extended" ? "150px" : "50px"
-                                }
-                                ceta="12 August 2022"
-                                statusColor={job.late ? "white" : "#83E884"}
-                                fraction="3/6"
-                                suffix="ARRIVED"
-                              />
-                            ))}
-                          </>
-                        </Column>
-                      )}
+                      {columns.buy_shipping_label.visible &&
+                        (department === "all" ||
+                          department === "warehouse_all" ||
+                          department === "warehouse_outbound") && (
+                          <Column
+                            category="Buy Shipping Label"
+                            borderTopColor="#77C135"
+                            amount_in_category={inboundArray.length}
+                          >
+                            <>
+                              {inboundArray.map((job, index) => (
+                                <JobCard
+                                  job_number={job.jobNumber}
+                                  time={job.time}
+                                  backgroundColor={job.late && "#D64045"}
+                                  displayLateIcon={job.late && "block"}
+                                  layout={layout}
+                                  cardHeight={
+                                    layout === "extended" ? "150px" : "50px"
+                                  }
+                                  ceta="12 August 2022"
+                                  statusColor={job.late ? "white" : "#83E884"}
+                                  fraction="3/6"
+                                  suffix="ARRIVED"
+                                />
+                              ))}
+                            </>
+                          </Column>
+                        )}
 
-                      {columns.customer_collection.visible && (
-                        <Column
-                          category="Customer Collection"
-                          borderTopColor="#77C135"
-                          amount_in_category={inboundArray.length}
-                        >
-                          <>
-                            {inboundArray.map((job, index) => (
-                              <JobCard
-                                job_number={job.jobNumber}
-                                time={job.time}
-                                backgroundColor={job.late && "#D64045"}
-                                displayLateIcon={job.late && "block"}
-                                layout={layout}
-                                cardHeight={
-                                  layout === "extended" ? "150px" : "50px"
-                                }
-                                ceta="12 August 2022"
-                                statusColor={job.late ? "white" : "#83E884"}
-                                fraction="3/6"
-                                suffix="ARRIVED"
-                              />
-                            ))}
-                          </>
-                        </Column>
-                      )}
+                      {columns.customer_collection.visible &&
+                        (department === "all" ||
+                          department === "warehouse_all" ||
+                          department === "warehouse_outbound" ||
+                          department === "global_trade") && (
+                          <Column
+                            category="Customer Collection"
+                            borderTopColor="#77C135"
+                            amount_in_category={inboundArray.length}
+                          >
+                            <>
+                              {inboundArray.map((job, index) => (
+                                <JobCard
+                                  job_number={job.jobNumber}
+                                  time={job.time}
+                                  backgroundColor={job.late && "#D64045"}
+                                  displayLateIcon={job.late && "block"}
+                                  layout={layout}
+                                  cardHeight={
+                                    layout === "extended" ? "150px" : "50px"
+                                  }
+                                  ceta="12 August 2022"
+                                  statusColor={job.late ? "white" : "#83E884"}
+                                  fraction="3/6"
+                                  suffix="ARRIVED"
+                                />
+                              ))}
+                            </>
+                          </Column>
+                        )}
 
-                      {columns.pack_and_hold.visible && (
-                        <Column
-                          category="Pack and Hold"
-                          borderTopColor="#77C135"
-                          amount_in_category={inboundArray.length}
-                        >
-                          <>
-                            {inboundArray.map((job, index) => (
-                              <JobCard
-                                job_number={job.jobNumber}
-                                time={job.time}
-                                backgroundColor={job.late && "#D64045"}
-                                displayLateIcon={job.late && "block"}
-                                layout={layout}
-                                cardHeight={
-                                  layout === "extended" ? "150px" : "50px"
-                                }
-                                ceta="12 August 2022"
-                                statusColor={job.late ? "white" : "#83E884"}
-                                fraction="3/6"
-                                suffix="ARRIVED"
-                              />
-                            ))}
-                          </>
-                        </Column>
-                      )}
+                      {columns.pack_and_hold.visible &&
+                        (department === "all" ||
+                          department === "warehouse_all" ||
+                          department === "global_trade") && (
+                          <Column
+                            category="Pack and Hold"
+                            borderTopColor="#77C135"
+                            amount_in_category={inboundArray.length}
+                          >
+                            <>
+                              {inboundArray.map((job, index) => (
+                                <JobCard
+                                  job_number={job.jobNumber}
+                                  time={job.time}
+                                  backgroundColor={job.late && "#D64045"}
+                                  displayLateIcon={job.late && "block"}
+                                  layout={layout}
+                                  cardHeight={
+                                    layout === "extended" ? "150px" : "50px"
+                                  }
+                                  ceta="12 August 2022"
+                                  statusColor={job.late ? "white" : "#83E884"}
+                                  fraction="3/6"
+                                  suffix="ARRIVED"
+                                />
+                              ))}
+                            </>
+                          </Column>
+                        )}
                     </div>
 
                     <div className="column-container">
-                      {columns.to_send_tracking_label.visible && (
-                        <Column
-                          category="To Send Tracking Label"
-                          borderTopColor="#77C135"
-                          amount_in_category={inboundArray.length}
-                        >
-                          <>
-                            {inboundArray.map((job, index) => (
-                              <JobCard
-                                job_number={job.jobNumber}
-                                time={job.time}
-                                backgroundColor={job.late && "#D64045"}
-                                displayLateIcon={job.late && "block"}
-                                layout={layout}
-                                cardHeight={
-                                  layout === "extended" ? "150px" : "50px"
-                                }
-                                ceta="12 August 2022"
-                                statusColor={job.late ? "white" : "#83E884"}
-                                fraction="3/6"
-                                suffix="ARRIVED"
-                              />
-                            ))}
-                          </>
-                        </Column>
-                      )}
+                      {columns.to_send_tracking_label.visible &&
+                        department === "all" && (
+                          <Column
+                            category="To Send Tracking Label"
+                            borderTopColor="#77C135"
+                            amount_in_category={inboundArray.length}
+                          >
+                            <>
+                              {inboundArray.map((job, index) => (
+                                <JobCard
+                                  job_number={job.jobNumber}
+                                  time={job.time}
+                                  backgroundColor={job.late && "#D64045"}
+                                  displayLateIcon={job.late && "block"}
+                                  layout={layout}
+                                  cardHeight={
+                                    layout === "extended" ? "150px" : "50px"
+                                  }
+                                  ceta="12 August 2022"
+                                  statusColor={job.late ? "white" : "#83E884"}
+                                  fraction="3/6"
+                                  suffix="ARRIVED"
+                                />
+                              ))}
+                            </>
+                          </Column>
+                        )}
 
-                      {columns.in_transit.visible && (
+                      {columns.in_transit.visible && department === "all" && (
                         <Column
                           category="In Transit"
                           borderTopColor="#77C135"
@@ -880,36 +935,38 @@ const App = () => {
                         </Column>
                       )}
 
-                      {columns.exception.visible && (
-                        <Column
-                          category="Exception"
-                          borderTopColor="#77C135"
-                          amount_in_category={inboundArray.length}
-                        >
-                          <>
-                            {inboundArray.map((job, index) => (
-                              <JobCard
-                                job_number={job.jobNumber}
-                                time={job.time}
-                                backgroundColor={job.late && "#D64045"}
-                                displayLateIcon={job.late && "block"}
-                                layout={layout}
-                                cardHeight={
-                                  layout === "extended" ? "150px" : "50px"
-                                }
-                                ceta="12 August 2022"
-                                statusColor={job.late ? "white" : "#83E884"}
-                                fraction="3/6"
-                                suffix="ARRIVED"
-                              />
-                            ))}
-                          </>
-                        </Column>
-                      )}
+                      {columns.exception.visible &&
+                        (department === "all" ||
+                          department === "global_trade") && (
+                          <Column
+                            category="Exception"
+                            borderTopColor="#77C135"
+                            amount_in_category={inboundArray.length}
+                          >
+                            <>
+                              {inboundArray.map((job, index) => (
+                                <JobCard
+                                  job_number={job.jobNumber}
+                                  time={job.time}
+                                  backgroundColor={job.late && "#D64045"}
+                                  displayLateIcon={job.late && "block"}
+                                  layout={layout}
+                                  cardHeight={
+                                    layout === "extended" ? "150px" : "50px"
+                                  }
+                                  ceta="12 August 2022"
+                                  statusColor={job.late ? "white" : "#83E884"}
+                                  fraction="3/6"
+                                  suffix="ARRIVED"
+                                />
+                              ))}
+                            </>
+                          </Column>
+                        )}
                     </div>
 
                     <div className="column-container">
-                      {columns.to_send_pod.visible && (
+                      {columns.to_send_pod.visible && department === "all" && (
                         <Column
                           category="To Send POD"
                           borderTopColor="#77C135"
@@ -936,59 +993,62 @@ const App = () => {
                         </Column>
                       )}
 
-                      {columns.still_to_action.visible && (
-                        <Column
-                          category="Still to Action"
-                          borderTopColor="#77C135"
-                          amount_in_category={inboundArray.length}
-                        >
-                          <>
-                            {inboundArray.map((job, index) => (
-                              <JobCard
-                                job_number={job.jobNumber}
-                                time={job.time}
-                                backgroundColor={job.late && "#D64045"}
-                                displayLateIcon={job.late && "block"}
-                                layout={layout}
-                                cardHeight={
-                                  layout === "extended" ? "150px" : "50px"
-                                }
-                                ceta="12 August 2022"
-                                statusColor={job.late ? "white" : "#83E884"}
-                                fraction="3/6"
-                                suffix="ARRIVED"
-                              />
-                            ))}
-                          </>
-                        </Column>
-                      )}
+                      {columns.still_to_action.visible &&
+                        department === "all" && (
+                          <Column
+                            category="Still to Action"
+                            borderTopColor="#77C135"
+                            amount_in_category={inboundArray.length}
+                          >
+                            <>
+                              {inboundArray.map((job, index) => (
+                                <JobCard
+                                  job_number={job.jobNumber}
+                                  time={job.time}
+                                  backgroundColor={job.late && "#D64045"}
+                                  displayLateIcon={job.late && "block"}
+                                  layout={layout}
+                                  cardHeight={
+                                    layout === "extended" ? "150px" : "50px"
+                                  }
+                                  ceta="12 August 2022"
+                                  statusColor={job.late ? "white" : "#83E884"}
+                                  fraction="3/6"
+                                  suffix="ARRIVED"
+                                />
+                              ))}
+                            </>
+                          </Column>
+                        )}
 
-                      {columns.last_column.visible && (
-                        <Column
-                          category="Last Column"
-                          borderTopColor="#77C135"
-                          amount_in_category={inboundArray.length}
-                        >
-                          <>
-                            {inboundArray.map((job, index) => (
-                              <JobCard
-                                job_number={job.jobNumber}
-                                time={job.time}
-                                backgroundColor={job.late && "#D64045"}
-                                displayLateIcon={job.late && "block"}
-                                layout={layout}
-                                cardHeight={
-                                  layout === "extended" ? "150px" : "50px"
-                                }
-                                ceta="12 August 2022"
-                                statusColor={job.late ? "white" : "#83E884"}
-                                fraction="3/6"
-                                suffix="ARRIVED"
-                              />
-                            ))}
-                          </>
-                        </Column>
-                      )}
+                      {columns.last_column.visible &&
+                        (department === "all" ||
+                          department === "global_trade") && (
+                          <Column
+                            category="Last Column"
+                            borderTopColor="#77C135"
+                            amount_in_category={inboundArray.length}
+                          >
+                            <>
+                              {inboundArray.map((job, index) => (
+                                <JobCard
+                                  job_number={job.jobNumber}
+                                  time={job.time}
+                                  backgroundColor={job.late && "#D64045"}
+                                  displayLateIcon={job.late && "block"}
+                                  layout={layout}
+                                  cardHeight={
+                                    layout === "extended" ? "150px" : "50px"
+                                  }
+                                  ceta="12 August 2022"
+                                  statusColor={job.late ? "white" : "#83E884"}
+                                  fraction="3/6"
+                                  suffix="ARRIVED"
+                                />
+                              ))}
+                            </>
+                          </Column>
+                        )}
                     </div>
                   </div>
                 </>
