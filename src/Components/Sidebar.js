@@ -66,6 +66,8 @@ const Sidebar = ({
     closeSidebarOutsideClick(e);
   };
 
+  const [placeholder, setPlaceholder] = useState("All");
+
   return (
     <>
       <div
@@ -85,54 +87,78 @@ const Sidebar = ({
 
         <div className="filters">
           <Dropdown
-            placeholder={department}
+            placeholder={placeholder}
             dropdownMarginBottom="15px"
             dropdownBackground="#1D2131"
             dropdownLabel="Department"
             menuItem={
               <>
-                <span className="menu-item light" onClick={allDepartments}>
+                <span
+                  className="menu-item light"
+                  onClick={() => {
+                    setPlaceholder("All");
+                    allDepartments();
+                  }}
+                >
                   All
                 </span>
 
                 <span
                   className="menu-item light"
-                  onClick={orderFulfilmentDepartment}
+                  onClick={() => {
+                    setPlaceholder("Order Fulfilment");
+                    orderFulfilmentDepartment();
+                  }}
                 >
                   Order Fulfilment
                 </span>
 
                 <span
                   className="menu-item light"
-                  onClick={warehouseAllDepartment}
+                  onClick={() => {
+                    setPlaceholder("Warehouse All");
+                    warehouseAllDepartment();
+                  }}
                 >
-                  Warehouse
+                  Warehouse - All
                 </span>
 
                 <span
                   className="menu-item light"
-                  onClick={problemResolutionDepartment}
+                  onClick={() => {
+                    setPlaceholder("Warehouse - Problem Resolution");
+                    problemResolutionDepartment();
+                  }}
                 >
                   Warehouse - Problem Resolution
                 </span>
 
                 <span
                   className="menu-item light"
-                  onClick={warehouseInboundDepartment}
+                  onClick={() => {
+                    setPlaceholder("Warehouse - Inbound");
+                    warehouseInboundDepartment();
+                  }}
                 >
-                  Inbound
+                  Warehouse - Inbound
                 </span>
 
                 <span
                   className="menu-item light"
-                  onClick={warehouseOutboundDepartment}
+                  onClick={() => {
+                    setPlaceholder("Warehouse - Outbound");
+                    warehouseOutboundDepartment();
+                  }}
                 >
-                  Outbound
+                  Warehouse - Outbound
                 </span>
 
                 <span
                   className="menu-item light"
-                  onClick={globalTradeDepartment}
+                  onClick={() => {
+                    setPlaceholder("Global Trade");
+                    globalTradeDepartment();
+                  }}
                 >
                   Global Trade
                 </span>

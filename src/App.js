@@ -544,8 +544,8 @@ const App = () => {
 
                       {columns.due_in_to_warehouse.visible &&
                         (department === "all" ||
-                          department === "warehouse" ||
-                          department === "inbound" ||
+                          department === "warehouse_all" ||
+                          department === "warehouse_inbound" ||
                           department === "warehouse_problem_resolution") && (
                           <Column
                             category="Due in to Warehouse"
@@ -908,32 +908,33 @@ const App = () => {
                         </Column>
                       )}
 
-                      {columns.non_trackable_courier.visible && (
-                        <Column
-                          category="Non Trackable Courier"
-                          borderTopColor="#77C135"
-                          amount_in_category={inboundArray.length}
-                        >
-                          <>
-                            {inboundArray.map((job, index) => (
-                              <JobCard
-                                job_number={job.jobNumber}
-                                time={job.time}
-                                backgroundColor={job.late && "#D64045"}
-                                displayLateIcon={job.late && "block"}
-                                layout={layout}
-                                cardHeight={
-                                  layout === "extended" ? "150px" : "50px"
-                                }
-                                ceta="12 August 2022"
-                                statusColor={job.late ? "white" : "#83E884"}
-                                fraction="3/6"
-                                suffix="ARRIVED"
-                              />
-                            ))}
-                          </>
-                        </Column>
-                      )}
+                      {columns.non_trackable_courier.visible &&
+                        department === "all" && (
+                          <Column
+                            category="Non Trackable Courier"
+                            borderTopColor="#77C135"
+                            amount_in_category={inboundArray.length}
+                          >
+                            <>
+                              {inboundArray.map((job, index) => (
+                                <JobCard
+                                  job_number={job.jobNumber}
+                                  time={job.time}
+                                  backgroundColor={job.late && "#D64045"}
+                                  displayLateIcon={job.late && "block"}
+                                  layout={layout}
+                                  cardHeight={
+                                    layout === "extended" ? "150px" : "50px"
+                                  }
+                                  ceta="12 August 2022"
+                                  statusColor={job.late ? "white" : "#83E884"}
+                                  fraction="3/6"
+                                  suffix="ARRIVED"
+                                />
+                              ))}
+                            </>
+                          </Column>
+                        )}
 
                       {columns.exception.visible &&
                         (department === "all" ||
