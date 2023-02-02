@@ -26,10 +26,9 @@ const App = () => {
   const [user, setUser] = useState(DEFAULT_USER);
   const [carouselView, setCarouselView] = useState(0);
 
-  const toOrderFilter =
-    (includeLate) =>
-    ({ category, late }) =>
-      category === "to_order" && (includeLate || !late);
+  const toOrderFilter = (includeLate) =>
+({ category, late }) =>
+        category === "to_order" && (includeLate || !late);
 
   const toOrderState = useMemo(
     () =>
@@ -41,8 +40,8 @@ const App = () => {
 
   const orderedFilter =
     (includeLate) =>
-    ({ category, late }) =>
-      category === "ordered" && (includeLate || !late);
+      ({ category, late }) =>
+        category === "ordered" && (includeLate || !late);
 
   const orderedState = useMemo(
     () =>
@@ -54,8 +53,8 @@ const App = () => {
 
   const awaitingTrackingFilter =
     (includeLate) =>
-    ({ category, late }) =>
-      category === "awaiting_tracking" && (includeLate || !late);
+      ({ category, late }) =>
+        category === "awaiting_tracking" && (includeLate || !late);
 
   const awaitingTrackingState = useMemo(
     () =>
@@ -74,8 +73,8 @@ const App = () => {
     user === "default"
       ? AllJobs.filter((job) => job.category === "awaiting_tracking")
       : multipleUsersArray.filter(
-          (job) => job.category === "awaiting_tracking"
-        );
+        (job) => job.category === "awaiting_tracking"
+      );
 
   const inboundArray =
     user === "default"
@@ -299,7 +298,7 @@ const App = () => {
       <main>
         <>
           <div className="overflow-wrap page-width">
-            <div className="column-carousel">
+            <div className="carousel-container">
               {carouselView < 0 && visibleColumns && (
                 <div
                   className="left-button"

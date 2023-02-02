@@ -1,11 +1,10 @@
-.column-carousel {
+.carousel-container {
   padding-top: 25px;
-  max-width: 1300px;
+  max-width: fit-content;
   margin: 0 auto;
-  overflow-x: scroll;
   display: flex;
-  overflow: hidden;
   min-height: 100%;
+  overflow: hidden;
 
   @media only screen and (max-width: 600px) {
     flex-direction: column;

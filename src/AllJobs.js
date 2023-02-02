@@ -5,6 +5,7 @@ export const AllJobs = [
     late: true,
     category: "to_order",
     country_flag: "🇬🇧",
+    pinned: true
   },
 
   {
@@ -13,6 +14,7 @@ export const AllJobs = [
     late: false,
     category: "to_order",
     country_flag: "🇸🇪",
+    pinned: false
   },
 
   {
