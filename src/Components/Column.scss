@@ -64,12 +64,18 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   grid-column-gap: 15px;
+  flex-wrap: wrap;
+}
+
+.title-container{
+  display: flex;
 }
 
 .category-title {
   font-weight: bold;
   margin-bottom: 30px;
   display: block;
+  margin-right: 10px;
 }
 
 .left-button {
@@ -106,4 +112,12 @@
 
 .job-card-container {
   overflow-y: scroll;
+}
+
+.pinned-container{
+  margin-bottom: 15px;
+
+  &:empty{
+    display: none;
+  }
 }

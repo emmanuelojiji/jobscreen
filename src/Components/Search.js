@@ -1,20 +1,14 @@
 import { useState, useRef } from "react";
 
-const Search = ({ user, DEFAULT_USER, AllJobs, multipleUsersArray }) => {
+const Search = ({ user, DEFAULT_USER, AllJobs, jobs }) => {
   const [search, setSearch] = useState("");
 
-  const searchQuery =
-    user === DEFAULT_USER
-      ? AllJobs.filter((query) =>
-          query.jobNumber
-            .toLowerCase()
-            .includes(search.toString().toLowerCase())
-        )
-      : multipleUsersArray.filter((query) =>
-          query.jobNumber
-            .toLowerCase()
-            .includes(search.toString().toLowerCase())
-        );
+  const searchResults =
+    jobs.filter((query) =>
+      query.jobNumber
+        .toLowerCase()
+        .includes(search.toString().toLowerCase())
+    )
 
   const searchRef = useRef(null);
 
@@ -44,9 +38,9 @@ const Search = ({ user, DEFAULT_USER, AllJobs, multipleUsersArray }) => {
           }}
           ref={searchRef}
         >
-          {searchQuery.map((query) => (
+          {searchResults.map((query) => (
             <div className="search-result">
-              {searchQuery.length >= 1 && (
+              {searchResults.length >= 1 && (
                 <>
                   <div>
                     <h4 className="job_number bold">{query.jobNumber}</h4>
@@ -58,7 +52,7 @@ const Search = ({ user, DEFAULT_USER, AllJobs, multipleUsersArray }) => {
             </div>
           ))}
 
-          {search.length > 0 && searchQuery.length === 0 && (
+          {search.length > 0 && searchResults.length === 0 && (
             <div className="search-result light">No results found</div>
           )}
         </div>

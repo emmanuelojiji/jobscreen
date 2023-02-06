@@ -285,7 +285,7 @@ const Sidebar = ({
             <Toggle defaultChecked={true} onChange={toSendTrackingToggle} />
             <span className="toggle-text medium">To Send Tracking</span>
           </div>
-        </div>
+       
 
         <div className="toggle-wrap">
           <Toggle defaultChecked={true} onChange={inTransitToggle} />
@@ -315,6 +315,7 @@ const Sidebar = ({
         <div className="toggle-wrap">
           <Toggle defaultChecked={true} onChange={lastColumnToggle} />
           <span className="toggle-text medium">Last Column</span>
+        </div>
         </div>
 
         <div className="layout-container" onClick={setExtended}>

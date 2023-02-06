@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronRight,
   faChevronLeft,
+  faThumbTack
 } from "@fortawesome/free-solid-svg-icons";
 import Column from "./Components/Column";
 import JobCard from "./Components/JobCard";
@@ -19,67 +20,11 @@ import SwitchModal from "./Components/SwitchModal";
 
 const DEFAULT_USER = "default";
 const CATEGORY_FILTER = "to_order";
-const multipleUsersArray = [...otherUser, ...AllJobs];
 
 const App = () => {
   const [showLateJobs, setShowLateJobs] = useState(true);
   const [user, setUser] = useState(DEFAULT_USER);
   const [carouselView, setCarouselView] = useState(0);
-
-  const toOrderFilter = (includeLate) =>
-({ category, late }) =>
-        category === "to_order" && (includeLate || !late);
-
-  const toOrderState = useMemo(
-    () =>
-      (user === DEFAULT_USER ? AllJobs : multipleUsersArray).filter(
-        toOrderFilter(showLateJobs)
-      ),
-    [user, showLateJobs]
-  );
-
-  const orderedFilter =
-    (includeLate) =>
-      ({ category, late }) =>
-        category === "ordered" && (includeLate || !late);
-
-  const orderedState = useMemo(
-    () =>
-      (user === DEFAULT_USER ? AllJobs : multipleUsersArray).filter(
-        orderedFilter(showLateJobs)
-      ),
-    [user, showLateJobs] // hook dependencies
-  );
-
-  const awaitingTrackingFilter =
-    (includeLate) =>
-      ({ category, late }) =>
-        category === "awaiting_tracking" && (includeLate || !late);
-
-  const awaitingTrackingState = useMemo(
-    () =>
-      (user === DEFAULT_USER ? AllJobs : multipleUsersArray).filter(
-        awaitingTrackingFilter(showLateJobs)
-      ),
-    [user, showLateJobs] // hook dependencies
-  );
-
-  const orderedArray =
-    user === "default"
-      ? AllJobs.filter((job) => job.category === "ordered")
-      : multipleUsersArray.filter((job) => job.category === "ordered");
-
-  const AwaitingTrackingArray =
-    user === "default"
-      ? AllJobs.filter((job) => job.category === "awaiting_tracking")
-      : multipleUsersArray.filter(
-        (job) => job.category === "awaiting_tracking"
-      );
-
-  const inboundArray =
-    user === "default"
-      ? AllJobs.filter((job) => job.category === "inbound")
-      : multipleUsersArray.filter((job) => job.category === "inbound");
 
   const [layout, setLayout] = useState("extended");
   const [sidebarVisible, setSidebarVisible] = useState(false);
@@ -88,13 +33,14 @@ const App = () => {
   const [orderedExtended, setOrderedExtended] = useState(false);
 
   const [columns, setColumns] = useState({
+    pinned: { visible: true, extended: true },
     to_order: { visible: true, extended: true },
     commercial_invoice_req: { visible: true, extended: true },
     export_docs_req: { visible: true, extended: true },
     ior_required: { visible: true, extended: true },
     awaiting_confirmation: { visible: true, extended: true },
     awaiting_tracking_number: { visible: true, extended: true },
-    due_in_to_warehouse: { visible: true, extended: true },
+    due_into_warehouse: { visible: true, extended: true },
     arrived: { visible: true, extended: true },
     inbounding: { visible: true, extended: true },
     awaiting_parts: { visible: true, extended: true },
@@ -112,6 +58,45 @@ const App = () => {
     still_to_action: { visible: true, extended: true },
     last_column: { visible: true, extended: true },
   });
+
+  const jobs = user === "default" ? [...AllJobs] : [...AllJobs, ...otherUser];
+
+  const getJobsByCategory = (jobs, category) => {
+    return jobs.filter((job) => job.category.includes(category))
+  }
+
+  /*const toOrderArray = getJobsByCategory(jobs, "to_order")
+  const orderedArray = getJobsByCategory(jobs, "ordered")
+  const awaitingTrackingArray = getJobsByCategory(jobs, "awaiting_tracking")
+  const inboundArray = getJobsByCategory(jobs, "inbound")*/
+
+  const [pinnedArray, setPinnedArray] = useState(jobs.filter(job => job.pinned))
+
+  const [toOrderArray, setToOrderArray] = useState(getJobsByCategory(jobs, "to_order"))
+  const [commercialInvoiceReqArray, setCommercialInvoiceReqArray] = useState(getJobsByCategory(jobs, "commercial_invoice"))
+  const [exportDocsReqArray, setExportDocsReqArray] = useState(getJobsByCategory(jobs, "export_docs_req"))
+  const [IORRequiredArray, setIORRequiredArray] = useState(getJobsByCategory(jobs, "ior_required_array"))
+  const [awaitingConfirmationArray, setAwaitingConfirmationArray] = useState(getJobsByCategory(jobs, "awaiting_confirmation"))
+  const [awaitingTrackingNumberArray, setAwaitingTrackingNumberArray] = useState(getJobsByCategory(jobs, "awaiting_tracking_number"))
+  const [dueIntoWarehouseArray, setDueIntoWarehouseaRRAY] = useState(getJobsByCategory(jobs, "due_into_warehouse"))
+  const [arrivedArray, setArrivedArray] = useState(getJobsByCategory(jobs, "arrived"))
+  const [inboundArray, setInboundArray] = useState(getJobsByCategory(jobs, "inbound"))
+  const [awaitingPartsArray, setAwaitingPartsArray] = useState(getJobsByCategory(jobs, "awaiting_parts"))
+  const [transitPalletArray, setTransitPalletArray] = useState(getJobsByCategory(jobs, "transit_pallet"))
+  const [problemShelfArray, setProblemShelfArray] = useState(getJobsByCategory(jobs, "problem_shelf"))
+  const [preparingToShipArray, setPreparingToShipArray] = useState(getJobsByCategory(jobs, "preparing_to_ship"))
+  const [buyShippingLabelArray, setBuyShippingLabelArray] = useState(getJobsByCategory(jobs, "buy_shipping_label"))
+  const [customerCollectionArray, setCustomerCollectionArray] = useState(getJobsByCategory(jobs, "customer_collection"))
+  const [packAndHoldArray, setPackAndHoldArray] = useState(getJobsByCategory(jobs, "pack_and_hold"))
+  const [toSendTrackingArray, setToSendTrackingArray] = useState(getJobsByCategory(jobs, "to_send_tracking"))
+  const [inTransitArray, setInTransitArray] = useState(getJobsByCategory(jobs, "in_transit"))
+  const [nonTrackableCourierArray, setNonTrackableCourierArray] = useState(getJobsByCategory(jobs, "non_trackable_courier"))
+  const [exceptionArray, setExceptionArray] = useState(getJobsByCategory(jobs, "exception"))
+  const [toSendPODArray, setToSendPODArray] = useState(getJobsByCategory(jobs, "to_send_pod"))
+  const [stillToActionArray, setStillToActionArray] = useState(getJobsByCategory(jobs, "still_to_action"))
+  const [lastColumnArray, setLastColumnArray] = useState(getJobsByCategory(jobs, "last_column"))
+
+
 
   const changeColumnVisibility = (column) => {
     setColumns((prevState) => {
@@ -140,6 +125,22 @@ const App = () => {
       };
     });
   };
+
+
+
+
+
+  const togglePin = (jobNumber, setArray) => {
+    setArray((prevArray) => {
+      return prevArray.map((job) => {
+        if (job.jobNumber === jobNumber) {
+          return { ...job, pinned: !job.pinned };
+        }
+        return job;
+      });
+    });
+  };
+
 
   const [noJobs, setNoJobs] = useState(false);
 
@@ -272,7 +273,7 @@ const App = () => {
             user={user}
             DEFAULT_USER={DEFAULT_USER}
             AllJobs={AllJobs}
-            multipleUsersArray={multipleUsersArray}
+            jobs={jobs}
           />
 
           <div className="controls-option-wrap">
@@ -324,13 +325,61 @@ const App = () => {
                     style={{ transform: `translateX(${carouselView}%)` }}
                   >
                     <div className="column-container">
+
+                      {columns.pinned.visible && (
+                        <Column
+                          category="Pinned"
+                          borderTopColor="#DC6942"
+                          amount_in_category={pinnedArray.length}
+                          width={!columns.to_order.extended && "79px"}
+                          extendedContent={columns.to_order.extended ? "flex" : "none"}
+                          changeSize={() => toggleColumnSize("to_order")}
+                          writingMode={
+                            !columns.to_order.extended && "vertical-rl"
+                          }
+                          pinDisplay={true}
+                    
+                        >
+                          <>
+                            {pinnedArray.map((job, index) => (
+                              <JobCard
+                                job_number={job.jobNumber}
+                                time={job.time}
+                                cardHeight="70px"
+                                width="70px"
+                                layout={layout}
+                                backgroundColor={job.late && "#D64045"}
+                                displayLateIcon={job.late && "block"}
+                                statusColor={job.late ? "white" : "#83E884"}
+                                cetaDisplay="none"
+                                circleBackground={job.pinned ? "gold" : "transparent"}
+                                circleOnClick={() => togglePin(job.jobNumber, setToOrderArray)}
+                                displayCircle="none"
+                                titleFontSize="12px"
+                                displayContent="none"
+                              />
+                            ))}
+                          </>
+                        </Column>
+                      )}
+
+
+
+
+
+
+
+
+
+
+
                       {columns.to_order.visible &&
                         (department == "all" ||
                           department == "order_fulfilment") && (
                           <Column
                             category="To Order"
                             borderTopColor="#DC6942"
-                            amount_in_category={toOrderState.length}
+                            amount_in_category={toOrderArray.length}
                             width={!columns.to_order.extended && "79px"}
                             extendedContent={
                               !columns.to_order.extended && "none"
@@ -341,7 +390,8 @@ const App = () => {
                             }
                           >
                             <>
-                              {toOrderState.map((job, index) => (
+
+                              {toOrderArray.map((job, index) => (
                                 <JobCard
                                   job_number={job.jobNumber}
                                   time={job.time}
@@ -353,6 +403,8 @@ const App = () => {
                                   displayLateIcon={job.late && "block"}
                                   statusColor={job.late ? "white" : "#83E884"}
                                   cetaDisplay="none"
+                                  circleBackground={job.pinned ? "gold" : "transparent"}
+                                  circleOnClick={() => togglePin(job.jobNumber, setToOrderArray)}
                                 />
                               ))}
                             </>
@@ -366,8 +418,8 @@ const App = () => {
                           <Column
                             category="Commercial Invoice Required"
                             borderTopColor="#1B90E6"
-                            opacity={orderedState.length === 0 && "0.5"}
-                            amount_in_category={orderedState.length}
+                            opacity={toOrderArray.length === 0 && "0.5"}
+                            amount_in_category={toOrderArray.length}
                             width={
                               !columns.commercial_invoice_req.extended && "79px"
                             }
@@ -383,11 +435,31 @@ const App = () => {
                             }
                           >
                             <>
-                              {orderedState.length == 0 && (
+                              {commercialInvoiceReqArray.length == 0 && (
                                 <p className="no-jobs light">No jobs to show</p>
                               )}
 
-                              {orderedState.map((job, index) => (
+                              <div className="pinned-container">
+                                {commercialInvoiceReqArray.filter(job => job.pinned).map((job, index) => (
+                                  <JobCard
+                                    job_number={job.jobNumber}
+                                    time={job.time}
+                                    backgroundColor={job.late && "#D64045"}
+                                    displayLateIcon={job.late && "block"}
+                                    layout={layout}
+                                    cardHeight={
+                                      layout === "extended" ? "150px" : "50px"
+                                    }
+                                    statusColor={job.late ? "white" : "#83E884"}
+                                    ceta="12 August 2022"
+                                    fraction="3/6"
+                                    suffix="Ordered"
+                                    circleBackground={job.pinned && "gold"}
+                                  />
+                                ))}
+                              </div>
+
+                              {commercialInvoiceReqArray.filter(job => job.pinned == false).map((job, index) => (
                                 <JobCard
                                   job_number={job.jobNumber}
                                   time={job.time}
@@ -401,6 +473,7 @@ const App = () => {
                                   ceta="12 August 2022"
                                   fraction="3/6"
                                   suffix="Ordered"
+
                                 />
                               ))}
                             </>
@@ -414,7 +487,7 @@ const App = () => {
                           <Column
                             category="Export Docs Required"
                             borderTopColor="#1B90E6"
-                            amount_in_category={awaitingTrackingState.length}
+                            amount_in_category={awaitingTrackingNumberArray.length}
                             width={!columns.export_docs_req.extended && "79px"}
                             extendedContent={
                               !columns.export_docs_req.extended && "none"
@@ -427,7 +500,29 @@ const App = () => {
                             }
                           >
                             <>
-                              {awaitingTrackingState.map((job, index) => (
+                              <div className="pinned-container">
+                                {awaitingTrackingNumberArray.filter(job => job.pinned).map((job, index) => (
+
+                                  <JobCard
+                                    job_number={job.jobNumber}
+                                    time={job.time}
+                                    backgroundColor={job.late && "#D64045"}
+                                    displayLateIcon={job.late && "block"}
+                                    layout={layout}
+                                    cardHeight={
+                                      layout === "extended" ? "150px" : "50px"
+                                    }
+                                    ceta="12 August 2022"
+                                    statusColor={job.late ? "white" : "#83E884"}
+                                    fraction="1/6"
+                                    suffix="TRACKING NOS. RECEIVED"
+                                    circleBackground={job.pinned && "gold"}
+                                  />
+
+                                ))}
+                              </div>
+
+                              {exportDocsReqArray.filter(job => !job.pinned).map((job, index) => (
                                 <JobCard
                                   job_number={job.jobNumber}
                                   time={job.time}
@@ -446,6 +541,10 @@ const App = () => {
                             </>
                           </Column>
                         )}
+                    </div>
+
+                    <div className="column-container">
+
                       {columns.ior_required.visible &&
                         (department === "all" ||
                           department === "global_trade") && (
@@ -463,7 +562,7 @@ const App = () => {
                             }
                           >
                             <>
-                              {inboundArray.map((job, index) => (
+                              {IORRequiredArray.map((job, index) => (
                                 <JobCard
                                   job_number={job.jobNumber}
                                   time={job.time}
@@ -482,9 +581,7 @@ const App = () => {
                             </>
                           </Column>
                         )}
-                    </div>
 
-                    <div className="column-container">
                       {columns.awaiting_confirmation.visible &&
                         department === "all" && (
                           <Column
@@ -493,7 +590,7 @@ const App = () => {
                             amount_in_category={inboundArray.length}
                           >
                             <>
-                              {inboundArray.map((job, index) => (
+                              {awaitingConfirmationArray.map((job, index) => (
                                 <JobCard
                                   job_number={job.jobNumber}
                                   time={job.time}
@@ -521,7 +618,7 @@ const App = () => {
                             amount_in_category={inboundArray.length}
                           >
                             <>
-                              {inboundArray.map((job, index) => (
+                              {awaitingTrackingNumberArray.map((job, index) => (
                                 <JobCard
                                   job_number={job.jobNumber}
                                   time={job.time}
@@ -541,7 +638,7 @@ const App = () => {
                           </Column>
                         )}
 
-                      {columns.due_in_to_warehouse.visible &&
+                      {columns.due_into_warehouse.visible &&
                         (department === "all" ||
                           department === "warehouse_all" ||
                           department === "warehouse_inbound" ||
@@ -552,38 +649,7 @@ const App = () => {
                             amount_in_category={inboundArray.length}
                           >
                             <>
-                              {inboundArray.map((job, index) => (
-                                <JobCard
-                                  job_number={job.jobNumber}
-                                  time={job.time}
-                                  backgroundColor={job.late && "#D64045"}
-                                  displayLateIcon={job.late && "block"}
-                                  layout={layout}
-                                  cardHeight={
-                                    layout === "extended" ? "150px" : "50px"
-                                  }
-                                  ceta="12 August 2022"
-                                  statusColor={job.late ? "white" : "#83E884"}
-                                  fraction="3/6"
-                                  suffix="ARRIVED"
-                                />
-                              ))}
-                            </>
-                          </Column>
-                        )}
-
-                      {columns.arrived.visible &&
-                        (department === "all" ||
-                          department === "warehouse_all" ||
-                          department === "warehouse_inbound" ||
-                          department === "warehouse_problem_resolution") && (
-                          <Column
-                            category="Arrived"
-                            borderTopColor="#77C135"
-                            amount_in_category={inboundArray.length}
-                          >
-                            <>
-                              {inboundArray.map((job, index) => (
+                              {dueIntoWarehouseArray.map((job, index) => (
                                 <JobCard
                                   job_number={job.jobNumber}
                                   time={job.time}
@@ -605,6 +671,40 @@ const App = () => {
                     </div>
 
                     <div className="column-container">
+
+                      {columns.arrived.visible &&
+                        (department === "all" ||
+                          department === "warehouse_all" ||
+                          department === "warehouse_inbound" ||
+                          department === "warehouse_problem_resolution") && (
+                          <Column
+                            category="Arrived"
+                            borderTopColor="#77C135"
+                            amount_in_category={inboundArray.length}
+                          >
+                            <>
+                              {arrivedArray.map((job, index) => (
+                                <JobCard
+                                  job_number={job.jobNumber}
+                                  time={job.time}
+                                  backgroundColor={job.late && "#D64045"}
+                                  displayLateIcon={job.late && "block"}
+                                  layout={layout}
+                                  cardHeight={
+                                    layout === "extended" ? "150px" : "50px"
+                                  }
+                                  ceta="12 August 2022"
+                                  statusColor={job.late ? "white" : "#83E884"}
+                                  fraction="3/6"
+                                  suffix="ARRIVED"
+                                />
+                              ))}
+                            </>
+                          </Column>
+                        )}
+
+
+
                       {columns.inbounding.visible &&
                         (department === "all" ||
                           department === "warehouse_all" ||
@@ -646,7 +746,7 @@ const App = () => {
                             amount_in_category={inboundArray.length}
                           >
                             <>
-                              {inboundArray.map((job, index) => (
+                              {awaitingPartsArray.map((job, index) => (
                                 <JobCard
                                   job_number={job.jobNumber}
                                   time={job.time}
@@ -677,37 +777,7 @@ const App = () => {
                             amount_in_category={inboundArray.length}
                           >
                             <>
-                              {inboundArray.map((job, index) => (
-                                <JobCard
-                                  job_number={job.jobNumber}
-                                  time={job.time}
-                                  backgroundColor={job.late && "#D64045"}
-                                  displayLateIcon={job.late && "block"}
-                                  layout={layout}
-                                  cardHeight={
-                                    layout === "extended" ? "150px" : "50px"
-                                  }
-                                  ceta="12 August 2022"
-                                  statusColor={job.late ? "white" : "#83E884"}
-                                  fraction="3/6"
-                                  suffix="ARRIVED"
-                                />
-                              ))}
-                            </>
-                          </Column>
-                        )}
-
-                      {columns.problem_shelf.visible &&
-                        (department === "all" ||
-                          department === "warehouse_all" ||
-                          department === "warehouse_outbound") && (
-                          <Column
-                            category="Problem Shelf"
-                            borderTopColor="#77C135"
-                            amount_in_category={inboundArray.length}
-                          >
-                            <>
-                              {inboundArray.map((job, index) => (
+                              {transitPalletArray.map((job, index) => (
                                 <JobCard
                                   job_number={job.jobNumber}
                                   time={job.time}
@@ -729,6 +799,39 @@ const App = () => {
                     </div>
 
                     <div className="column-container">
+
+                      {columns.problem_shelf.visible &&
+                        (department === "all" ||
+                          department === "warehouse_all" ||
+                          department === "warehouse_outbound") && (
+                          <Column
+                            category="Problem Shelf"
+                            borderTopColor="#77C135"
+                            amount_in_category={inboundArray.length}
+                          >
+                            <>
+                              {problemShelfArray.map((job, index) => (
+                                <JobCard
+                                  job_number={job.jobNumber}
+                                  time={job.time}
+                                  backgroundColor={job.late && "#D64045"}
+                                  displayLateIcon={job.late && "block"}
+                                  layout={layout}
+                                  cardHeight={
+                                    layout === "extended" ? "150px" : "50px"
+                                  }
+                                  ceta="12 August 2022"
+                                  statusColor={job.late ? "white" : "#83E884"}
+                                  fraction="3/6"
+                                  suffix="ARRIVED"
+                                />
+                              ))}
+                            </>
+                          </Column>
+                        )}
+
+
+
                       {columns.preparing_to_ship.visible &&
                         (department === "all" ||
                           department === "warehouse_all" ||
@@ -739,7 +842,7 @@ const App = () => {
                             amount_in_category={inboundArray.length}
                           >
                             <>
-                              {inboundArray.map((job, index) => (
+                              {preparingToShipArray.map((job, index) => (
                                 <JobCard
                                   job_number={job.jobNumber}
                                   time={job.time}
@@ -769,7 +872,7 @@ const App = () => {
                             amount_in_category={inboundArray.length}
                           >
                             <>
-                              {inboundArray.map((job, index) => (
+                              {buyShippingLabelArray.map((job, index) => (
                                 <JobCard
                                   job_number={job.jobNumber}
                                   time={job.time}
@@ -800,37 +903,7 @@ const App = () => {
                             amount_in_category={inboundArray.length}
                           >
                             <>
-                              {inboundArray.map((job, index) => (
-                                <JobCard
-                                  job_number={job.jobNumber}
-                                  time={job.time}
-                                  backgroundColor={job.late && "#D64045"}
-                                  displayLateIcon={job.late && "block"}
-                                  layout={layout}
-                                  cardHeight={
-                                    layout === "extended" ? "150px" : "50px"
-                                  }
-                                  ceta="12 August 2022"
-                                  statusColor={job.late ? "white" : "#83E884"}
-                                  fraction="3/6"
-                                  suffix="ARRIVED"
-                                />
-                              ))}
-                            </>
-                          </Column>
-                        )}
-
-                      {columns.pack_and_hold.visible &&
-                        (department === "all" ||
-                          department === "warehouse_all" ||
-                          department === "global_trade") && (
-                          <Column
-                            category="Pack and Hold"
-                            borderTopColor="#77C135"
-                            amount_in_category={inboundArray.length}
-                          >
-                            <>
-                              {inboundArray.map((job, index) => (
+                              {customerCollectionArray.map((job, index) => (
                                 <JobCard
                                   job_number={job.jobNumber}
                                   time={job.time}
@@ -852,6 +925,38 @@ const App = () => {
                     </div>
 
                     <div className="column-container">
+                      {columns.pack_and_hold.visible &&
+                        (department === "all" ||
+                          department === "warehouse_all" ||
+                          department === "global_trade") && (
+                          <Column
+                            category="Pack and Hold"
+                            borderTopColor="#77C135"
+                            amount_in_category={inboundArray.length}
+                          >
+                            <>
+                              {packAndHoldArray.map((job, index) => (
+                                <JobCard
+                                  job_number={job.jobNumber}
+                                  time={job.time}
+                                  backgroundColor={job.late && "#D64045"}
+                                  displayLateIcon={job.late && "block"}
+                                  layout={layout}
+                                  cardHeight={
+                                    layout === "extended" ? "150px" : "50px"
+                                  }
+                                  ceta="12 August 2022"
+                                  statusColor={job.late ? "white" : "#83E884"}
+                                  fraction="3/6"
+                                  suffix="ARRIVED"
+                                />
+                              ))}
+                            </>
+                          </Column>
+                        )}
+
+
+
                       {columns.to_send_tracking_label.visible &&
                         department === "all" && (
                           <Column
@@ -860,7 +965,7 @@ const App = () => {
                             amount_in_category={inboundArray.length}
                           >
                             <>
-                              {inboundArray.map((job, index) => (
+                              {toSendTrackingArray.map((job, index) => (
                                 <JobCard
                                   job_number={job.jobNumber}
                                   time={job.time}
@@ -887,7 +992,7 @@ const App = () => {
                           amount_in_category={inboundArray.length}
                         >
                           <>
-                            {inboundArray.map((job, index) => (
+                            {inTransitArray.map((job, index) => (
                               <JobCard
                                 job_number={job.jobNumber}
                                 time={job.time}
@@ -915,36 +1020,7 @@ const App = () => {
                             amount_in_category={inboundArray.length}
                           >
                             <>
-                              {inboundArray.map((job, index) => (
-                                <JobCard
-                                  job_number={job.jobNumber}
-                                  time={job.time}
-                                  backgroundColor={job.late && "#D64045"}
-                                  displayLateIcon={job.late && "block"}
-                                  layout={layout}
-                                  cardHeight={
-                                    layout === "extended" ? "150px" : "50px"
-                                  }
-                                  ceta="12 August 2022"
-                                  statusColor={job.late ? "white" : "#83E884"}
-                                  fraction="3/6"
-                                  suffix="ARRIVED"
-                                />
-                              ))}
-                            </>
-                          </Column>
-                        )}
-
-                      {columns.exception.visible &&
-                        (department === "all" ||
-                          department === "global_trade") && (
-                          <Column
-                            category="Exception"
-                            borderTopColor="#77C135"
-                            amount_in_category={inboundArray.length}
-                          >
-                            <>
-                              {inboundArray.map((job, index) => (
+                              {nonTrackableCourierArray.map((job, index) => (
                                 <JobCard
                                   job_number={job.jobNumber}
                                   time={job.time}
@@ -965,7 +1041,40 @@ const App = () => {
                         )}
                     </div>
 
+
                     <div className="column-container">
+
+                      {columns.exception.visible &&
+                        (department === "all" ||
+                          department === "global_trade") && (
+                          <Column
+                            category="Exception"
+                            borderTopColor="#77C135"
+                            amount_in_category={inboundArray.length}
+                          >
+                            <>
+                              {exceptionArray.map((job, index) => (
+                                <JobCard
+                                  job_number={job.jobNumber}
+                                  time={job.time}
+                                  backgroundColor={job.late && "#D64045"}
+                                  displayLateIcon={job.late && "block"}
+                                  layout={layout}
+                                  cardHeight={
+                                    layout === "extended" ? "150px" : "50px"
+                                  }
+                                  ceta="12 August 2022"
+                                  statusColor={job.late ? "white" : "#83E884"}
+                                  fraction="3/6"
+                                  suffix="ARRIVED"
+                                />
+                              ))}
+                            </>
+                          </Column>
+                        )}
+
+
+
                       {columns.to_send_pod.visible && department === "all" && (
                         <Column
                           category="To Send POD"
@@ -973,7 +1082,7 @@ const App = () => {
                           amount_in_category={inboundArray.length}
                         >
                           <>
-                            {inboundArray.map((job, index) => (
+                            {toSendPODArray.map((job, index) => (
                               <JobCard
                                 job_number={job.jobNumber}
                                 time={job.time}
@@ -1001,7 +1110,7 @@ const App = () => {
                             amount_in_category={inboundArray.length}
                           >
                             <>
-                              {inboundArray.map((job, index) => (
+                              {stillToActionArray.map((job, index) => (
                                 <JobCard
                                   job_number={job.jobNumber}
                                   time={job.time}
@@ -1030,7 +1139,7 @@ const App = () => {
                             amount_in_category={inboundArray.length}
                           >
                             <>
-                              {inboundArray.map((job, index) => (
+                              {lastColumnArray.map((job, index) => (
                                 <JobCard
                                   job_number={job.jobNumber}
                                   time={job.time}

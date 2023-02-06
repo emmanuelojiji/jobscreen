@@ -5,6 +5,7 @@ import clock from "../snoozed.svg";
 const JobCard = ({
   layout,
   cardHeight,
+  width,
   backgroundColor,
   displayLateIcon,
   tooltipDisplay,
@@ -15,10 +16,17 @@ const JobCard = ({
   statusColor,
   fraction,
   suffix,
+  circleBackground,
+  circleOnClick,
+  displayCircle,
+  titleFontSize,
+  displayContent
 }) => {
   const [showTooltip, setShowTooltip] = useState(false);
 
   const [cardOpen, setCardOpen] = useState(false);
+
+  const [pinned, setPinned] = useState(false)
 
   return (
     <div
@@ -26,6 +34,7 @@ const JobCard = ({
       style={{
         backgroundColor: backgroundColor,
         height: cardOpen ? "150px" : cardHeight,
+        width: width
       }}
       onClick={(e) => {
         if (!cardOpen && layout === "condensed") {
@@ -45,9 +54,12 @@ const JobCard = ({
       >
         <img src={clock} />
       </div>
-      <span className="job-number medium">{job_number}</span>
+      <div className="number-circle-container">
+        <span className="job-number medium" style={{fontSize: titleFontSize}}>{job_number}</span>
+        <div className="circle" style={{ background: circleBackground, display: displayCircle }} onClick={circleOnClick}></div>
+      </div>
       {(layout === "extended" || cardOpen) && (
-        <>
+        <div className="job-card-content" style={{display: displayContent}}>
           <span className="time light">{time}</span>
 
           <span className="ceta" style={{ display: cetaDisplay }}>
@@ -60,7 +72,7 @@ const JobCard = ({
               {suffix}
             </span>
           </span>
-        </>
+        </div>
       )}
 
       <div

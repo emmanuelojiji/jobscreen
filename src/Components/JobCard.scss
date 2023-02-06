@@ -23,6 +23,19 @@
 .job-number {
   color: white;
   font-weight: bold;
+  text-align: center;
+}
+
+.circle {
+  width: 20px;
+  height: 20px;
+  border: solid 1px grey;
+  border-radius: 100%;
+}
+
+.number-circle-container {
+  display: flex;
+  justify-content: space-between;
 }
 
 .time {
@@ -80,4 +93,10 @@
   .tooltip-bold {
     font-weight: bold;
   }
+}
+
+.job-card-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
