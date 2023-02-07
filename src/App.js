@@ -59,8 +59,7 @@ const App = () => {
     last_column: { visible: true, extended: true },
   });
 
-  const jobs = user === "default" ? [...AllJobs] : [...AllJobs, ...otherUser];
-
+  const [jobs, setJobs] = useState(user === "default" ? [...AllJobs] : [...AllJobs, ...otherUser]);
 
   const getJobsByCategory = (jobs, category) => {
     return jobs.filter((job) => job.category.includes(category))
@@ -71,7 +70,9 @@ const App = () => {
   const awaitingTrackingArray = getJobsByCategory(jobs, "awaiting_tracking")
   const inboundArray = getJobsByCategory(jobs, "inbound")*/
 
-  const [pinnedArray, setPinnedArray] = useState(jobs.filter(job => job.pinned))
+
+
+  const pinnedArray = jobs.filter(job => job.pinned && (showLateJobs || !job.late));
 
   const [toOrderArray, setToOrderArray] = useState(getJobsByCategory(jobs, "to_order"))
   const [commercialInvoiceReqArray, setCommercialInvoiceReqArray] = useState(getJobsByCategory(jobs, "commerc"))
@@ -131,7 +132,7 @@ const App = () => {
 
 
 
-  const togglePin = (jobNumber, setArray) => {
+  /*const togglePin = (jobNumber, setArray) => {
     setArray((prevArray) => {
       return prevArray.map((job) => {
         if (job.jobNumber === jobNumber) {
@@ -140,8 +141,19 @@ const App = () => {
         return job;
       });
     });
-  };
+  };*/
 
+ 
+const togglePin = (jobNumber) => {
+  setJobs(prevArray => {
+    return prevArray.map(job => {
+      if (job.jobNumber === jobNumber) {
+        return { ...job, pinned: !job.pinned };
+      }
+      return job;
+    });
+  });
+};
 
   const [noJobs, setNoJobs] = useState(false);
 
@@ -342,7 +354,7 @@ const App = () => {
 
                         >
                           <>
-                            {pinnedArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
+                            {pinnedArray.map((job, index) => (
                               <JobCard
                                 job_number={job.jobNumber}
                                 time={job.time}
@@ -353,8 +365,8 @@ const App = () => {
                                 displayLateIcon={job.late && "block"}
                                 statusColor={job.late ? "white" : "#83E884"}
                                 cetaDisplay="none"
-                                circleBackground={job.pinned ? "gold" : "transparent"}
-                                circleOnClick={() => togglePin(job.jobNumber, setToOrderArray)}
+                                circleBackground={ job.pinned && "red"}
+                                circleOnClick={() => togglePin(job.jobNumber)}
                                 displayCircle="none"
                                 titleFontSize="12px"
                                 displayContent="none"
@@ -404,8 +416,8 @@ const App = () => {
                                   displayLateIcon={job.late && "block"}
                                   statusColor={job.late ? "white" : "#83E884"}
                                   cetaDisplay="none"
-                                  circleBackground={job.pinned ? "gold" : "transparent"}
-                                  circleOnClick={() => togglePin(job.jobNumber, setToOrderArray)}
+                                  circleBackground={ job.pinned && "red"}
+                                  circleOnClick={() => togglePin(job.jobNumber)}
                                 />
                               ))}
                             </>
@@ -454,6 +466,7 @@ const App = () => {
                                   ceta="12 August 2022"
                                   fraction="3/6"
                                   suffix="Ordered"
+                                  circleOnClick={() => togglePin(job.jobNumber)}
 
                                 />
                               ))}
@@ -481,28 +494,7 @@ const App = () => {
                             }
                           >
                             <>
-                              <div className="pinned-container">
-                                {awaitingTrackingNumberArray.filter(job => (showLateJobs || !job.late)).filter(job => job.pinned).map((job, index) => (
-
-                                  <JobCard
-                                    job_number={job.jobNumber}
-                                    time={job.time}
-                                    backgroundColor={job.late && "#D64045"}
-                                    displayLateIcon={job.late && "block"}
-                                    layout={layout}
-                                    cardHeight={
-                                      layout === "extended" ? "150px" : "50px"
-                                    }
-                                    ceta="12 August 2022"
-                                    statusColor={job.late ? "white" : "#83E884"}
-                                    fraction="1/6"
-                                    suffix="TRACKING NOS. RECEIVED"
-                                    circleBackground={job.pinned && "gold"}
-                                  />
-
-                                ))}
-                              </div>
-
+                              
                               {exportDocsReqArray.filter(job => !job.pinned).map((job, index) => (
                                 <JobCard
                                   job_number={job.jobNumber}
@@ -517,6 +509,7 @@ const App = () => {
                                   statusColor={job.late ? "white" : "#83E884"}
                                   fraction="1/6"
                                   suffix="TRACKING NOS. RECEIVED"
+                                  circleOnClick={() => togglePin(job.jobNumber)}
                                 />
                               ))}
                             </>
@@ -557,6 +550,7 @@ const App = () => {
                                   statusColor={job.late ? "white" : "#83E884"}
                                   fraction="3/6"
                                   suffix="ARRIVED"
+                                  circleOnClick={() => togglePin(job.jobNumber)}
                                 />
                               ))}
                             </>
@@ -585,6 +579,7 @@ const App = () => {
                                   statusColor={job.late ? "white" : "#83E884"}
                                   fraction="3/6"
                                   suffix="ARRIVED"
+                                  circleOnClick={() => togglePin(job.jobNumber)}
                                 />
                               ))}
                             </>
@@ -613,6 +608,7 @@ const App = () => {
                                   statusColor={job.late ? "white" : "#83E884"}
                                   fraction="3/6"
                                   suffix="ARRIVED"
+                                  circleOnClick={() => togglePin(job.jobNumber)}
                                 />
                               ))}
                             </>
@@ -644,6 +640,7 @@ const App = () => {
                                   statusColor={job.late ? "white" : "#83E884"}
                                   fraction="3/6"
                                   suffix="ARRIVED"
+                                  circleOnClick={() => togglePin(job.jobNumber)}
                                 />
                               ))}
                             </>
@@ -678,6 +675,7 @@ const App = () => {
                                   statusColor={job.late ? "white" : "#83E884"}
                                   fraction="3/6"
                                   suffix="ARRIVED"
+                                  circleOnClick={() => togglePin(job.jobNumber)}
                                 />
                               ))}
                             </>
@@ -711,6 +709,7 @@ const App = () => {
                                   statusColor={job.late ? "white" : "#83E884"}
                                   fraction="3/6"
                                   suffix="ARRIVED"
+                                  circleOnClick={() => togglePin(job.jobNumber)}
                                 />
                               ))}
                             </>
@@ -741,6 +740,7 @@ const App = () => {
                                   statusColor={job.late ? "white" : "#83E884"}
                                   fraction="3/6"
                                   suffix="ARRIVED"
+                                  circleOnClick={() => togglePin(job.jobNumber)}
                                 />
                               ))}
                             </>
@@ -772,6 +772,7 @@ const App = () => {
                                   statusColor={job.late ? "white" : "#83E884"}
                                   fraction="3/6"
                                   suffix="ARRIVED"
+                                  circleOnClick={() => togglePin(job.jobNumber)}
                                 />
                               ))}
                             </>
@@ -805,6 +806,7 @@ const App = () => {
                                   statusColor={job.late ? "white" : "#83E884"}
                                   fraction="3/6"
                                   suffix="ARRIVED"
+                                  circleOnClick={() => togglePin(job.jobNumber)}
                                 />
                               ))}
                             </>
@@ -837,6 +839,7 @@ const App = () => {
                                   statusColor={job.late ? "white" : "#83E884"}
                                   fraction="3/6"
                                   suffix="ARRIVED"
+                                  circleOnClick={() => togglePin(job.jobNumber)}
                                 />
                               ))}
                             </>
@@ -867,6 +870,7 @@ const App = () => {
                                   statusColor={job.late ? "white" : "#83E884"}
                                   fraction="3/6"
                                   suffix="ARRIVED"
+                                  circleOnClick={() => togglePin(job.jobNumber)}
                                 />
                               ))}
                             </>
@@ -898,6 +902,7 @@ const App = () => {
                                   statusColor={job.late ? "white" : "#83E884"}
                                   fraction="3/6"
                                   suffix="ARRIVED"
+                                  circleOnClick={() => togglePin(job.jobNumber)}
                                 />
                               ))}
                             </>
@@ -930,6 +935,7 @@ const App = () => {
                                   statusColor={job.late ? "white" : "#83E884"}
                                   fraction="3/6"
                                   suffix="ARRIVED"
+                                  circleOnClick={() => togglePin(job.jobNumber)}
                                 />
                               ))}
                             </>
@@ -960,6 +966,7 @@ const App = () => {
                                   statusColor={job.late ? "white" : "#83E884"}
                                   fraction="3/6"
                                   suffix="ARRIVED"
+                                  circleOnClick={() => togglePin(job.jobNumber)}
                                 />
                               ))}
                             </>
@@ -987,6 +994,7 @@ const App = () => {
                                 statusColor={job.late ? "white" : "#83E884"}
                                 fraction="3/6"
                                 suffix="ARRIVED"
+                                circleOnClick={() => togglePin(job.jobNumber)}
                               />
                             ))}
                           </>
@@ -1015,6 +1023,7 @@ const App = () => {
                                   statusColor={job.late ? "white" : "#83E884"}
                                   fraction="3/6"
                                   suffix="ARRIVED"
+                                  circleOnClick={() => togglePin(job.jobNumber)}
                                 />
                               ))}
                             </>
@@ -1048,6 +1057,7 @@ const App = () => {
                                   statusColor={job.late ? "white" : "#83E884"}
                                   fraction="3/6"
                                   suffix="ARRIVED"
+                                  circleOnClick={() => togglePin(job.jobNumber)}
                                 />
                               ))}
                             </>
@@ -1077,6 +1087,7 @@ const App = () => {
                                 statusColor={job.late ? "white" : "#83E884"}
                                 fraction="3/6"
                                 suffix="ARRIVED"
+                                circleOnClick={() => togglePin(job.jobNumber)}
                               />
                             ))}
                           </>
@@ -1105,6 +1116,7 @@ const App = () => {
                                   statusColor={job.late ? "white" : "#83E884"}
                                   fraction="3/6"
                                   suffix="ARRIVED"
+                                  circleOnClick={() => togglePin(job.jobNumber)}
                                 />
                               ))}
                             </>
@@ -1134,6 +1146,7 @@ const App = () => {
                                   statusColor={job.late ? "white" : "#83E884"}
                                   fraction="3/6"
                                   suffix="ARRIVED"
+                                  circleOnClick={() => togglePin(job.jobNumber)}
                                 />
                               ))}
                             </>
