@@ -74,29 +74,29 @@ const App = () => {
 
   const pinnedArray = jobs.filter(job => job.pinned && (showLateJobs || !job.late));
 
-  const [toOrderArray, setToOrderArray] = useState(getJobsByCategory(jobs, "to_order"))
-  const [commercialInvoiceReqArray, setCommercialInvoiceReqArray] = useState(getJobsByCategory(jobs, "commerc"))
-  const [exportDocsReqArray, setExportDocsReqArray] = useState(getJobsByCategory(jobs, "export_docs_req"))
-  const [IORRequiredArray, setIORRequiredArray] = useState(getJobsByCategory(jobs, "ior_required_array"))
-  const [awaitingConfirmationArray, setAwaitingConfirmationArray] = useState(getJobsByCategory(jobs, "awaiting_confirmation"))
-  const [awaitingTrackingNumberArray, setAwaitingTrackingNumberArray] = useState(getJobsByCategory(jobs, "awaiting_tracking_number"))
-  const [dueIntoWarehouseArray, setDueIntoWarehouseaRRAY] = useState(getJobsByCategory(jobs, "due_into_warehouse"))
-  const [arrivedArray, setArrivedArray] = useState(getJobsByCategory(jobs, "arrived"))
-  const [inboundArray, setInboundArray] = useState(getJobsByCategory(jobs, "inbound"))
-  const [awaitingPartsArray, setAwaitingPartsArray] = useState(getJobsByCategory(jobs, "awaiting_parts"))
-  const [transitPalletArray, setTransitPalletArray] = useState(getJobsByCategory(jobs, "transit_pallet"))
-  const [problemShelfArray, setProblemShelfArray] = useState(getJobsByCategory(jobs, "problem_shelf"))
-  const [preparingToShipArray, setPreparingToShipArray] = useState(getJobsByCategory(jobs, "preparing_to_ship"))
-  const [buyShippingLabelArray, setBuyShippingLabelArray] = useState(getJobsByCategory(jobs, "buy_shipping_label"))
-  const [customerCollectionArray, setCustomerCollectionArray] = useState(getJobsByCategory(jobs, "customer_collection"))
-  const [packAndHoldArray, setPackAndHoldArray] = useState(getJobsByCategory(jobs, "pack_and_hold"))
-  const [toSendTrackingArray, setToSendTrackingArray] = useState(getJobsByCategory(jobs, "to_send_tracking"))
-  const [inTransitArray, setInTransitArray] = useState(getJobsByCategory(jobs, "in_transit"))
-  const [nonTrackableCourierArray, setNonTrackableCourierArray] = useState(getJobsByCategory(jobs, "non_trackable_courier"))
-  const [exceptionArray, setExceptionArray] = useState(getJobsByCategory(jobs, "exception"))
-  const [toSendPODArray, setToSendPODArray] = useState(getJobsByCategory(jobs, "to_send_pod"))
-  const [stillToActionArray, setStillToActionArray] = useState(getJobsByCategory(jobs, "still_to_action"))
-  const [lastColumnArray, setLastColumnArray] = useState(getJobsByCategory(jobs, "last_column"))
+  const toOrderArray = getJobsByCategory(jobs, "to_order")
+  const commercialInvoiceReqArray = getJobsByCategory(jobs, "commercial_invoice_req")
+  const exportDocsReqArray = getJobsByCategory(jobs, "export_docs_req")
+  const IORRequiredArray = getJobsByCategory(jobs, "ior_required_array")
+  const awaitingConfirmationArray = getJobsByCategory(jobs, "awaiting_confirmation")
+  const awaitingTrackingNumberArray = getJobsByCategory(jobs, "awaiting_tracking_number")
+  const dueIntoWarehouseArray = getJobsByCategory(jobs, "due_into_warehouse")
+  const arrivedArray = getJobsByCategory(jobs, "arrived")
+  const inboundArray = getJobsByCategory(jobs, "inbound")
+  const awaitingPartsArray = getJobsByCategory(jobs, "awaiting_parts")
+  const transitPalletArray = getJobsByCategory(jobs, "transit_pallet")
+  const problemShelfArray = getJobsByCategory(jobs, "problem_shelf")
+  const preparingToShipArray = getJobsByCategory(jobs, "preparing_to_ship")
+  const buyShippingLabelArray = getJobsByCategory(jobs, "buy_shipping_label")
+  const customerCollectionArray = getJobsByCategory(jobs, "customer_collection")
+  const packAndHoldArray = getJobsByCategory(jobs, "pack_and_hold")
+  const toSendTrackingArray = getJobsByCategory(jobs, "to_send_tracking")
+  const inTransitArray = getJobsByCategory(jobs, "in_transit")
+  const nonTrackableCourierArray = getJobsByCategory(jobs, "non_trackable_courier")
+  const exceptionArray = getJobsByCategory(jobs, "exception")
+  const toSendPODArray = getJobsByCategory(jobs, "to_send_pod")
+  const stillToActionArray = getJobsByCategory(jobs, "still_to_action")
+  const lastColumnArray = getJobsByCategory(jobs, "last_column")
 
 
 
@@ -143,17 +143,17 @@ const App = () => {
     });
   };*/
 
- 
-const togglePin = (jobNumber) => {
-  setJobs(prevArray => {
-    return prevArray.map(job => {
-      if (job.jobNumber === jobNumber) {
-        return { ...job, pinned: !job.pinned };
-      }
-      return job;
+
+  const togglePin = (jobNumber) => {
+    setJobs(prevArray => {
+      return prevArray.map(job => {
+        if (job.jobNumber === jobNumber) {
+          return { ...job, pinned: !job.pinned };
+        }
+        return job;
+      });
     });
-  });
-};
+  };
 
   const [noJobs, setNoJobs] = useState(false);
 
@@ -365,7 +365,7 @@ const togglePin = (jobNumber) => {
                                 displayLateIcon={job.late && "block"}
                                 statusColor={job.late ? "white" : "#83E884"}
                                 cetaDisplay="none"
-                                circleBackground={ job.pinned && "red"}
+                                circleBackground={job.pinned && "gold"}
                                 circleOnClick={() => togglePin(job.jobNumber)}
                                 displayCircle="none"
                                 titleFontSize="12px"
@@ -416,8 +416,8 @@ const togglePin = (jobNumber) => {
                                   displayLateIcon={job.late && "block"}
                                   statusColor={job.late ? "white" : "#83E884"}
                                   cetaDisplay="none"
-                                  circleBackground={ job.pinned && "red"}
                                   circleOnClick={() => togglePin(job.jobNumber)}
+                                  circleBackground={job.pinned && "gold"}
                                 />
                               ))}
                             </>
@@ -467,6 +467,7 @@ const togglePin = (jobNumber) => {
                                   fraction="3/6"
                                   suffix="Ordered"
                                   circleOnClick={() => togglePin(job.jobNumber)}
+                                  circleBackground={job.pinned && "gold"}
 
                                 />
                               ))}
@@ -481,7 +482,7 @@ const togglePin = (jobNumber) => {
                           <Column
                             category="Export Docs Required"
                             borderTopColor="#1B90E6"
-                            amount_in_category={awaitingTrackingNumberArray.length}
+                            amount_in_category={exportDocsReqArray.length}
                             width={!columns.export_docs_req.extended && "79px"}
                             extendedContent={
                               !columns.export_docs_req.extended && "none"
@@ -494,8 +495,8 @@ const togglePin = (jobNumber) => {
                             }
                           >
                             <>
-                              
-                              {exportDocsReqArray.filter(job => !job.pinned).map((job, index) => (
+
+                              {exportDocsReqArray.filter(job => (showLateJobs || !job.late)).map((job, index)  => (
                                 <JobCard
                                   job_number={job.jobNumber}
                                   time={job.time}
@@ -510,6 +511,7 @@ const togglePin = (jobNumber) => {
                                   fraction="1/6"
                                   suffix="TRACKING NOS. RECEIVED"
                                   circleOnClick={() => togglePin(job.jobNumber)}
+                                  circleBackground={job.pinned && "gold"}
                                 />
                               ))}
                             </>
@@ -551,6 +553,7 @@ const togglePin = (jobNumber) => {
                                   fraction="3/6"
                                   suffix="ARRIVED"
                                   circleOnClick={() => togglePin(job.jobNumber)}
+                                  circleBackground={job.pinned && "gold"}
                                 />
                               ))}
                             </>
@@ -580,6 +583,7 @@ const togglePin = (jobNumber) => {
                                   fraction="3/6"
                                   suffix="ARRIVED"
                                   circleOnClick={() => togglePin(job.jobNumber)}
+                                  circleBackground={job.pinned && "gold"}
                                 />
                               ))}
                             </>
@@ -609,6 +613,7 @@ const togglePin = (jobNumber) => {
                                   fraction="3/6"
                                   suffix="ARRIVED"
                                   circleOnClick={() => togglePin(job.jobNumber)}
+                                  circleBackground={job.pinned && "gold"}
                                 />
                               ))}
                             </>
@@ -641,6 +646,7 @@ const togglePin = (jobNumber) => {
                                   fraction="3/6"
                                   suffix="ARRIVED"
                                   circleOnClick={() => togglePin(job.jobNumber)}
+                                  circleBackground={job.pinned && "gold"}
                                 />
                               ))}
                             </>
@@ -676,6 +682,7 @@ const togglePin = (jobNumber) => {
                                   fraction="3/6"
                                   suffix="ARRIVED"
                                   circleOnClick={() => togglePin(job.jobNumber)}
+                                  circleBackground={job.pinned && "gold"}
                                 />
                               ))}
                             </>
@@ -710,6 +717,7 @@ const togglePin = (jobNumber) => {
                                   fraction="3/6"
                                   suffix="ARRIVED"
                                   circleOnClick={() => togglePin(job.jobNumber)}
+                                  circleBackground={job.pinned && "gold"}
                                 />
                               ))}
                             </>
@@ -741,6 +749,7 @@ const togglePin = (jobNumber) => {
                                   fraction="3/6"
                                   suffix="ARRIVED"
                                   circleOnClick={() => togglePin(job.jobNumber)}
+                                  circleBackground={job.pinned && "gold"}
                                 />
                               ))}
                             </>
@@ -773,6 +782,7 @@ const togglePin = (jobNumber) => {
                                   fraction="3/6"
                                   suffix="ARRIVED"
                                   circleOnClick={() => togglePin(job.jobNumber)}
+                                  circleBackground={job.pinned && "gold"}
                                 />
                               ))}
                             </>
@@ -807,6 +817,7 @@ const togglePin = (jobNumber) => {
                                   fraction="3/6"
                                   suffix="ARRIVED"
                                   circleOnClick={() => togglePin(job.jobNumber)}
+                                  circleBackground={job.pinned && "gold"}
                                 />
                               ))}
                             </>
@@ -840,6 +851,7 @@ const togglePin = (jobNumber) => {
                                   fraction="3/6"
                                   suffix="ARRIVED"
                                   circleOnClick={() => togglePin(job.jobNumber)}
+                                  circleBackground={job.pinned && "gold"}
                                 />
                               ))}
                             </>
@@ -871,6 +883,7 @@ const togglePin = (jobNumber) => {
                                   fraction="3/6"
                                   suffix="ARRIVED"
                                   circleOnClick={() => togglePin(job.jobNumber)}
+                                  circleBackground={job.pinned && "gold"}
                                 />
                               ))}
                             </>
@@ -903,6 +916,7 @@ const togglePin = (jobNumber) => {
                                   fraction="3/6"
                                   suffix="ARRIVED"
                                   circleOnClick={() => togglePin(job.jobNumber)}
+                                  circleBackground={job.pinned && "gold"}
                                 />
                               ))}
                             </>
@@ -936,6 +950,7 @@ const togglePin = (jobNumber) => {
                                   fraction="3/6"
                                   suffix="ARRIVED"
                                   circleOnClick={() => togglePin(job.jobNumber)}
+                                  circleBackground={job.pinned && "gold"}
                                 />
                               ))}
                             </>
@@ -967,6 +982,7 @@ const togglePin = (jobNumber) => {
                                   fraction="3/6"
                                   suffix="ARRIVED"
                                   circleOnClick={() => togglePin(job.jobNumber)}
+                                  circleBackground={job.pinned && "gold"}
                                 />
                               ))}
                             </>
@@ -995,6 +1011,7 @@ const togglePin = (jobNumber) => {
                                 fraction="3/6"
                                 suffix="ARRIVED"
                                 circleOnClick={() => togglePin(job.jobNumber)}
+                                circleBackground={job.pinned && "gold"}
                               />
                             ))}
                           </>
@@ -1024,6 +1041,7 @@ const togglePin = (jobNumber) => {
                                   fraction="3/6"
                                   suffix="ARRIVED"
                                   circleOnClick={() => togglePin(job.jobNumber)}
+                                  circleBackground={job.pinned && "gold"}
                                 />
                               ))}
                             </>
@@ -1058,6 +1076,7 @@ const togglePin = (jobNumber) => {
                                   fraction="3/6"
                                   suffix="ARRIVED"
                                   circleOnClick={() => togglePin(job.jobNumber)}
+                                  circleBackground={job.pinned && "gold"}
                                 />
                               ))}
                             </>
@@ -1088,6 +1107,7 @@ const togglePin = (jobNumber) => {
                                 fraction="3/6"
                                 suffix="ARRIVED"
                                 circleOnClick={() => togglePin(job.jobNumber)}
+                                circleBackground={job.pinned && "gold"}
                               />
                             ))}
                           </>
@@ -1117,6 +1137,7 @@ const togglePin = (jobNumber) => {
                                   fraction="3/6"
                                   suffix="ARRIVED"
                                   circleOnClick={() => togglePin(job.jobNumber)}
+                                  circleBackground={job.pinned && "gold"}
                                 />
                               ))}
                             </>
@@ -1147,6 +1168,7 @@ const togglePin = (jobNumber) => {
                                   fraction="3/6"
                                   suffix="ARRIVED"
                                   circleOnClick={() => togglePin(job.jobNumber)}
+                                  circleBackground={job.pinned && "gold"}
                                 />
                               ))}
                             </>
