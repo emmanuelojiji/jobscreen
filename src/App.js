@@ -392,7 +392,7 @@ const App = () => {
                           <Column
                             category="To Order"
                             borderTopColor="#DC6942"
-                            amount_in_category={toOrderArray.length}
+                            amount_in_category={!showLateJobs ? toOrderArray.length - toOrderArray.filter(job => job.late).length : toOrderArray.length}
                             width={!columns.to_order.extended && "79px"}
                             extendedContent={
                               !columns.to_order.extended && "none"
@@ -496,7 +496,7 @@ const App = () => {
                           >
                             <>
 
-                              {exportDocsReqArray.filter(job => (showLateJobs || !job.late)).map((job, index)  => (
+                              {exportDocsReqArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
                                 <JobCard
                                   job_number={job.jobNumber}
                                   time={job.time}
