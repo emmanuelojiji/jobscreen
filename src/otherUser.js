@@ -19,7 +19,7 @@ export const otherUser = [
     jobNumber: "SG-J24277",
     time: "8 mins ago",
     late: false,
-    category: "ordered",
+    category: "commercial_invoice_req",
     country_flag: "🇸🇳",
   },
 

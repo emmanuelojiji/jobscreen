@@ -23,7 +23,7 @@ const CATEGORY_FILTER = "to_order";
 
 const App = () => {
   const [showLateJobs, setShowLateJobs] = useState(true);
-  const [user, setUser] = useState(DEFAULT_USER);
+  const [user, setUser] = useState("default");
   const [carouselView, setCarouselView] = useState(0);
 
   const [layout, setLayout] = useState("extended");
@@ -61,6 +61,7 @@ const App = () => {
 
   const jobs = user === "default" ? [...AllJobs] : [...AllJobs, ...otherUser];
 
+
   const getJobsByCategory = (jobs, category) => {
     return jobs.filter((job) => job.category.includes(category))
   }
@@ -73,7 +74,7 @@ const App = () => {
   const [pinnedArray, setPinnedArray] = useState(jobs.filter(job => job.pinned))
 
   const [toOrderArray, setToOrderArray] = useState(getJobsByCategory(jobs, "to_order"))
-  const [commercialInvoiceReqArray, setCommercialInvoiceReqArray] = useState(getJobsByCategory(jobs, "commercial_invoice"))
+  const [commercialInvoiceReqArray, setCommercialInvoiceReqArray] = useState(getJobsByCategory(jobs, "commerc"))
   const [exportDocsReqArray, setExportDocsReqArray] = useState(getJobsByCategory(jobs, "export_docs_req"))
   const [IORRequiredArray, setIORRequiredArray] = useState(getJobsByCategory(jobs, "ior_required_array"))
   const [awaitingConfirmationArray, setAwaitingConfirmationArray] = useState(getJobsByCategory(jobs, "awaiting_confirmation"))
@@ -338,10 +339,10 @@ const App = () => {
                             !columns.to_order.extended && "vertical-rl"
                           }
                           pinDisplay={true}
-                    
+
                         >
                           <>
-                            {pinnedArray.map((job, index) => (
+                            {pinnedArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
                               <JobCard
                                 job_number={job.jobNumber}
                                 time={job.time}
@@ -391,7 +392,7 @@ const App = () => {
                           >
                             <>
 
-                              {toOrderArray.map((job, index) => (
+                              {toOrderArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
                                 <JobCard
                                   job_number={job.jobNumber}
                                   time={job.time}
@@ -418,8 +419,8 @@ const App = () => {
                           <Column
                             category="Commercial Invoice Required"
                             borderTopColor="#1B90E6"
-                            opacity={toOrderArray.length === 0 && "0.5"}
-                            amount_in_category={toOrderArray.length}
+                            opacity={commercialInvoiceReqArray.length === 0 && "0.5"}
+                            amount_in_category={commercialInvoiceReqArray.length}
                             width={
                               !columns.commercial_invoice_req.extended && "79px"
                             }
@@ -439,27 +440,7 @@ const App = () => {
                                 <p className="no-jobs light">No jobs to show</p>
                               )}
 
-                              <div className="pinned-container">
-                                {commercialInvoiceReqArray.filter(job => job.pinned).map((job, index) => (
-                                  <JobCard
-                                    job_number={job.jobNumber}
-                                    time={job.time}
-                                    backgroundColor={job.late && "#D64045"}
-                                    displayLateIcon={job.late && "block"}
-                                    layout={layout}
-                                    cardHeight={
-                                      layout === "extended" ? "150px" : "50px"
-                                    }
-                                    statusColor={job.late ? "white" : "#83E884"}
-                                    ceta="12 August 2022"
-                                    fraction="3/6"
-                                    suffix="Ordered"
-                                    circleBackground={job.pinned && "gold"}
-                                  />
-                                ))}
-                              </div>
-
-                              {commercialInvoiceReqArray.filter(job => job.pinned == false).map((job, index) => (
+                              {commercialInvoiceReqArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
                                 <JobCard
                                   job_number={job.jobNumber}
                                   time={job.time}
@@ -501,7 +482,7 @@ const App = () => {
                           >
                             <>
                               <div className="pinned-container">
-                                {awaitingTrackingNumberArray.filter(job => job.pinned).map((job, index) => (
+                                {awaitingTrackingNumberArray.filter(job => (showLateJobs || !job.late)).filter(job => job.pinned).map((job, index) => (
 
                                   <JobCard
                                     job_number={job.jobNumber}
@@ -562,7 +543,7 @@ const App = () => {
                             }
                           >
                             <>
-                              {IORRequiredArray.map((job, index) => (
+                              {IORRequiredArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
                                 <JobCard
                                   job_number={job.jobNumber}
                                   time={job.time}
@@ -618,7 +599,7 @@ const App = () => {
                             amount_in_category={inboundArray.length}
                           >
                             <>
-                              {awaitingTrackingNumberArray.map((job, index) => (
+                              {awaitingTrackingNumberArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
                                 <JobCard
                                   job_number={job.jobNumber}
                                   time={job.time}
@@ -649,7 +630,7 @@ const App = () => {
                             amount_in_category={inboundArray.length}
                           >
                             <>
-                              {dueIntoWarehouseArray.map((job, index) => (
+                              {dueIntoWarehouseArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
                                 <JobCard
                                   job_number={job.jobNumber}
                                   time={job.time}
@@ -683,7 +664,7 @@ const App = () => {
                             amount_in_category={inboundArray.length}
                           >
                             <>
-                              {arrivedArray.map((job, index) => (
+                              {arrivedArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
                                 <JobCard
                                   job_number={job.jobNumber}
                                   time={job.time}
@@ -716,7 +697,7 @@ const App = () => {
                             amount_in_category={inboundArray.length}
                           >
                             <>
-                              {inboundArray.map((job, index) => (
+                              {inboundArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
                                 <JobCard
                                   job_number={job.jobNumber}
                                   time={job.time}
@@ -746,7 +727,7 @@ const App = () => {
                             amount_in_category={inboundArray.length}
                           >
                             <>
-                              {awaitingPartsArray.map((job, index) => (
+                              {awaitingPartsArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
                                 <JobCard
                                   job_number={job.jobNumber}
                                   time={job.time}
@@ -777,7 +758,7 @@ const App = () => {
                             amount_in_category={inboundArray.length}
                           >
                             <>
-                              {transitPalletArray.map((job, index) => (
+                              {transitPalletArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
                                 <JobCard
                                   job_number={job.jobNumber}
                                   time={job.time}
@@ -810,7 +791,7 @@ const App = () => {
                             amount_in_category={inboundArray.length}
                           >
                             <>
-                              {problemShelfArray.map((job, index) => (
+                              {problemShelfArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
                                 <JobCard
                                   job_number={job.jobNumber}
                                   time={job.time}
@@ -842,7 +823,7 @@ const App = () => {
                             amount_in_category={inboundArray.length}
                           >
                             <>
-                              {preparingToShipArray.map((job, index) => (
+                              {preparingToShipArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
                                 <JobCard
                                   job_number={job.jobNumber}
                                   time={job.time}
@@ -872,7 +853,7 @@ const App = () => {
                             amount_in_category={inboundArray.length}
                           >
                             <>
-                              {buyShippingLabelArray.map((job, index) => (
+                              {buyShippingLabelArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
                                 <JobCard
                                   job_number={job.jobNumber}
                                   time={job.time}
@@ -903,7 +884,7 @@ const App = () => {
                             amount_in_category={inboundArray.length}
                           >
                             <>
-                              {customerCollectionArray.map((job, index) => (
+                              {customerCollectionArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
                                 <JobCard
                                   job_number={job.jobNumber}
                                   time={job.time}
@@ -935,7 +916,7 @@ const App = () => {
                             amount_in_category={inboundArray.length}
                           >
                             <>
-                              {packAndHoldArray.map((job, index) => (
+                              {packAndHoldArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
                                 <JobCard
                                   job_number={job.jobNumber}
                                   time={job.time}
@@ -965,7 +946,7 @@ const App = () => {
                             amount_in_category={inboundArray.length}
                           >
                             <>
-                              {toSendTrackingArray.map((job, index) => (
+                              {toSendTrackingArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
                                 <JobCard
                                   job_number={job.jobNumber}
                                   time={job.time}
@@ -992,7 +973,7 @@ const App = () => {
                           amount_in_category={inboundArray.length}
                         >
                           <>
-                            {inTransitArray.map((job, index) => (
+                            {inTransitArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
                               <JobCard
                                 job_number={job.jobNumber}
                                 time={job.time}
@@ -1020,7 +1001,7 @@ const App = () => {
                             amount_in_category={inboundArray.length}
                           >
                             <>
-                              {nonTrackableCourierArray.map((job, index) => (
+                              {nonTrackableCourierArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
                                 <JobCard
                                   job_number={job.jobNumber}
                                   time={job.time}
@@ -1053,7 +1034,7 @@ const App = () => {
                             amount_in_category={inboundArray.length}
                           >
                             <>
-                              {exceptionArray.map((job, index) => (
+                              {exceptionArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
                                 <JobCard
                                   job_number={job.jobNumber}
                                   time={job.time}
@@ -1082,7 +1063,7 @@ const App = () => {
                           amount_in_category={inboundArray.length}
                         >
                           <>
-                            {toSendPODArray.map((job, index) => (
+                            {toSendPODArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
                               <JobCard
                                 job_number={job.jobNumber}
                                 time={job.time}
@@ -1110,7 +1091,7 @@ const App = () => {
                             amount_in_category={inboundArray.length}
                           >
                             <>
-                              {stillToActionArray.map((job, index) => (
+                              {stillToActionArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
                                 <JobCard
                                   job_number={job.jobNumber}
                                   time={job.time}
@@ -1139,7 +1120,7 @@ const App = () => {
                             amount_in_category={inboundArray.length}
                           >
                             <>
-                              {lastColumnArray.map((job, index) => (
+                              {lastColumnArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
                                 <JobCard
                                   job_number={job.jobNumber}
                                   time={job.time}
