@@ -349,7 +349,7 @@ const App = () => {
                                 statusColor={job.late ? "white" : "#83E884"}
                                 cetaDisplay="none"
                                 circleBackground={job.pinned && "gold"}
-                                circleOnClick={() => togglePin(job.jobNumber)}
+                                circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
 
 
 
@@ -451,7 +451,7 @@ const App = () => {
                                   ceta="12 August 2022"
                                   fraction="3/6"
                                   suffix="Ordered"
-                                  circleOnClick={() => togglePin(job.jobNumber)}
+                                  circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                   circleBackground={job.pinned && "gold"}
 
                                 />
@@ -495,7 +495,7 @@ const App = () => {
                                   statusColor={job.late ? "white" : "#83E884"}
                                   fraction="1/6"
                                   suffix="TRACKING NOS. RECEIVED"
-                                  circleOnClick={() => togglePin(job.jobNumber)}
+                                  circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                   circleBackground={job.pinned && "gold"}
                                 />
                               ))}
@@ -537,7 +537,7 @@ const App = () => {
                                   statusColor={job.late ? "white" : "#83E884"}
                                   fraction="3/6"
                                   suffix="ARRIVED"
-                                  circleOnClick={() => togglePin(job.jobNumber)}
+                                  circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                   circleBackground={job.pinned && "gold"}
                                 />
                               ))}
@@ -567,7 +567,7 @@ const App = () => {
                                   statusColor={job.late ? "white" : "#83E884"}
                                   fraction="3/6"
                                   suffix="ARRIVED"
-                                  circleOnClick={() => togglePin(job.jobNumber)}
+                                  circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                   circleBackground={job.pinned && "gold"}
                                 />
                               ))}
@@ -597,7 +597,7 @@ const App = () => {
                                   statusColor={job.late ? "white" : "#83E884"}
                                   fraction="3/6"
                                   suffix="ARRIVED"
-                                  circleOnClick={() => togglePin(job.jobNumber)}
+                                  circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                   circleBackground={job.pinned && "gold"}
                                 />
                               ))}
@@ -630,7 +630,7 @@ const App = () => {
                                   statusColor={job.late ? "white" : "#83E884"}
                                   fraction="3/6"
                                   suffix="ARRIVED"
-                                  circleOnClick={() => togglePin(job.jobNumber)}
+                                  circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                   circleBackground={job.pinned && "gold"}
                                 />
                               ))}
@@ -666,7 +666,7 @@ const App = () => {
                                   statusColor={job.late ? "white" : "#83E884"}
                                   fraction="3/6"
                                   suffix="ARRIVED"
-                                  circleOnClick={() => togglePin(job.jobNumber)}
+                                  circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                   circleBackground={job.pinned && "gold"}
                                 />
                               ))}
@@ -701,7 +701,7 @@ const App = () => {
                                   statusColor={job.late ? "white" : "#83E884"}
                                   fraction="3/6"
                                   suffix="ARRIVED"
-                                  circleOnClick={() => togglePin(job.jobNumber)}
+                                  circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                   circleBackground={job.pinned && "gold"}
                                 />
                               ))}
@@ -733,7 +733,7 @@ const App = () => {
                                   statusColor={job.late ? "white" : "#83E884"}
                                   fraction="3/6"
                                   suffix="ARRIVED"
-                                  circleOnClick={() => togglePin(job.jobNumber)}
+                                  circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                   circleBackground={job.pinned && "gold"}
                                 />
                               ))}
@@ -766,7 +766,7 @@ const App = () => {
                                   statusColor={job.late ? "white" : "#83E884"}
                                   fraction="3/6"
                                   suffix="ARRIVED"
-                                  circleOnClick={() => togglePin(job.jobNumber)}
+                                  circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                   circleBackground={job.pinned && "gold"}
                                 />
                               ))}
@@ -801,7 +801,7 @@ const App = () => {
                                   statusColor={job.late ? "white" : "#83E884"}
                                   fraction="3/6"
                                   suffix="ARRIVED"
-                                  circleOnClick={() => togglePin(job.jobNumber)}
+                                  circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                   circleBackground={job.pinned && "gold"}
                                 />
                               ))}
@@ -835,7 +835,7 @@ const App = () => {
                                   statusColor={job.late ? "white" : "#83E884"}
                                   fraction="3/6"
                                   suffix="ARRIVED"
-                                  circleOnClick={() => togglePin(job.jobNumber)}
+                                  circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                   circleBackground={job.pinned && "gold"}
                                 />
                               ))}
@@ -867,7 +867,7 @@ const App = () => {
                                   statusColor={job.late ? "white" : "#83E884"}
                                   fraction="3/6"
                                   suffix="ARRIVED"
-                                  circleOnClick={() => togglePin(job.jobNumber)}
+                                  circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                   circleBackground={job.pinned && "gold"}
                                 />
                               ))}
@@ -900,7 +900,7 @@ const App = () => {
                                   statusColor={job.late ? "white" : "#83E884"}
                                   fraction="3/6"
                                   suffix="ARRIVED"
-                                  circleOnClick={() => togglePin(job.jobNumber)}
+                                  circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                   circleBackground={job.pinned && "gold"}
                                 />
                               ))}
@@ -934,7 +934,7 @@ const App = () => {
                                   statusColor={job.late ? "white" : "#83E884"}
                                   fraction="3/6"
                                   suffix="ARRIVED"
-                                  circleOnClick={() => togglePin(job.jobNumber)}
+                                  circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                   circleBackground={job.pinned && "gold"}
                                 />
                               ))}
@@ -966,7 +966,7 @@ const App = () => {
                                   statusColor={job.late ? "white" : "#83E884"}
                                   fraction="3/6"
                                   suffix="ARRIVED"
-                                  circleOnClick={() => togglePin(job.jobNumber)}
+                                  circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                   circleBackground={job.pinned && "gold"}
                                 />
                               ))}
@@ -995,7 +995,7 @@ const App = () => {
                                 statusColor={job.late ? "white" : "#83E884"}
                                 fraction="3/6"
                                 suffix="ARRIVED"
-                                circleOnClick={() => togglePin(job.jobNumber)}
+                                circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                 circleBackground={job.pinned && "gold"}
                               />
                             ))}
@@ -1025,7 +1025,7 @@ const App = () => {
                                   statusColor={job.late ? "white" : "#83E884"}
                                   fraction="3/6"
                                   suffix="ARRIVED"
-                                  circleOnClick={() => togglePin(job.jobNumber)}
+                                  circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                   circleBackground={job.pinned && "gold"}
                                 />
                               ))}
@@ -1060,7 +1060,7 @@ const App = () => {
                                   statusColor={job.late ? "white" : "#83E884"}
                                   fraction="3/6"
                                   suffix="ARRIVED"
-                                  circleOnClick={() => togglePin(job.jobNumber)}
+                                  circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                   circleBackground={job.pinned && "gold"}
                                 />
                               ))}
@@ -1091,7 +1091,7 @@ const App = () => {
                                 statusColor={job.late ? "white" : "#83E884"}
                                 fraction="3/6"
                                 suffix="ARRIVED"
-                                circleOnClick={() => togglePin(job.jobNumber)}
+                                circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                 circleBackground={job.pinned && "gold"}
                               />
                             ))}
@@ -1121,7 +1121,7 @@ const App = () => {
                                   statusColor={job.late ? "white" : "#83E884"}
                                   fraction="3/6"
                                   suffix="ARRIVED"
-                                  circleOnClick={() => togglePin(job.jobNumber)}
+                                  circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                   circleBackground={job.pinned && "gold"}
                                 />
                               ))}
@@ -1152,7 +1152,7 @@ const App = () => {
                                   statusColor={job.late ? "white" : "#83E884"}
                                   fraction="3/6"
                                   suffix="ARRIVED"
-                                  circleOnClick={() => togglePin(job.jobNumber)}
+                                  circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                   circleBackground={job.pinned && "gold"}
                                 />
                               ))}
