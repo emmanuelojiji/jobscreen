@@ -322,7 +322,7 @@ const App = () => {
                       {columns.pinned.visible && (
                         <Column
                           category="Pinned"
-                          borderTopColor="#DC6942"
+                          borderTopColor="#d3d347"
                           amount_in_category={pinnedArray.length}
                           width={!columns.pinned.extended && "79px"}
                           extendedContent={
