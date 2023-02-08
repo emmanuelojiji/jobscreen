@@ -65,12 +65,6 @@ const App = () => {
     return jobs.filter((job) => job.category.includes(category))
   }
 
-  /*const toOrderArray = getJobsByCategory(jobs, "to_order")
-  const orderedArray = getJobsByCategory(jobs, "ordered")
-  const awaitingTrackingArray = getJobsByCategory(jobs, "awaiting_tracking")
-  const inboundArray = getJobsByCategory(jobs, "inbound")*/
-
-
 
   const pinnedArray = jobs.filter(job => job.pinned && (showLateJobs || !job.late));
 
@@ -128,20 +122,6 @@ const App = () => {
     });
   };
 
-
-
-
-
-  /*const togglePin = (jobNumber, setArray) => {
-    setArray((prevArray) => {
-      return prevArray.map((job) => {
-        if (job.jobNumber === jobNumber) {
-          return { ...job, pinned: !job.pinned };
-        }
-        return job;
-      });
-    });
-  };*/
 
 
   const togglePin = (jobNumber) => {
@@ -344,22 +324,25 @@ const App = () => {
                           category="Pinned"
                           borderTopColor="#DC6942"
                           amount_in_category={pinnedArray.length}
-                          width={!columns.to_order.extended && "79px"}
-                          extendedContent={columns.to_order.extended ? "flex" : "none"}
-                          changeSize={() => toggleColumnSize("to_order")}
-                          writingMode={
-                            !columns.to_order.extended && "vertical-rl"
+                          width={!columns.pinned.extended && "79px"}
+                          extendedContent={
+                            !columns.pinned.extended ? "none" : "flex"
                           }
-                          pinDisplay={true}
+                          changeSize={() => toggleColumnSize("pinned")}
+                          writingMode={
+                            !columns.pinned.extended && "vertical-rl"
+                          }
+                          pinDisplay={columns.pinned.extended && "none"}
 
                         >
+                          {pinnedArray.length < 1 && (<p className="no-jobs light">No jobs to show</p>)}
                           <>
                             {pinnedArray.map((job, index) => (
                               <JobCard
                                 job_number={job.jobNumber}
                                 time={job.time}
-                                cardHeight="70px"
-                                width="70px"
+
+
                                 layout={layout}
                                 backgroundColor={job.late && "#D64045"}
                                 displayLateIcon={job.late && "block"}
@@ -367,8 +350,8 @@ const App = () => {
                                 cetaDisplay="none"
                                 circleBackground={job.pinned && "gold"}
                                 circleOnClick={() => togglePin(job.jobNumber)}
-                                displayCircle="none"
-                                titleFontSize="12px"
+
+
                                 displayContent="none"
                               />
                             ))}
