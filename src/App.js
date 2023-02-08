@@ -352,6 +352,8 @@ const App = () => {
                                 circleOnClick={() => togglePin(job.jobNumber)}
 
 
+
+
                                 displayContent="none"
                               />
                             ))}
@@ -399,7 +401,7 @@ const App = () => {
                                   displayLateIcon={job.late && "block"}
                                   statusColor={job.late ? "white" : "#83E884"}
                                   cetaDisplay="none"
-                                  circleOnClick={() => togglePin(job.jobNumber)}
+                                  circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                   circleBackground={job.pinned && "gold"}
                                 />
                               ))}

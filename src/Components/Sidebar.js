@@ -14,7 +14,6 @@ const Sidebar = ({
   layout,
   setExtended,
   setCondensed,
-
   toOrderToggle,
   commercialInvoiceReqToggle,
   exportDocsToggle,
