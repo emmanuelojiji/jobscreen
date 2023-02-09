@@ -106,7 +106,7 @@
   height: 100%;
 }
 
-.number-username-container{
+.number-username-container {
   display: flex;
   align-items: center;
 }
@@ -117,7 +117,8 @@
   display: inline-block;
   overflow: hidden;
   white-space: nowrap;
-
-
+  color:white;
+  font-family: 'Avenir-Light';
+  font-size: 14px;
 
 }
