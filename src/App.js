@@ -334,11 +334,8 @@ const App = () => {
                           borderTopColor="#d3d347"
                           opacity={pinnedArray.length === 0 && "0.5"}
                           amount_in_category={pinnedArray.length}
-                          width={!columns.pinned.extended && "79px"}
-                          extendedContent={
-                            !columns.pinned.extended ? "none" : "flex"
-                          }
-                          changeSize={() => toggleColumnSize("pinned")}
+                          
+
                           writingMode={
                             !columns.pinned.extended && "vertical-rl"
                           }
