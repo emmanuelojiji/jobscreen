@@ -332,6 +332,7 @@ const App = () => {
                         <Column
                           category="Pinned"
                           borderTopColor="#d3d347"
+                          opacity={pinnedArray.length === 0 && "0.5"}
                           amount_in_category={pinnedArray.length}
                           width={!columns.pinned.extended && "79px"}
                           extendedContent={
@@ -416,7 +417,7 @@ const App = () => {
                           <Column
                             category="Commercial Invoice Required"
                             borderTopColor="#1B90E6"
-                            opacity={commercialInvoiceReqArray.length === 0 && "0.5"}
+                            opacity={commercialInvoiceReqArray.length == 0 || (commercialInvoiceReqArray.length ==  1 && !showLateJobs) && "0.5"}
                             amount_in_category={!showLateJobs ? commercialInvoiceReqArray.length - commercialInvoiceReqArray.filter(job => job.late).length : commercialInvoiceReqArray.length}
                             width={
                               !columns.commercial_invoice_req.extended && "79px"
