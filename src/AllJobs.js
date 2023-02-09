@@ -59,20 +59,11 @@ export const AllJobs = [
     user_name: "Tom"
   },
 
-  {
-    jobNumber: "DE-J56896",
-    time: "8 mins ago",
-    late: false,
-    category: "commercial_invoice_req",
-    country_flag: "🇬🇧",
-    pinned: false,
-    user_name: "Tom"
-  },
 
   {
     jobNumber: "DE-J56897",
     time: "8 mins ago",
-    late: false,
+    late: true,
     category: "commercial_invoice_req",
     country_flag: "🇬🇧",
     pinned: false,

@@ -417,7 +417,7 @@ const App = () => {
                             category="Commercial Invoice Required"
                             borderTopColor="#1B90E6"
                             opacity={commercialInvoiceReqArray.length === 0 && "0.5"}
-                            amount_in_category={commercialInvoiceReqArray.length}
+                            amount_in_category={!showLateJobs ? commercialInvoiceReqArray.length - commercialInvoiceReqArray.filter(job => job.late).length : commercialInvoiceReqArray.length}
                             width={
                               !columns.commercial_invoice_req.extended && "79px"
                             }
@@ -433,7 +433,7 @@ const App = () => {
                             }
                           >
                             <>
-                              {commercialInvoiceReqArray.length == 0 && (
+                              {commercialInvoiceReqArray.length == 0 || (commercialInvoiceReqArray.length ==  1 && !showLateJobs) && (
                                 <p className="no-jobs light">No jobs to show</p>
                               )}
 
