@@ -18,12 +18,12 @@ import avatar from "./avatar.jpg";
 import Search from "./Components/Search";
 import SwitchModal from "./Components/SwitchModal";
 
-const DEFAULT_USER = "default";
-const CATEGORY_FILTER = "to_order";
 
 const App = () => {
+
+  const [defaultUser, setDefaultUser] = useState("Tom")
+
   const [showLateJobs, setShowLateJobs] = useState(true);
-  const [user, setUser] = useState("default");
   const [carouselView, setCarouselView] = useState(0);
 
   const [layout, setLayout] = useState("extended");
@@ -31,6 +31,7 @@ const App = () => {
 
   const [toOrderExtended, setToOrderExtended] = useState(false);
   const [orderedExtended, setOrderedExtended] = useState(false);
+
 
   const [columns, setColumns] = useState({
     pinned: { visible: true, extended: true },
@@ -59,12 +60,20 @@ const App = () => {
     last_column: { visible: true, extended: true },
   });
 
-  const [jobs, setJobs] = useState(user === "default" ? [...AllJobs] : [...AllJobs, ...otherUser]);
+
+
+  const [user, setUser] = useState("default");
+
+  const [jobs, setJobs] = useState([]);
+
+  useEffect(() => {
+    setJobs(user === "default" ? [...AllJobs] : [...AllJobs, ...otherUser]);
+  }, [user]);
+
 
   const getJobsByCategory = (jobs, category) => {
     return jobs.filter((job) => job.category.includes(category))
   }
-
 
   const pinnedArray = jobs.filter(job => job.pinned && (showLateJobs || !job.late));
 
@@ -264,7 +273,7 @@ const App = () => {
           <div className="controls-option-wrap"></div>
           <Search
             user={user}
-            DEFAULT_USER={DEFAULT_USER}
+
             AllJobs={AllJobs}
             jobs={jobs}
           />
@@ -341,8 +350,6 @@ const App = () => {
                               <JobCard
                                 job_number={job.jobNumber}
                                 time={job.time}
-
-
                                 layout={layout}
                                 backgroundColor={job.late && "#D64045"}
                                 displayLateIcon={job.late && "block"}
@@ -350,25 +357,16 @@ const App = () => {
                                 cetaDisplay="none"
                                 circleBackground={job.pinned && "gold"}
                                 circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
-
-
-
-
+                                job={job}
+                                pinned={job.pinned}
                                 displayContent="none"
+                                user_name={job.user_name}
+                                defaultUser={defaultUser}
                               />
                             ))}
                           </>
                         </Column>
                       )}
-
-
-
-
-
-
-
-
-
 
 
                       {columns.to_order.visible &&
@@ -403,6 +401,8 @@ const App = () => {
                                   cetaDisplay="none"
                                   circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                   circleBackground={job.pinned && "gold"}
+                                  user_name={job.user_name}
+                                  defaultUser={defaultUser}
                                 />
                               ))}
                             </>
@@ -453,6 +453,8 @@ const App = () => {
                                   suffix="Ordered"
                                   circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                   circleBackground={job.pinned && "gold"}
+                                  user_name={job.user_name}
+                                  defaultUser={defaultUser}
 
                                 />
                               ))}
@@ -497,6 +499,8 @@ const App = () => {
                                   suffix="TRACKING NOS. RECEIVED"
                                   circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                   circleBackground={job.pinned && "gold"}
+                                  user_name={job.user_name}
+                                  defaultUser={defaultUser}
                                 />
                               ))}
                             </>
@@ -539,6 +543,8 @@ const App = () => {
                                   suffix="ARRIVED"
                                   circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                   circleBackground={job.pinned && "gold"}
+                                  user_name={job.user_name}
+                                  defaultUser={defaultUser}
                                 />
                               ))}
                             </>
@@ -569,6 +575,8 @@ const App = () => {
                                   suffix="ARRIVED"
                                   circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                   circleBackground={job.pinned && "gold"}
+                                  user_name={job.user_name}
+                                  defaultUser={defaultUser}
                                 />
                               ))}
                             </>
@@ -599,6 +607,8 @@ const App = () => {
                                   suffix="ARRIVED"
                                   circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                   circleBackground={job.pinned && "gold"}
+                                  user_name={job.user_name}
+                                  defaultUser={defaultUser}
                                 />
                               ))}
                             </>
@@ -632,6 +642,8 @@ const App = () => {
                                   suffix="ARRIVED"
                                   circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                   circleBackground={job.pinned && "gold"}
+                                  user_name={job.user_name}
+                                  defaultUser={defaultUser}
                                 />
                               ))}
                             </>
@@ -668,6 +680,8 @@ const App = () => {
                                   suffix="ARRIVED"
                                   circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                   circleBackground={job.pinned && "gold"}
+                                  user_name={job.user_name}
+                                  defaultUser={defaultUser}
                                 />
                               ))}
                             </>
@@ -703,6 +717,8 @@ const App = () => {
                                   suffix="ARRIVED"
                                   circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                   circleBackground={job.pinned && "gold"}
+                                  user_name={job.user_name}
+                                  defaultUser={defaultUser}
                                 />
                               ))}
                             </>
@@ -735,6 +751,8 @@ const App = () => {
                                   suffix="ARRIVED"
                                   circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                   circleBackground={job.pinned && "gold"}
+                                  user_name={job.user_name}
+                                  defaultUser={defaultUser}
                                 />
                               ))}
                             </>
@@ -768,6 +786,8 @@ const App = () => {
                                   suffix="ARRIVED"
                                   circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                   circleBackground={job.pinned && "gold"}
+                                  user_name={job.user_name}
+                                  defaultUser={defaultUser}
                                 />
                               ))}
                             </>
@@ -803,6 +823,8 @@ const App = () => {
                                   suffix="ARRIVED"
                                   circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                   circleBackground={job.pinned && "gold"}
+                                  user_name={job.user_name}
+                                  defaultUser={defaultUser}
                                 />
                               ))}
                             </>
@@ -837,6 +859,8 @@ const App = () => {
                                   suffix="ARRIVED"
                                   circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                   circleBackground={job.pinned && "gold"}
+                                  user_name={job.user_name}
+                                  defaultUser={defaultUser}
                                 />
                               ))}
                             </>
@@ -869,6 +893,8 @@ const App = () => {
                                   suffix="ARRIVED"
                                   circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                   circleBackground={job.pinned && "gold"}
+                                  user_name={job.user_name}
+                                  defaultUser={defaultUser}
                                 />
                               ))}
                             </>
@@ -902,6 +928,8 @@ const App = () => {
                                   suffix="ARRIVED"
                                   circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                   circleBackground={job.pinned && "gold"}
+                                  user_name={job.user_name}
+                                  defaultUser={defaultUser}
                                 />
                               ))}
                             </>
@@ -936,6 +964,8 @@ const App = () => {
                                   suffix="ARRIVED"
                                   circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                   circleBackground={job.pinned && "gold"}
+                                  user_name={job.user_name}
+                                  defaultUser={defaultUser}
                                 />
                               ))}
                             </>
@@ -968,6 +998,8 @@ const App = () => {
                                   suffix="ARRIVED"
                                   circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                   circleBackground={job.pinned && "gold"}
+                                  user_name={job.user_name}
+                                  defaultUser={defaultUser}
                                 />
                               ))}
                             </>
@@ -997,6 +1029,8 @@ const App = () => {
                                 suffix="ARRIVED"
                                 circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                 circleBackground={job.pinned && "gold"}
+                                user_name={job.user_name}
+                                defaultUser={defaultUser}
                               />
                             ))}
                           </>
@@ -1027,6 +1061,8 @@ const App = () => {
                                   suffix="ARRIVED"
                                   circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                   circleBackground={job.pinned && "gold"}
+                                  user_name={job.user_name}
+                                  defaultUser={defaultUser}
                                 />
                               ))}
                             </>
@@ -1062,6 +1098,8 @@ const App = () => {
                                   suffix="ARRIVED"
                                   circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                   circleBackground={job.pinned && "gold"}
+                                  user_name={job.user_name}
+                                  defaultUser={defaultUser}
                                 />
                               ))}
                             </>
@@ -1093,6 +1131,8 @@ const App = () => {
                                 suffix="ARRIVED"
                                 circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                 circleBackground={job.pinned && "gold"}
+                                user_name={job.user_name}
+                                defaultUser={defaultUser}
                               />
                             ))}
                           </>
@@ -1123,6 +1163,8 @@ const App = () => {
                                   suffix="ARRIVED"
                                   circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                   circleBackground={job.pinned && "gold"}
+                                  user_name={job.user_name}
+                                  defaultUser={defaultUser}
                                 />
                               ))}
                             </>
@@ -1154,6 +1196,8 @@ const App = () => {
                                   suffix="ARRIVED"
                                   circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                   circleBackground={job.pinned && "gold"}
+                                  user_name={job.user_name}
+                                  defaultUser={defaultUser}
                                 />
                               ))}
                             </>

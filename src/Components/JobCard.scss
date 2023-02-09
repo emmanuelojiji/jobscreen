@@ -24,6 +24,7 @@
   color: white;
   font-weight: bold;
   text-align: center;
+  margin-right: 10px;
 }
 
 .circle {
@@ -95,8 +96,28 @@
   }
 }
 
+.fa-user {
+  margin-right: 5px;
+}
+
 .job-card-content {
   display: flex;
   flex-direction: column;
   height: 100%;
+}
+
+.number-username-container{
+  display: flex;
+  align-items: center;
+}
+
+.username-container {
+  width: 85px;
+  text-overflow: ellipsis;
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+
+
+
 }

@@ -1,6 +1,10 @@
 import { useState } from "react";
 import "./JobCard.scss";
 import clock from "../snoozed.svg";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faUser
+} from "@fortawesome/free-solid-svg-icons";
 
 const JobCard = ({
   layout,
@@ -20,13 +24,17 @@ const JobCard = ({
   circleOnClick,
   displayCircle,
   titleFontSize,
-  displayContent
+  displayContent,
+  job,
+  pinned,
+  user_name,
+  defaultUser
 }) => {
   const [showTooltip, setShowTooltip] = useState(false);
 
   const [cardOpen, setCardOpen] = useState(false);
 
-  const [pinned, setPinned] = useState(false)
+  const [pinnedCardOpen, setPinnedCardOpen] = useState(false)
 
   return (
     <div
@@ -55,11 +63,11 @@ const JobCard = ({
         <img src={clock} />
       </div>
       <div className="number-circle-container">
-        <span className="job-number medium" style={{fontSize: titleFontSize}}>{job_number}</span>
+        <div className="number-username-container"><span className="job-number medium" style={{ fontSize: titleFontSize }}>{job_number}</span> {user_name != defaultUser && (<span className="username-container"><FontAwesomeIcon icon={faUser} />{user_name}</span>)}</div>
         <div className="circle" style={{ background: circleBackground, display: displayCircle }} onClick={circleOnClick}></div>
       </div>
       {(layout === "extended" || cardOpen) && (
-        <div className="job-card-content" style={{display: displayContent}}>
+        <div className="job-card-content" style={{ display: displayContent }}>
           <span className="time light">{time}</span>
 
           <span className="ceta" style={{ display: cetaDisplay }}>

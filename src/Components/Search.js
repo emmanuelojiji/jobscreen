@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 
-const Search = ({ user, DEFAULT_USER, AllJobs, jobs }) => {
+const Search = ({ user, AllJobs, jobs }) => {
   const [search, setSearch] = useState("");
 
   const searchResults =

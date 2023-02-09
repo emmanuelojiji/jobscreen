@@ -40,12 +40,7 @@ const SwitchModal = ({
                   >
                     Default
                   </span>
-                  <span
-                    className="menu-item normal"
-                    onClick={() => setUser("Jack Smith")}
-                  >
-                    Jack Smith
-                  </span>
+
                   <span
                     className="menu-item normal"
                     onClick={() => setUser("Holly Jones")}

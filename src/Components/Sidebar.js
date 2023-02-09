@@ -65,7 +65,7 @@ const Sidebar = ({
     closeSidebarOutsideClick(e);
   };
 
-  const [placeholder, setPlaceholder] = useState("All");
+  const [placeholder, setPlaceholder] = useState("All Departments");
 
   return (
     <>
@@ -95,11 +95,11 @@ const Sidebar = ({
                 <span
                   className="menu-item light"
                   onClick={() => {
-                    setPlaceholder("All");
+                    setPlaceholder("All Departments");
                     allDepartments();
                   }}
                 >
-                  All
+                  All Departments
                 </span>
 
                 <span
