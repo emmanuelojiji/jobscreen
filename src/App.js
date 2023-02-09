@@ -80,7 +80,7 @@ const App = () => {
   const toOrderArray = getJobsByCategory(jobs, "to_order")
   const commercialInvoiceReqArray = getJobsByCategory(jobs, "commercial_invoice_req")
   const exportDocsReqArray = getJobsByCategory(jobs, "export_docs_req")
-  const IORRequiredArray = getJobsByCategory(jobs, "ior_required_array")
+  const IORRequiredArray = getJobsByCategory(jobs, "ior_required")
   const awaitingConfirmationArray = getJobsByCategory(jobs, "awaiting_confirmation")
   const awaitingTrackingNumberArray = getJobsByCategory(jobs, "awaiting_tracking_number")
   const dueIntoWarehouseArray = getJobsByCategory(jobs, "due_into_warehouse")
@@ -517,7 +517,7 @@ const App = () => {
                           <Column
                             category="IOR Required"
                             borderTopColor="#77C135"
-                            amount_in_category={inboundArray.length}
+                            amount_in_category={IORRequiredArray.length}
                             width={!columns.ior_required.extended && "79px"}
                             extendedContent={
                               !columns.ior_required.extended && "none"
@@ -589,7 +589,7 @@ const App = () => {
                           <Column
                             category="Awaiting Tracking Number"
                             borderTopColor="#77C135"
-                            amount_in_category={inboundArray.length}
+                            amount_in_category={awaitingTrackingNumberArray.length}
                           >
                             <>
                               {awaitingTrackingNumberArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
@@ -624,7 +624,7 @@ const App = () => {
                           <Column
                             category="Due in to Warehouse"
                             borderTopColor="#77C135"
-                            amount_in_category={inboundArray.length}
+                            amount_in_category={dueIntoWarehouseArray.length}
                           >
                             <>
                               {dueIntoWarehouseArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
@@ -662,7 +662,7 @@ const App = () => {
                           <Column
                             category="Arrived"
                             borderTopColor="#77C135"
-                            amount_in_category={inboundArray.length}
+                            amount_in_category={arrivedArray.length}
                           >
                             <>
                               {arrivedArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
@@ -733,7 +733,7 @@ const App = () => {
                           <Column
                             category="Awaiting Parts"
                             borderTopColor="#77C135"
-                            amount_in_category={inboundArray.length}
+                            amount_in_category={awaitingPartsArray.length}
                           >
                             <>
                               {awaitingPartsArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
@@ -768,7 +768,7 @@ const App = () => {
                           <Column
                             category="Transit Pallet"
                             borderTopColor="#77C135"
-                            amount_in_category={inboundArray.length}
+                            amount_in_category={transitPalletArray.length}
                           >
                             <>
                               {transitPalletArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
@@ -783,8 +783,7 @@ const App = () => {
                                   }
                                   ceta="12 August 2022"
                                   statusColor={job.late ? "white" : "#83E884"}
-                                  fraction="3/6"
-                                  suffix="ARRIVED"
+                              
                                   circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                   circleBackground={job.pinned && "gold"}
                                   user_name={job.user_name}
@@ -805,7 +804,7 @@ const App = () => {
                           <Column
                             category="Problem Shelf"
                             borderTopColor="#77C135"
-                            amount_in_category={inboundArray.length}
+                            amount_in_category={problemShelfArray.length}
                           >
                             <>
                               {problemShelfArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
@@ -820,8 +819,7 @@ const App = () => {
                                   }
                                   ceta="12 August 2022"
                                   statusColor={job.late ? "white" : "#83E884"}
-                                  fraction="3/6"
-                                  suffix="ARRIVED"
+                               
                                   circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                   circleBackground={job.pinned && "gold"}
                                   user_name={job.user_name}
@@ -841,7 +839,7 @@ const App = () => {
                           <Column
                             category="Preparing to ship"
                             borderTopColor="#77C135"
-                            amount_in_category={inboundArray.length}
+                            amount_in_category={preparingToShipArray.length}
                           >
                             <>
                               {preparingToShipArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
@@ -856,8 +854,7 @@ const App = () => {
                                   }
                                   ceta="12 August 2022"
                                   statusColor={job.late ? "white" : "#83E884"}
-                                  fraction="3/6"
-                                  suffix="ARRIVED"
+                                
                                   circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                   circleBackground={job.pinned && "gold"}
                                   user_name={job.user_name}
@@ -875,7 +872,7 @@ const App = () => {
                           <Column
                             category="Buy Shipping Label"
                             borderTopColor="#77C135"
-                            amount_in_category={inboundArray.length}
+                            amount_in_category={buyShippingLabelArray.length}
                           >
                             <>
                               {buyShippingLabelArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
@@ -890,8 +887,7 @@ const App = () => {
                                   }
                                   ceta="12 August 2022"
                                   statusColor={job.late ? "white" : "#83E884"}
-                                  fraction="3/6"
-                                  suffix="ARRIVED"
+                              
                                   circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                   circleBackground={job.pinned && "gold"}
                                   user_name={job.user_name}
@@ -910,7 +906,7 @@ const App = () => {
                           <Column
                             category="Customer Collection"
                             borderTopColor="#77C135"
-                            amount_in_category={inboundArray.length}
+                            amount_in_category={customerCollectionArray.length}
                           >
                             <>
                               {customerCollectionArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
@@ -925,8 +921,7 @@ const App = () => {
                                   }
                                   ceta="12 August 2022"
                                   statusColor={job.late ? "white" : "#83E884"}
-                                  fraction="3/6"
-                                  suffix="ARRIVED"
+                                
                                   circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                   circleBackground={job.pinned && "gold"}
                                   user_name={job.user_name}
@@ -946,7 +941,7 @@ const App = () => {
                           <Column
                             category="Pack and Hold"
                             borderTopColor="#77C135"
-                            amount_in_category={inboundArray.length}
+                            amount_in_category={packAndHoldArray.length}
                           >
                             <>
                               {packAndHoldArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
@@ -961,8 +956,7 @@ const App = () => {
                                   }
                                   ceta="12 August 2022"
                                   statusColor={job.late ? "white" : "#83E884"}
-                                  fraction="3/6"
-                                  suffix="ARRIVED"
+                                
                                   circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                   circleBackground={job.pinned && "gold"}
                                   user_name={job.user_name}
@@ -980,7 +974,7 @@ const App = () => {
                           <Column
                             category="To Send Tracking Label"
                             borderTopColor="#77C135"
-                            amount_in_category={inboundArray.length}
+                            amount_in_category={toSendTrackingArray.length}
                           >
                             <>
                               {toSendTrackingArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
@@ -995,8 +989,7 @@ const App = () => {
                                   }
                                   ceta="12 August 2022"
                                   statusColor={job.late ? "white" : "#83E884"}
-                                  fraction="3/6"
-                                  suffix="ARRIVED"
+                                
                                   circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                   circleBackground={job.pinned && "gold"}
                                   user_name={job.user_name}
@@ -1011,7 +1004,7 @@ const App = () => {
                         <Column
                           category="In Transit"
                           borderTopColor="#77C135"
-                          amount_in_category={inboundArray.length}
+                          amount_in_category={inTransitArray.length}
                         >
                           <>
                             {inTransitArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
@@ -1026,8 +1019,7 @@ const App = () => {
                                 }
                                 ceta="12 August 2022"
                                 statusColor={job.late ? "white" : "#83E884"}
-                                fraction="3/6"
-                                suffix="ARRIVED"
+                               
                                 circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                 circleBackground={job.pinned && "gold"}
                                 user_name={job.user_name}
@@ -1043,7 +1035,7 @@ const App = () => {
                           <Column
                             category="Non Trackable Courier"
                             borderTopColor="#77C135"
-                            amount_in_category={inboundArray.length}
+                            amount_in_category={nonTrackableCourierArray.length}
                           >
                             <>
                               {nonTrackableCourierArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
@@ -1058,8 +1050,7 @@ const App = () => {
                                   }
                                   ceta="12 August 2022"
                                   statusColor={job.late ? "white" : "#83E884"}
-                                  fraction="3/6"
-                                  suffix="ARRIVED"
+                               
                                   circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                   circleBackground={job.pinned && "gold"}
                                   user_name={job.user_name}
@@ -1080,7 +1071,7 @@ const App = () => {
                           <Column
                             category="Exception"
                             borderTopColor="#77C135"
-                            amount_in_category={inboundArray.length}
+                            amount_in_category={exceptionArray.length}
                           >
                             <>
                               {exceptionArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
@@ -1095,8 +1086,7 @@ const App = () => {
                                   }
                                   ceta="12 August 2022"
                                   statusColor={job.late ? "white" : "#83E884"}
-                                  fraction="3/6"
-                                  suffix="ARRIVED"
+                                
                                   circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                   circleBackground={job.pinned && "gold"}
                                   user_name={job.user_name}
@@ -1113,7 +1103,7 @@ const App = () => {
                         <Column
                           category="To Send POD"
                           borderTopColor="#77C135"
-                          amount_in_category={inboundArray.length}
+                          amount_in_category={toSendPODArray.length}
                         >
                           <>
                             {toSendPODArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
@@ -1128,8 +1118,7 @@ const App = () => {
                                 }
                                 ceta="12 August 2022"
                                 statusColor={job.late ? "white" : "#83E884"}
-                                fraction="3/6"
-                                suffix="ARRIVED"
+                              
                                 circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                 circleBackground={job.pinned && "gold"}
                                 user_name={job.user_name}
@@ -1145,7 +1134,7 @@ const App = () => {
                           <Column
                             category="Still to Action"
                             borderTopColor="#77C135"
-                            amount_in_category={inboundArray.length}
+                            amount_in_category={stillToActionArray.length}
                           >
                             <>
                               {stillToActionArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
@@ -1160,8 +1149,7 @@ const App = () => {
                                   }
                                   ceta="12 August 2022"
                                   statusColor={job.late ? "white" : "#83E884"}
-                                  fraction="3/6"
-                                  suffix="ARRIVED"
+                                  
                                   circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                   circleBackground={job.pinned && "gold"}
                                   user_name={job.user_name}
@@ -1178,7 +1166,7 @@ const App = () => {
                           <Column
                             category="Last Column"
                             borderTopColor="#77C135"
-                            amount_in_category={inboundArray.length}
+                            amount_in_category={lastColumnArray.length}
                           >
                             <>
                               {lastColumnArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
@@ -1193,8 +1181,7 @@ const App = () => {
                                   }
                                   ceta="12 August 2022"
                                   statusColor={job.late ? "white" : "#83E884"}
-                                  fraction="3/6"
-                                  suffix="ARRIVED"
+                                
                                   circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                   circleBackground={job.pinned && "gold"}
                                   user_name={job.user_name}
