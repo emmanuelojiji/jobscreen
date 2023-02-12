@@ -24,6 +24,8 @@ const App = () => {
   const [defaultUser, setDefaultUser] = useState("Tom")
 
   const [showLateJobs, setShowLateJobs] = useState(true);
+  const [showPinnedJobs, setShowPinnedJobs] = useState(true);
+
   const [carouselView, setCarouselView] = useState(0);
 
   const [layout, setLayout] = useState("extended");
@@ -270,6 +272,22 @@ const App = () => {
             </label>
           </div>
 
+          <div className="controls-option-wrap">
+            <span className="controls-label normal">Show pinned</span>
+            <label>
+              <Toggle
+                defaultChecked={true}
+                onChange={(e) => {
+                  if (e.target.checked) {
+                    setShowPinnedJobs(true);
+                  } else {
+                    setShowPinnedJobs(false);
+                  }
+                }}
+              />
+            </label>
+          </div>
+
           <div className="controls-option-wrap"></div>
           <Search
             user={user}
@@ -334,7 +352,7 @@ const App = () => {
                           borderTopColor="#d3d347"
                           opacity={pinnedArray.length === 0 && "0.5"}
                           amount_in_category={pinnedArray.length}
-                          
+
 
                           writingMode={
                             !columns.pinned.extended && "vertical-rl"
@@ -384,8 +402,30 @@ const App = () => {
                             }
                           >
                             <>
+                              {showPinnedJobs && <div className="pinned-container">
+                                {toOrderArray.filter(job => (showLateJobs || !job.late) && (job.pinned)).map((job, index) => (
+                                  <JobCard
+                                    job_number={job.jobNumber}
+                                    time={job.time}
+                                    cardHeight={
+                                      layout === "extended" ? "150px" : "50px"
+                                    }
+                                    layout={layout}
+                                    backgroundColor={job.late && "#D64045"}
+                                    displayLateIcon={job.late && "block"}
+                                    statusColor={job.late ? "white" : "#83E884"}
+                                    cetaDisplay="none"
+                                    circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
+                                    circleBackground={job.pinned && "gold"}
+                                    user_name={job.user_name}
+                                    defaultUser={defaultUser}
+                                  />
+                                ))}
+                              </div>}
 
-                              {toOrderArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
+
+
+                              {toOrderArray.filter(job => (showLateJobs || !job.late) && !job.pinned).map((job, index) => (
                                 <JobCard
                                   job_number={job.jobNumber}
                                   time={job.time}
@@ -414,7 +454,7 @@ const App = () => {
                           <Column
                             category="Commercial Invoice Required"
                             borderTopColor="#1B90E6"
-                            opacity={commercialInvoiceReqArray.length == 0 || (commercialInvoiceReqArray.length ==  1 && !showLateJobs) && "0.5"}
+                            opacity={commercialInvoiceReqArray.length == 0 || (commercialInvoiceReqArray.length == 1 && !showLateJobs) && "0.5"}
                             amount_in_category={!showLateJobs ? commercialInvoiceReqArray.length - commercialInvoiceReqArray.filter(job => job.late).length : commercialInvoiceReqArray.length}
                             width={
                               !columns.commercial_invoice_req.extended && "79px"
@@ -431,7 +471,7 @@ const App = () => {
                             }
                           >
                             <>
-                              {commercialInvoiceReqArray.length == 0 || (commercialInvoiceReqArray.length ==  1 && !showLateJobs) && (
+                              {commercialInvoiceReqArray.length == 0 || (commercialInvoiceReqArray.length == 1 && !showLateJobs) && (
                                 <p className="no-jobs light">No jobs to show</p>
                               )}
 
@@ -780,7 +820,7 @@ const App = () => {
                                   }
                                   ceta="12 August 2022"
                                   statusColor={job.late ? "white" : "#83E884"}
-                              
+
                                   circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                   circleBackground={job.pinned && "gold"}
                                   user_name={job.user_name}
@@ -816,7 +856,7 @@ const App = () => {
                                   }
                                   ceta="12 August 2022"
                                   statusColor={job.late ? "white" : "#83E884"}
-                               
+
                                   circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                   circleBackground={job.pinned && "gold"}
                                   user_name={job.user_name}
@@ -851,7 +891,7 @@ const App = () => {
                                   }
                                   ceta="12 August 2022"
                                   statusColor={job.late ? "white" : "#83E884"}
-                                
+
                                   circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                   circleBackground={job.pinned && "gold"}
                                   user_name={job.user_name}
@@ -884,7 +924,7 @@ const App = () => {
                                   }
                                   ceta="12 August 2022"
                                   statusColor={job.late ? "white" : "#83E884"}
-                              
+
                                   circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                   circleBackground={job.pinned && "gold"}
                                   user_name={job.user_name}
@@ -918,7 +958,7 @@ const App = () => {
                                   }
                                   ceta="12 August 2022"
                                   statusColor={job.late ? "white" : "#83E884"}
-                                
+
                                   circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                   circleBackground={job.pinned && "gold"}
                                   user_name={job.user_name}
@@ -953,7 +993,7 @@ const App = () => {
                                   }
                                   ceta="12 August 2022"
                                   statusColor={job.late ? "white" : "#83E884"}
-                                
+
                                   circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                   circleBackground={job.pinned && "gold"}
                                   user_name={job.user_name}
@@ -986,7 +1026,7 @@ const App = () => {
                                   }
                                   ceta="12 August 2022"
                                   statusColor={job.late ? "white" : "#83E884"}
-                                
+
                                   circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                   circleBackground={job.pinned && "gold"}
                                   user_name={job.user_name}
@@ -1016,7 +1056,7 @@ const App = () => {
                                 }
                                 ceta="12 August 2022"
                                 statusColor={job.late ? "white" : "#83E884"}
-                               
+
                                 circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                 circleBackground={job.pinned && "gold"}
                                 user_name={job.user_name}
@@ -1047,7 +1087,7 @@ const App = () => {
                                   }
                                   ceta="12 August 2022"
                                   statusColor={job.late ? "white" : "#83E884"}
-                               
+
                                   circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                   circleBackground={job.pinned && "gold"}
                                   user_name={job.user_name}
@@ -1083,7 +1123,7 @@ const App = () => {
                                   }
                                   ceta="12 August 2022"
                                   statusColor={job.late ? "white" : "#83E884"}
-                                
+
                                   circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                   circleBackground={job.pinned && "gold"}
                                   user_name={job.user_name}
@@ -1115,7 +1155,7 @@ const App = () => {
                                 }
                                 ceta="12 August 2022"
                                 statusColor={job.late ? "white" : "#83E884"}
-                              
+
                                 circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                 circleBackground={job.pinned && "gold"}
                                 user_name={job.user_name}
@@ -1146,7 +1186,7 @@ const App = () => {
                                   }
                                   ceta="12 August 2022"
                                   statusColor={job.late ? "white" : "#83E884"}
-                                  
+
                                   circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                   circleBackground={job.pinned && "gold"}
                                   user_name={job.user_name}
@@ -1178,7 +1218,7 @@ const App = () => {
                                   }
                                   ceta="12 August 2022"
                                   statusColor={job.late ? "white" : "#83E884"}
-                                
+
                                   circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                   circleBackground={job.pinned && "gold"}
                                   user_name={job.user_name}
