@@ -6,6 +6,8 @@ import {
   faUser
 } from "@fortawesome/free-solid-svg-icons";
 
+import avatar from "../job-card-avatar.jpeg"
+
 const JobCard = ({
   layout,
   cardHeight,
@@ -60,7 +62,7 @@ const JobCard = ({
         <img src={clock} />
       </div>
       <div className="number-circle-container">
-        <div className="number-username-container"><span className="job-number medium" style={{ fontSize: titleFontSize, color: jobNumberColor }}>{job_number}</span> {user_name != defaultUser && (<span className="username-container"><FontAwesomeIcon icon={faUser} />{user_name}</span>)}</div>
+        <div className="number-username-container"><span className="job-number medium" style={{ fontSize: titleFontSize, color: jobNumberColor }}>{job_number}</span> {user_name != defaultUser && (<div className="job-card-avatar" style={{ backgroundImage: `url(${avatar})` }}></div>)}</div>
         <div className="circle" style={{ background: circleBackground, display: displayCircle }} onClick={circleOnClick}></div>
       </div>
       {(layout === "extended") && (
@@ -69,7 +71,7 @@ const JobCard = ({
 
           {ceta && <span className="ceta" style={{ display: cetaDisplay }}>
             CETA <span className="ceta-bold">{ceta}</span>
-          </span> }
+          </span>}
 
           <span className="status light" style={{ color: statusColor }}>
             <span>
