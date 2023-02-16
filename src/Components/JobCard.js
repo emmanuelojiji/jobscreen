@@ -33,7 +33,12 @@ const JobCard = ({
   defaultUser,
   height,
   cardOnClick,
-  jobNumberColor
+  jobNumberColor,
+  circleBorder,
+  displayTime,
+  category,
+  displayCategory
+
 }) => {
   const [showTooltip, setShowTooltip] = useState(false);
 
@@ -63,11 +68,11 @@ const JobCard = ({
       </div>
       <div className="number-circle-container">
         <div className="number-username-container"><span className="job-number medium" style={{ fontSize: titleFontSize, color: jobNumberColor }}>{job_number}</span> {user_name != defaultUser && (<div className="job-card-avatar" style={{ backgroundImage: `url(${avatar})` }}></div>)}</div>
-        <div className="circle" style={{ background: circleBackground, display: displayCircle }} onClick={circleOnClick}></div>
+        <div className="circle" style={{ background: circleBackground, display: displayCircle, border: circleBorder }} onClick={circleOnClick}></div>
       </div>
       {(layout === "extended") && (
         <div className="job-card-content" style={{ display: isExpanded ? "flex" : "none" }}>
-          <span className="time light">{time}</span>
+          <span className="time light" style={{ display: displayTime }}>{time}</span>
 
           {ceta && <span className="ceta" style={{ display: cetaDisplay }}>
             CETA <span className="ceta-bold">{ceta}</span>
@@ -79,6 +84,7 @@ const JobCard = ({
               {suffix}
             </span>
           </span>
+          <span class="bold category" style={{display: displayCategory}}>{category}</span>
         </div>
       )}
 

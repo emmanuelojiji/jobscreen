@@ -4,6 +4,7 @@ export const otherUser = [
     time: "8 mins ago",
     late: true,
     category: "to_order",
+    category_display: "To Order",
     country_flag: "🇬🇳",
     pinned:false,
     user_name: "Holly Jones"
@@ -14,6 +15,7 @@ export const otherUser = [
     time: "8 mins ago",
     late: true,
     category: "ordered",
+    category_display: "Ordered",
     country_flag: "🇸🇳",
     pinned:false,
     user_name: "Holly Jones"
@@ -22,8 +24,10 @@ export const otherUser = [
   {
     jobNumber: "SG-J24272",
     time: "8 mins ago",
+    ceta: "12 August 2022",
     late: false,
     category: "commercial_invoice_req",
+    category_display: "Commercial Invoice Required",
     country_flag: "🇸🇳",
     pinned:false,
     user_name: "Holly Jones"
@@ -34,6 +38,8 @@ export const otherUser = [
     time: "8 mins ago",
     late: false,
     category: "commercial_invoice_req",
+    category_display: "Commercial Invoice Required",
+    ceta: "12 August 2022",
     country_flag: "🇸🇳",
     pinned:false,
     user_name: "Holly Jones"
@@ -44,6 +50,8 @@ export const otherUser = [
     time: "8 mins ago",
     late: false,
     category: "commercial_invoice_req",
+    category_display: "Commercial Invoice Required",
+    ceta: "12 August 2022",
     country_flag: "🇸🇳",
     pinned:false,
     user_name: "Holly Jones"
@@ -54,6 +62,7 @@ export const otherUser = [
     time: "8 mins ago",
     late: false,
     category: "inbound",
+    category_display: "Inbound",
     country_flag: "🇸🇳",
     pinned:false,
     user_name: "Holly Jones"
@@ -64,6 +73,7 @@ export const otherUser = [
     time: "8 mins ago",
     late: true,
     category: "awaiting_tracking",
+    category_display: "Awaiting Tracking",
     country_flag: "🇸🇳",
     pinned:false,
     user_name: "Holly Jones"
@@ -74,6 +84,7 @@ export const otherUser = [
     time: "8 mins ago",
     late: false,
     category: "awaiting_tracking",
+    category_display: "Awaiting Tracking",
     country_flag: "🇸🇳",
     pinned:false,
     user_name: "Holly Jones"
@@ -83,6 +94,7 @@ export const otherUser = [
     time: "8 mins ago",
     late: false,
     category: "inbound",
+    category_display: "Inbound",
     country_flag: "🇸🇳",
     pinned:false,
     user_name: "Holly Jones"
@@ -92,7 +104,8 @@ export const otherUser = [
     jobNumber: "SG-J24279",
     time: "8 mins ago",
     late: false,
-    category: "ordered",
+    category: "export_docs_req",
+    category_display: "Export Docs Required",
     country_flag: "🇸🇳",
     pinned:true,
     user_name: "Holly Jones"
@@ -103,6 +116,7 @@ export const otherUser = [
     time: "8 mins ago",
     late: false,
     category: "ordered",
+    category_display: "Ordered",
     country_flag: "🇸🇳",
     pinned:false,
     user_name: "Holly Jones"
@@ -113,6 +127,7 @@ export const otherUser = [
     time: "8 mins ago",
     late: true,
     category: "ordered",
+    category_display: "Ordered",
     country_flag: "🇸🇳",
     pinned:false,
     user_name: "Holly Jones"
@@ -123,6 +138,7 @@ export const otherUser = [
     time: "8 mins ago",
     late: false,
     category: "ordered",
+    category_display: "Ordered",
     country_flag: "🇸🇳",
     pinned:false,
     user_name: "Holly Jones"
@@ -133,6 +149,7 @@ export const otherUser = [
     time: "8 mins ago",
     late: false,
     category: "ordered",
+    category_display: "Ordered",
     country_flag: "🇸🇳",
     pinned:false,
     user_name: "Holly Jones"
@@ -143,6 +160,7 @@ export const otherUser = [
     time: "8 mins ago",
     late: false,
     category: "ordered",
+    category_display: "Ordered",
     country_flag: "🇸🇳",
     pinned:false,
     user_name: "Holly Jones"
@@ -153,6 +171,8 @@ export const otherUser = [
     time: "8 mins ago",
     late: false,
     category: "export_docs_req",
+    category_display: "Export Docs Required",
+    ceta: "12 August 2022",
     country_flag: "🇸🇳",
     pinned: "true",
     user_name: "Holly Jones"

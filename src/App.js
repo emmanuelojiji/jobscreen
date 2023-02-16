@@ -384,21 +384,16 @@ const App = () => {
                               backgroundColor={job.late && "#D64045"}
                               displayLateIcon={job.late && "block"}
                               statusColor={job.late ? "white" : "#83E884"}
-                              ceta={job.ceta}
                               circleBackground={job.pinned && "gold"}
                               circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                               job={job}
                               pinned={job.pinned}
-
                               user_name={job.user_name}
                               defaultUser={defaultUser}
-
-                              fraction={job.fraction}
-                              suffix={job.suffix}
                               jobNumberColor={job.late && "white"}
-
-
-
+                              displayTime="none"
+                              category={job.category_display}
+                              
                             />
                           ))}
                         </>
@@ -421,6 +416,7 @@ const App = () => {
                           writingMode={
                             !columns.to_order.extended && "vertical-rl"
                           }
+                          pinFilterDisplay={!columns.to_order.extended && "none"}
                         >
                           <>
                             {showPinnedJobs && <div className="pinned-container">
@@ -439,7 +435,8 @@ const App = () => {
                                   defaultUser={defaultUser}
                                   displayContent={layout === "extended" ? "flex" : "none"}
                                   jobNumberColor={job.late && "white"}
-                              
+                                  circleBorder={job.late && "solid 1px white"}
+
 
                                 />
                               ))}
@@ -466,7 +463,7 @@ const App = () => {
                                 defaultUser={defaultUser}
                                 displayContent={layout === "extended" ? "flex" : "none"}
                                 jobNumberColor={job.late && "white"}
-
+                                circleBorder={job.late && "solid 1px white"}
                               />
                             ))}
                           </>
@@ -495,13 +492,40 @@ const App = () => {
                             !columns.commercial_invoice_req.extended &&
                             "vertical-rl"
                           }
+                          pinFilterDisplay={!columns.commercial_invoice_req.extended && "none"}
                         >
+
+                          {showPinnedJobs && <div className="pinned-container">
+                            {commercialInvoiceReqArray.filter(job => (showLateJobs || !job.late) && (job.pinned)).map((job, index) => (
+                              <JobCard
+                                job_number={job.jobNumber}
+                                time={job.time}
+                                layout={layout}
+                                backgroundColor={job.late && "#D64045"}
+                                displayLateIcon={job.late && "block"}
+                                statusColor={job.late ? "white" : "#83E884"}
+                                ceta={job.ceta && job.ceta}
+                                fraction="3/6"
+                                suffix="Ordered"
+                                circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
+                                circleBackground={job.pinned && "gold"}
+                                user_name={job.user_name}
+                                defaultUser={defaultUser}
+                                displayContent={layout === "extended" ? "flex" : "none"}
+                                jobNumberColor={job.late && "white"}
+                                circleBorder={job.late && "solid 1px white"}
+
+
+
+                              />
+                            ))}
+                          </div>}
                           <>
                             {commercialInvoiceReqArray.length == 0 || (commercialInvoiceReqArray.length == 1 && !showLateJobs) && (
                               <p className="no-jobs light">No jobs to show</p>
                             )}
 
-                            {commercialInvoiceReqArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
+                            {commercialInvoiceReqArray.filter(job => (showLateJobs || !job.late) && !job.pinned).map((job, index) => (
                               <JobCard
                                 job_number={job.jobNumber}
                                 time={job.time}
@@ -520,6 +544,7 @@ const App = () => {
                                 user_name={job.user_name}
                                 defaultUser={defaultUser}
                                 jobNumberColor={job.late && "white"}
+                                circleBorder={job.late && "solid 1px white"}
 
                               />
                             ))}
@@ -545,10 +570,11 @@ const App = () => {
                           writingMode={
                             !columns.export_docs_req.extended && "vertical-rl"
                           }
+                          pinFilterDisplay={!columns.export_docs_req.extended && "none"}
                         >
                           <>
 
-                          {showPinnedJobs && <div className="pinned-container">
+                            {showPinnedJobs && <div className="pinned-container">
                               {exportDocsReqArray.filter(job => (showLateJobs || !job.late) && (job.pinned)).map((job, index) => (
                                 <JobCard
                                   job_number={job.jobNumber}
@@ -558,6 +584,8 @@ const App = () => {
                                   displayLateIcon={job.late && "block"}
                                   statusColor={job.late ? "white" : "#83E884"}
                                   ceta={job.ceta && job.ceta}
+                                  fraction="1/6"
+                                  suffix="TRACKING NOS. RECEIVED"
                                   circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                   circleBackground={job.pinned && "gold"}
                                   user_name={job.user_name}
@@ -610,6 +638,7 @@ const App = () => {
                           writingMode={
                             !columns.ior_required.extended && "vertical-rl"
                           }
+                          pinFilterDisplay={!columns.ior_required.extended && "none"}
                         >
                           <>
                             {IORRequiredArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
@@ -655,6 +684,7 @@ const App = () => {
                             !columns.awaiting_confirmation.extended &&
                             "vertical-rl"
                           }
+                          pinFilterDisplay={!columns.awaiting_confirmation.extended && "none"}
                         >
                           <>
                             {awaitingConfirmationArray.map((job, index) => (
@@ -701,6 +731,7 @@ const App = () => {
                             !columns.awaiting_tracking_number.extended &&
                             "vertical-rl"
                           }
+                          pinFilterDisplay={!columns.awaiting_tracking_number.extended && "none"}
                         >
                           <>
                             {awaitingTrackingNumberArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
@@ -750,6 +781,7 @@ const App = () => {
                             !columns.due_into_warehouse.extended &&
                             "vertical-rl"
                           }
+                          pinFilterDisplay={!columns.due_into_warehouse.extended && "none"}
                         >
                           <>
                             {dueIntoWarehouseArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
@@ -788,6 +820,7 @@ const App = () => {
                           category="Arrived"
                           borderTopColor="#77C135"
                           amount_in_category={arrivedArray.length}
+
                         >
                           <>
                             {arrivedArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
