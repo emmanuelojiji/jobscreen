@@ -28,29 +28,26 @@ const JobCard = ({
   job,
   pinned,
   user_name,
-  defaultUser
+  defaultUser,
+  height,
+  cardOnClick,
+  jobNumberColor
 }) => {
   const [showTooltip, setShowTooltip] = useState(false);
 
-  const [cardOpen, setCardOpen] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(true);
 
-  const [pinnedCardOpen, setPinnedCardOpen] = useState(false)
 
   return (
     <div
       className="JobCard"
       style={{
         backgroundColor: backgroundColor,
-        height: cardOpen ? "150px" : cardHeight,
+        height: isExpanded ? "150px" : "50px",
         width: width
       }}
       onClick={(e) => {
-        if (!cardOpen && layout === "condensed") {
-          setCardOpen(true);
-        } else {
-          setCardOpen(false);
-        }
-
+        setIsExpanded(!isExpanded)
         e.stopPropagation();
       }}
     >
@@ -63,20 +60,20 @@ const JobCard = ({
         <img src={clock} />
       </div>
       <div className="number-circle-container">
-        <div className="number-username-container"><span className="job-number medium" style={{ fontSize: titleFontSize }}>{job_number}</span> {user_name != defaultUser && (<span className="username-container"><FontAwesomeIcon icon={faUser} />{user_name}</span>)}</div>
+        <div className="number-username-container"><span className="job-number medium" style={{ fontSize: titleFontSize, color: jobNumberColor }}>{job_number}</span> {user_name != defaultUser && (<span className="username-container"><FontAwesomeIcon icon={faUser} />{user_name}</span>)}</div>
         <div className="circle" style={{ background: circleBackground, display: displayCircle }} onClick={circleOnClick}></div>
       </div>
-      {(layout === "extended" || cardOpen) && (
-        <div className="job-card-content" style={{ display: displayContent }}>
+      {(layout === "extended") && (
+        <div className="job-card-content" style={{ display: isExpanded ? "flex" : "none" }}>
           <span className="time light">{time}</span>
 
-          <span className="ceta" style={{ display: cetaDisplay }}>
+          {ceta && <span className="ceta" style={{ display: cetaDisplay }}>
             CETA <span className="ceta-bold">{ceta}</span>
-          </span>
+          </span> }
 
           <span className="status light" style={{ color: statusColor }}>
             <span>
-              <span className="fraction bold">{`${fraction}`} </span>
+              {fraction && <span className="fraction bold">{`${fraction}`} </span>}
               {suffix}
             </span>
           </span>
@@ -99,6 +96,7 @@ const JobCard = ({
 JobCard.defaultProps = {
   fraction: "",
   suffix: "",
+  ceta: "",
 };
 
 export default JobCard;

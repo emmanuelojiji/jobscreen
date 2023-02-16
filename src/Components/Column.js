@@ -19,12 +19,14 @@ const Column = ({
   changeSize,
   writingMode,
   pinDisplay,
-  background
+  background,
+  pinFilterDisplay,
+  pinClicked
 }) => {
   return (
     <div
       className={`Column`}
-      style={{ borderTopColor: borderTopColor, opacity: opacity, width: width, background: background }}
+      style={{ borderTopColor: borderTopColor, opacity: opacity, minWidth: width, background: background }}
       onClick={changeSize}
     >
       <div className="column-header bold" style={{ writingMode: writingMode }}>
@@ -32,7 +34,13 @@ const Column = ({
           <span className="category-title">{category}</span>
           {pinDisplay && (<FontAwesomeIcon icon={faThumbTack} />)}
         </div>
-        <span>{amount_in_category}</span>
+
+        <div className="pin-amount-wrap">
+          <div className="pin-container" style={{display: pinFilterDisplay}} onClick={pinClicked}>
+          <FontAwesomeIcon icon={faThumbTack} />
+          </div>
+          <span>{amount_in_category}</span>
+        </div>
       </div>
       <div className="column-content" style={{ display: extendedContent }}>
         {children}

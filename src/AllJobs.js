@@ -65,6 +65,9 @@ export const AllJobs = [
     time: "8 mins ago",
     late: true,
     category: "commercial_invoice_req",
+    fraction: "3/6",
+    suffix: "Ordered",
+    ceta: "12 August 2022",
     country_flag: "🇬🇧",
     pinned: false,
     user_name: "Tom"
@@ -141,6 +144,9 @@ export const AllJobs = [
     time: "8 mins ago",
     late: false,
     category: "export_docs_req",
+    fraction:"1/6",
+    suffix: "TRACKING NOS. RECEIVED",
+    ceta: "12 August 2022",
     country_flag: "🇬🇧",
     pinned: false,
     user_name: "Tom"
@@ -151,6 +157,9 @@ export const AllJobs = [
     time: "8 mins ago",
     late: false,
     category: "export_docs_req",
+    fraction:"1/6",
+    suffix: "TRACKING NOS. RECEIVED",
+    ceta: "12 August 2022",
     country_flag: "🇬🇧",
     pinned: false,
     user_name: "Tom"

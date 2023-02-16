@@ -34,6 +34,16 @@ const App = () => {
   const [toOrderExtended, setToOrderExtended] = useState(false);
   const [orderedExtended, setOrderedExtended] = useState(false);
 
+  const [allExpanded, setAllExpanded] = useState(true)
+
+  const handleGlobalToggle = (expanded) => {
+    setAllExpanded(!expanded);
+  };
+
+  const columnSpecificFilter = () => {
+
+  }
+
 
   const [columns, setColumns] = useState({
     pinned: { visible: true, extended: true },
@@ -78,6 +88,8 @@ const App = () => {
   }
 
   const pinnedArray = jobs.filter(job => job.pinned && (showLateJobs || !job.late));
+
+
 
   const toOrderArray = getJobsByCategory(jobs, "to_order")
   const commercialInvoiceReqArray = getJobsByCategory(jobs, "commercial_invoice_req")
@@ -189,6 +201,7 @@ const App = () => {
         setCondensed={() => {
           setLayout("condensed");
         }}
+        globalToggle={handleGlobalToggle}
         layout={layout}
         toOrderToggle={toggleVisibility("to_order")}
         commercialInvoiceReqToggle={toggleVisibility("commercial_invoice_req")}
@@ -344,38 +357,233 @@ const App = () => {
                     className="column-slide"
                     style={{ transform: `translateX(${carouselView}%)` }}
                   >
-                    <div className="column-container">
 
-                      {columns.pinned.visible && (
+
+                    {columns.pinned.visible && (
+                      <Column
+                        category="Pinned"
+                        borderTopColor="#d3d347"
+                        opacity={pinnedArray.length === 0 && "0.5"}
+                        amount_in_category={pinnedArray.length}
+                        writingMode={
+                          !columns.pinned.extended && "vertical-rl"
+                        }
+                        pinDisplay={columns.pinned.extended && "none"}
+                        pinFilterDisplay="none"
+
+
+
+                      >
+                        {pinnedArray.length < 1 && (<p className="no-jobs light">No jobs to show</p>)}
+                        <>
+                          {pinnedArray.map((job, index) => (
+                            <JobCard
+                              job_number={job.jobNumber}
+                              time={job.time}
+                              layout={layout}
+                              backgroundColor={job.late && "#D64045"}
+                              displayLateIcon={job.late && "block"}
+                              statusColor={job.late ? "white" : "#83E884"}
+                              ceta={job.ceta}
+                              circleBackground={job.pinned && "gold"}
+                              circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
+                              job={job}
+                              pinned={job.pinned}
+
+                              user_name={job.user_name}
+                              defaultUser={defaultUser}
+
+                              fraction={job.fraction}
+                              suffix={job.suffix}
+                              jobNumberColor={job.late && "white"}
+
+
+
+                            />
+                          ))}
+                        </>
+                      </Column>
+                    )}
+
+
+                    {columns.to_order.visible &&
+                      (department == "all" ||
+                        department == "order_fulfilment") && (
                         <Column
-                          category="Pinned"
-                          borderTopColor="#d3d347"
-                          opacity={pinnedArray.length === 0 && "0.5"}
-                          amount_in_category={pinnedArray.length}
-
-
-                          writingMode={
-                            !columns.pinned.extended && "vertical-rl"
+                          category="To Order"
+                          borderTopColor="#DC6942"
+                          amount_in_category={!showLateJobs ? toOrderArray.length - toOrderArray.filter(job => job.late).length : toOrderArray.length}
+                          width={!columns.to_order.extended && "79px"}
+                          extendedContent={
+                            !columns.to_order.extended && "none"
                           }
-                          pinDisplay={columns.pinned.extended && "none"}
-
+                          changeSize={() => toggleColumnSize("to_order")}
+                          writingMode={
+                            !columns.to_order.extended && "vertical-rl"
+                          }
                         >
-                          {pinnedArray.length < 1 && (<p className="no-jobs light">No jobs to show</p>)}
                           <>
-                            {pinnedArray.map((job, index) => (
+                            {showPinnedJobs && <div className="pinned-container">
+                              {toOrderArray.filter(job => (showLateJobs || !job.late) && (job.pinned)).map((job, index) => (
+                                <JobCard
+                                  job_number={job.jobNumber}
+                                  time={job.time}
+                                  layout={layout}
+                                  backgroundColor={job.late && "#D64045"}
+                                  displayLateIcon={job.late && "block"}
+                                  statusColor={job.late ? "white" : "#83E884"}
+                                  ceta={job.ceta && job.ceta}
+                                  circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
+                                  circleBackground={job.pinned && "gold"}
+                                  user_name={job.user_name}
+                                  defaultUser={defaultUser}
+                                  displayContent={layout === "extended" ? "flex" : "none"}
+                                  jobNumberColor={job.late && "white"}
+                              
+
+                                />
+                              ))}
+                            </div>}
+
+
+
+                            {toOrderArray.filter(job => (showLateJobs || !job.late) && !job.pinned).map((job, index) => (
                               <JobCard
                                 job_number={job.jobNumber}
                                 time={job.time}
+                                cardHeight={
+                                  layout === "extended" ? "150px" : "50px"
+                                }
+                                height={layout === "extended" ? "150px" : "50px"}
                                 layout={layout}
                                 backgroundColor={job.late && "#D64045"}
                                 displayLateIcon={job.late && "block"}
                                 statusColor={job.late ? "white" : "#83E884"}
                                 cetaDisplay="none"
-                                circleBackground={job.pinned && "gold"}
                                 circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
-                                job={job}
-                                pinned={job.pinned}
-                                displayContent="none"
+                                circleBackground={job.pinned && "gold"}
+                                user_name={job.user_name}
+                                defaultUser={defaultUser}
+                                displayContent={layout === "extended" ? "flex" : "none"}
+                                jobNumberColor={job.late && "white"}
+
+                              />
+                            ))}
+                          </>
+                        </Column>
+                      )}
+
+                    {columns.commercial_invoice_req.visible &&
+                      (department === "all" ||
+                        department === "order_fulfilment" ||
+                        department === "global_trade") && (
+                        <Column
+                          category="Commercial Invoice Required"
+                          borderTopColor="#1B90E6"
+                          opacity={commercialInvoiceReqArray.length == 0 || (commercialInvoiceReqArray.length == 1 && !showLateJobs) && "0.5"}
+                          amount_in_category={!showLateJobs ? commercialInvoiceReqArray.length - commercialInvoiceReqArray.filter(job => job.late).length : commercialInvoiceReqArray.length}
+                          width={
+                            !columns.commercial_invoice_req.extended && "79px"
+                          }
+                          extendedContent={
+                            !columns.commercial_invoice_req.extended && "none"
+                          }
+                          changeSize={() =>
+                            toggleColumnSize("commercial_invoice_req")
+                          }
+                          writingMode={
+                            !columns.commercial_invoice_req.extended &&
+                            "vertical-rl"
+                          }
+                        >
+                          <>
+                            {commercialInvoiceReqArray.length == 0 || (commercialInvoiceReqArray.length == 1 && !showLateJobs) && (
+                              <p className="no-jobs light">No jobs to show</p>
+                            )}
+
+                            {commercialInvoiceReqArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
+                              <JobCard
+                                job_number={job.jobNumber}
+                                time={job.time}
+                                backgroundColor={job.late && "#D64045"}
+                                displayLateIcon={job.late && "block"}
+                                layout={layout}
+                                cardHeight={
+                                  layout === "extended" ? "150px" : "50px"
+                                }
+                                statusColor={job.late ? "white" : "#83E884"}
+                                ceta={job.ceta && job.ceta}
+                                fraction="3/6"
+                                suffix="Ordered"
+                                circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
+                                circleBackground={job.pinned && "gold"}
+                                user_name={job.user_name}
+                                defaultUser={defaultUser}
+                                jobNumberColor={job.late && "white"}
+
+                              />
+                            ))}
+                          </>
+                        </Column>
+                      )}
+
+                    {columns.export_docs_req.visible &&
+                      (department === "all" ||
+                        department === "order_fulfilment" ||
+                        department === "global_trade") && (
+                        <Column
+                          category="Export Docs Required"
+                          borderTopColor="#1B90E6"
+                          amount_in_category={exportDocsReqArray.length}
+                          width={!columns.export_docs_req.extended && "79px"}
+                          extendedContent={
+                            !columns.export_docs_req.extended && "none"
+                          }
+                          changeSize={() =>
+                            toggleColumnSize("export_docs_req")
+                          }
+                          writingMode={
+                            !columns.export_docs_req.extended && "vertical-rl"
+                          }
+                        >
+                          <>
+
+                          {showPinnedJobs && <div className="pinned-container">
+                              {exportDocsReqArray.filter(job => (showLateJobs || !job.late) && (job.pinned)).map((job, index) => (
+                                <JobCard
+                                  job_number={job.jobNumber}
+                                  time={job.time}
+                                  layout={layout}
+                                  backgroundColor={job.late && "#D64045"}
+                                  displayLateIcon={job.late && "block"}
+                                  statusColor={job.late ? "white" : "#83E884"}
+                                  ceta={job.ceta && job.ceta}
+                                  circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
+                                  circleBackground={job.pinned && "gold"}
+                                  user_name={job.user_name}
+                                  defaultUser={defaultUser}
+                                  displayContent={layout === "extended" ? "flex" : "none"}
+
+                                />
+                              ))}
+                            </div>}
+
+                            {exportDocsReqArray.filter(job => (showLateJobs || !job.late) && (!job.pinned)).map((job, index) => (
+                              <JobCard
+                                job_number={job.jobNumber}
+                                time={job.time}
+                                backgroundColor={job.late && "#D64045"}
+                                displayLateIcon={job.late && "block"}
+                                layout={layout}
+                                cardHeight={
+                                  layout === "extended" ? "150px" : "50px"
+                                }
+                                ceta="12 August 2022"
+                                statusColor={job.late ? "white" : "#83E884"}
+                                fraction="1/6"
+                                suffix="TRACKING NOS. RECEIVED"
+                                circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
+                                circleBackground={job.pinned && "gold"}
                                 user_name={job.user_name}
                                 defaultUser={defaultUser}
                               />
@@ -385,666 +593,310 @@ const App = () => {
                       )}
 
 
-                      {columns.to_order.visible &&
-                        (department == "all" ||
-                          department == "order_fulfilment") && (
-                          <Column
-                            category="To Order"
-                            borderTopColor="#DC6942"
-                            amount_in_category={!showLateJobs ? toOrderArray.length - toOrderArray.filter(job => job.late).length : toOrderArray.length}
-                            width={!columns.to_order.extended && "79px"}
-                            extendedContent={
-                              !columns.to_order.extended && "none"
-                            }
-                            changeSize={() => toggleColumnSize("to_order")}
-                            writingMode={
-                              !columns.to_order.extended && "vertical-rl"
-                            }
-                          >
-                            <>
-                              {showPinnedJobs && <div className="pinned-container">
-                                {toOrderArray.filter(job => (showLateJobs || !job.late) && (job.pinned)).map((job, index) => (
-                                  <JobCard
-                                    job_number={job.jobNumber}
-                                    time={job.time}
-                                    cardHeight={
-                                      layout === "extended" ? "150px" : "50px"
-                                    }
-                                    layout={layout}
-                                    backgroundColor={job.late && "#D64045"}
-                                    displayLateIcon={job.late && "block"}
-                                    statusColor={job.late ? "white" : "#83E884"}
-                                    cetaDisplay="none"
-                                    circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
-                                    circleBackground={job.pinned && "gold"}
-                                    user_name={job.user_name}
-                                    defaultUser={defaultUser}
-                                  />
-                                ))}
-                              </div>}
 
 
-
-                              {toOrderArray.filter(job => (showLateJobs || !job.late) && !job.pinned).map((job, index) => (
-                                <JobCard
-                                  job_number={job.jobNumber}
-                                  time={job.time}
-                                  cardHeight={
-                                    layout === "extended" ? "150px" : "50px"
-                                  }
-                                  layout={layout}
-                                  backgroundColor={job.late && "#D64045"}
-                                  displayLateIcon={job.late && "block"}
-                                  statusColor={job.late ? "white" : "#83E884"}
-                                  cetaDisplay="none"
-                                  circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
-                                  circleBackground={job.pinned && "gold"}
-                                  user_name={job.user_name}
-                                  defaultUser={defaultUser}
-                                />
-                              ))}
-                            </>
-                          </Column>
-                        )}
-
-                      {columns.commercial_invoice_req.visible &&
-                        (department === "all" ||
-                          department === "order_fulfilment" ||
-                          department === "global_trade") && (
-                          <Column
-                            category="Commercial Invoice Required"
-                            borderTopColor="#1B90E6"
-                            opacity={commercialInvoiceReqArray.length == 0 || (commercialInvoiceReqArray.length == 1 && !showLateJobs) && "0.5"}
-                            amount_in_category={!showLateJobs ? commercialInvoiceReqArray.length - commercialInvoiceReqArray.filter(job => job.late).length : commercialInvoiceReqArray.length}
-                            width={
-                              !columns.commercial_invoice_req.extended && "79px"
-                            }
-                            extendedContent={
-                              !columns.commercial_invoice_req.extended && "none"
-                            }
-                            changeSize={() =>
-                              toggleColumnSize("commercial_invoice_req")
-                            }
-                            writingMode={
-                              !columns.commercial_invoice_req.extended &&
-                              "vertical-rl"
-                            }
-                          >
-                            <>
-                              {commercialInvoiceReqArray.length == 0 || (commercialInvoiceReqArray.length == 1 && !showLateJobs) && (
-                                <p className="no-jobs light">No jobs to show</p>
-                              )}
-
-                              {commercialInvoiceReqArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
-                                <JobCard
-                                  job_number={job.jobNumber}
-                                  time={job.time}
-                                  backgroundColor={job.late && "#D64045"}
-                                  displayLateIcon={job.late && "block"}
-                                  layout={layout}
-                                  cardHeight={
-                                    layout === "extended" ? "150px" : "50px"
-                                  }
-                                  statusColor={job.late ? "white" : "#83E884"}
-                                  ceta="12 August 2022"
-                                  fraction="3/6"
-                                  suffix="Ordered"
-                                  circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
-                                  circleBackground={job.pinned && "gold"}
-                                  user_name={job.user_name}
-                                  defaultUser={defaultUser}
-
-                                />
-                              ))}
-                            </>
-                          </Column>
-                        )}
-
-                      {columns.export_docs_req.visible &&
-                        (department === "all" ||
-                          department === "order_fulfilment" ||
-                          department === "global_trade") && (
-                          <Column
-                            category="Export Docs Required"
-                            borderTopColor="#1B90E6"
-                            amount_in_category={exportDocsReqArray.length}
-                            width={!columns.export_docs_req.extended && "79px"}
-                            extendedContent={
-                              !columns.export_docs_req.extended && "none"
-                            }
-                            changeSize={() =>
-                              toggleColumnSize("export_docs_req")
-                            }
-                            writingMode={
-                              !columns.export_docs_req.extended && "vertical-rl"
-                            }
-                          >
-                            <>
-
-                              {exportDocsReqArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
-                                <JobCard
-                                  job_number={job.jobNumber}
-                                  time={job.time}
-                                  backgroundColor={job.late && "#D64045"}
-                                  displayLateIcon={job.late && "block"}
-                                  layout={layout}
-                                  cardHeight={
-                                    layout === "extended" ? "150px" : "50px"
-                                  }
-                                  ceta="12 August 2022"
-                                  statusColor={job.late ? "white" : "#83E884"}
-                                  fraction="1/6"
-                                  suffix="TRACKING NOS. RECEIVED"
-                                  circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
-                                  circleBackground={job.pinned && "gold"}
-                                  user_name={job.user_name}
-                                  defaultUser={defaultUser}
-                                />
-                              ))}
-                            </>
-                          </Column>
-                        )}
-                    </div>
-
-                    <div className="column-container">
-
-                      {columns.ior_required.visible &&
-                        (department === "all" ||
-                          department === "global_trade") && (
-                          <Column
-                            category="IOR Required"
-                            borderTopColor="#77C135"
-                            amount_in_category={IORRequiredArray.length}
-                            width={!columns.ior_required.extended && "79px"}
-                            extendedContent={
-                              !columns.ior_required.extended && "none"
-                            }
-                            changeSize={() => toggleColumnSize("ior_required")}
-                            writingMode={
-                              !columns.ior_required.extended && "vertical-rl"
-                            }
-                          >
-                            <>
-                              {IORRequiredArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
-                                <JobCard
-                                  job_number={job.jobNumber}
-                                  time={job.time}
-                                  backgroundColor={job.late && "#D64045"}
-                                  displayLateIcon={job.late && "block"}
-                                  layout={layout}
-                                  cardHeight={
-                                    layout === "extended" ? "150px" : "50px"
-                                  }
-                                  ceta="12 August 2022"
-                                  statusColor={job.late ? "white" : "#83E884"}
-                                  fraction="3/6"
-                                  suffix="ARRIVED"
-                                  circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
-                                  circleBackground={job.pinned && "gold"}
-                                  user_name={job.user_name}
-                                  defaultUser={defaultUser}
-                                />
-                              ))}
-                            </>
-                          </Column>
-                        )}
-
-                      {columns.awaiting_confirmation.visible &&
-                        department === "all" && (
-                          <Column
-                            category="Awaiting Confirmation"
-                            borderTopColor="#77C135"
-                            amount_in_category={inboundArray.length}
-                          >
-                            <>
-                              {awaitingConfirmationArray.map((job, index) => (
-                                <JobCard
-                                  job_number={job.jobNumber}
-                                  time={job.time}
-                                  backgroundColor={job.late && "#D64045"}
-                                  displayLateIcon={job.late && "block"}
-                                  layout={layout}
-                                  cardHeight={
-                                    layout === "extended" ? "150px" : "50px"
-                                  }
-                                  ceta="12 August 2022"
-                                  statusColor={job.late ? "white" : "#83E884"}
-                                  fraction="3/6"
-                                  suffix="ARRIVED"
-                                  circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
-                                  circleBackground={job.pinned && "gold"}
-                                  user_name={job.user_name}
-                                  defaultUser={defaultUser}
-                                />
-                              ))}
-                            </>
-                          </Column>
-                        )}
-
-                      {columns.awaiting_tracking_number.visible &&
-                        department === "all" && (
-                          <Column
-                            category="Awaiting Tracking Number"
-                            borderTopColor="#77C135"
-                            amount_in_category={awaitingTrackingNumberArray.length}
-                          >
-                            <>
-                              {awaitingTrackingNumberArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
-                                <JobCard
-                                  job_number={job.jobNumber}
-                                  time={job.time}
-                                  backgroundColor={job.late && "#D64045"}
-                                  displayLateIcon={job.late && "block"}
-                                  layout={layout}
-                                  cardHeight={
-                                    layout === "extended" ? "150px" : "50px"
-                                  }
-                                  ceta="12 August 2022"
-                                  statusColor={job.late ? "white" : "#83E884"}
-                                  fraction="3/6"
-                                  suffix="ARRIVED"
-                                  circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
-                                  circleBackground={job.pinned && "gold"}
-                                  user_name={job.user_name}
-                                  defaultUser={defaultUser}
-                                />
-                              ))}
-                            </>
-                          </Column>
-                        )}
-
-                      {columns.due_into_warehouse.visible &&
-                        (department === "all" ||
-                          department === "warehouse_all" ||
-                          department === "warehouse_inbound" ||
-                          department === "warehouse_problem_resolution") && (
-                          <Column
-                            category="Due in to Warehouse"
-                            borderTopColor="#77C135"
-                            amount_in_category={dueIntoWarehouseArray.length}
-                          >
-                            <>
-                              {dueIntoWarehouseArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
-                                <JobCard
-                                  job_number={job.jobNumber}
-                                  time={job.time}
-                                  backgroundColor={job.late && "#D64045"}
-                                  displayLateIcon={job.late && "block"}
-                                  layout={layout}
-                                  cardHeight={
-                                    layout === "extended" ? "150px" : "50px"
-                                  }
-                                  ceta="12 August 2022"
-                                  statusColor={job.late ? "white" : "#83E884"}
-                                  fraction="3/6"
-                                  suffix="ARRIVED"
-                                  circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
-                                  circleBackground={job.pinned && "gold"}
-                                  user_name={job.user_name}
-                                  defaultUser={defaultUser}
-                                />
-                              ))}
-                            </>
-                          </Column>
-                        )}
-                    </div>
-
-                    <div className="column-container">
-
-                      {columns.arrived.visible &&
-                        (department === "all" ||
-                          department === "warehouse_all" ||
-                          department === "warehouse_inbound" ||
-                          department === "warehouse_problem_resolution") && (
-                          <Column
-                            category="Arrived"
-                            borderTopColor="#77C135"
-                            amount_in_category={arrivedArray.length}
-                          >
-                            <>
-                              {arrivedArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
-                                <JobCard
-                                  job_number={job.jobNumber}
-                                  time={job.time}
-                                  backgroundColor={job.late && "#D64045"}
-                                  displayLateIcon={job.late && "block"}
-                                  layout={layout}
-                                  cardHeight={
-                                    layout === "extended" ? "150px" : "50px"
-                                  }
-                                  ceta="12 August 2022"
-                                  statusColor={job.late ? "white" : "#83E884"}
-                                  fraction="3/6"
-                                  suffix="ARRIVED"
-                                  circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
-                                  circleBackground={job.pinned && "gold"}
-                                  user_name={job.user_name}
-                                  defaultUser={defaultUser}
-                                />
-                              ))}
-                            </>
-                          </Column>
-                        )}
-
-
-
-                      {columns.inbounding.visible &&
-                        (department === "all" ||
-                          department === "warehouse_all" ||
-                          department === "warehouse_inbound" ||
-                          department === "warehouse_problem_resolution") && (
-                          <Column
-                            category="Inbound"
-                            borderTopColor="#77C135"
-                            amount_in_category={inboundArray.length}
-                          >
-                            <>
-                              {inboundArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
-                                <JobCard
-                                  job_number={job.jobNumber}
-                                  time={job.time}
-                                  backgroundColor={job.late && "#D64045"}
-                                  displayLateIcon={job.late && "block"}
-                                  layout={layout}
-                                  cardHeight={
-                                    layout === "extended" ? "150px" : "50px"
-                                  }
-                                  ceta="12 August 2022"
-                                  statusColor={job.late ? "white" : "#83E884"}
-                                  fraction="3/6"
-                                  suffix="ARRIVED"
-                                  circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
-                                  circleBackground={job.pinned && "gold"}
-                                  user_name={job.user_name}
-                                  defaultUser={defaultUser}
-                                />
-                              ))}
-                            </>
-                          </Column>
-                        )}
-
-                      {columns.awaiting_parts.visible &&
-                        (department === "all" ||
-                          department === "warehouse_all" ||
-                          department === "warehouse_inbound") && (
-                          <Column
-                            category="Awaiting Parts"
-                            borderTopColor="#77C135"
-                            amount_in_category={awaitingPartsArray.length}
-                          >
-                            <>
-                              {awaitingPartsArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
-                                <JobCard
-                                  job_number={job.jobNumber}
-                                  time={job.time}
-                                  backgroundColor={job.late && "#D64045"}
-                                  displayLateIcon={job.late && "block"}
-                                  layout={layout}
-                                  cardHeight={
-                                    layout === "extended" ? "150px" : "50px"
-                                  }
-                                  ceta="12 August 2022"
-                                  statusColor={job.late ? "white" : "#83E884"}
-                                  fraction="3/6"
-                                  suffix="ARRIVED"
-                                  circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
-                                  circleBackground={job.pinned && "gold"}
-                                  user_name={job.user_name}
-                                  defaultUser={defaultUser}
-                                />
-                              ))}
-                            </>
-                          </Column>
-                        )}
-
-                      {columns.transit_pallet.visible &&
-                        (department === "all" ||
-                          department === "warehouse_all" ||
-                          department === "warehouse_inbound" ||
-                          department === "warehouse_outbound") && (
-                          <Column
-                            category="Transit Pallet"
-                            borderTopColor="#77C135"
-                            amount_in_category={transitPalletArray.length}
-                          >
-                            <>
-                              {transitPalletArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
-                                <JobCard
-                                  job_number={job.jobNumber}
-                                  time={job.time}
-                                  backgroundColor={job.late && "#D64045"}
-                                  displayLateIcon={job.late && "block"}
-                                  layout={layout}
-                                  cardHeight={
-                                    layout === "extended" ? "150px" : "50px"
-                                  }
-                                  ceta="12 August 2022"
-                                  statusColor={job.late ? "white" : "#83E884"}
-
-                                  circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
-                                  circleBackground={job.pinned && "gold"}
-                                  user_name={job.user_name}
-                                  defaultUser={defaultUser}
-                                />
-                              ))}
-                            </>
-                          </Column>
-                        )}
-                    </div>
-
-                    <div className="column-container">
-
-                      {columns.problem_shelf.visible &&
-                        (department === "all" ||
-                          department === "warehouse_all" ||
-                          department === "warehouse_outbound") && (
-                          <Column
-                            category="Problem Shelf"
-                            borderTopColor="#77C135"
-                            amount_in_category={problemShelfArray.length}
-                          >
-                            <>
-                              {problemShelfArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
-                                <JobCard
-                                  job_number={job.jobNumber}
-                                  time={job.time}
-                                  backgroundColor={job.late && "#D64045"}
-                                  displayLateIcon={job.late && "block"}
-                                  layout={layout}
-                                  cardHeight={
-                                    layout === "extended" ? "150px" : "50px"
-                                  }
-                                  ceta="12 August 2022"
-                                  statusColor={job.late ? "white" : "#83E884"}
-
-                                  circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
-                                  circleBackground={job.pinned && "gold"}
-                                  user_name={job.user_name}
-                                  defaultUser={defaultUser}
-                                />
-                              ))}
-                            </>
-                          </Column>
-                        )}
-
-
-
-                      {columns.preparing_to_ship.visible &&
-                        (department === "all" ||
-                          department === "warehouse_all" ||
-                          department === "warehouse_outbound") && (
-                          <Column
-                            category="Preparing to ship"
-                            borderTopColor="#77C135"
-                            amount_in_category={preparingToShipArray.length}
-                          >
-                            <>
-                              {preparingToShipArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
-                                <JobCard
-                                  job_number={job.jobNumber}
-                                  time={job.time}
-                                  backgroundColor={job.late && "#D64045"}
-                                  displayLateIcon={job.late && "block"}
-                                  layout={layout}
-                                  cardHeight={
-                                    layout === "extended" ? "150px" : "50px"
-                                  }
-                                  ceta="12 August 2022"
-                                  statusColor={job.late ? "white" : "#83E884"}
-
-                                  circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
-                                  circleBackground={job.pinned && "gold"}
-                                  user_name={job.user_name}
-                                  defaultUser={defaultUser}
-                                />
-                              ))}
-                            </>
-                          </Column>
-                        )}
-
-                      {columns.buy_shipping_label.visible &&
-                        (department === "all" ||
-                          department === "warehouse_all" ||
-                          department === "warehouse_outbound") && (
-                          <Column
-                            category="Buy Shipping Label"
-                            borderTopColor="#77C135"
-                            amount_in_category={buyShippingLabelArray.length}
-                          >
-                            <>
-                              {buyShippingLabelArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
-                                <JobCard
-                                  job_number={job.jobNumber}
-                                  time={job.time}
-                                  backgroundColor={job.late && "#D64045"}
-                                  displayLateIcon={job.late && "block"}
-                                  layout={layout}
-                                  cardHeight={
-                                    layout === "extended" ? "150px" : "50px"
-                                  }
-                                  ceta="12 August 2022"
-                                  statusColor={job.late ? "white" : "#83E884"}
-
-                                  circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
-                                  circleBackground={job.pinned && "gold"}
-                                  user_name={job.user_name}
-                                  defaultUser={defaultUser}
-                                />
-                              ))}
-                            </>
-                          </Column>
-                        )}
-
-                      {columns.customer_collection.visible &&
-                        (department === "all" ||
-                          department === "warehouse_all" ||
-                          department === "warehouse_outbound" ||
-                          department === "global_trade") && (
-                          <Column
-                            category="Customer Collection"
-                            borderTopColor="#77C135"
-                            amount_in_category={customerCollectionArray.length}
-                          >
-                            <>
-                              {customerCollectionArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
-                                <JobCard
-                                  job_number={job.jobNumber}
-                                  time={job.time}
-                                  backgroundColor={job.late && "#D64045"}
-                                  displayLateIcon={job.late && "block"}
-                                  layout={layout}
-                                  cardHeight={
-                                    layout === "extended" ? "150px" : "50px"
-                                  }
-                                  ceta="12 August 2022"
-                                  statusColor={job.late ? "white" : "#83E884"}
-
-                                  circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
-                                  circleBackground={job.pinned && "gold"}
-                                  user_name={job.user_name}
-                                  defaultUser={defaultUser}
-                                />
-                              ))}
-                            </>
-                          </Column>
-                        )}
-                    </div>
-
-                    <div className="column-container">
-                      {columns.pack_and_hold.visible &&
-                        (department === "all" ||
-                          department === "warehouse_all" ||
-                          department === "global_trade") && (
-                          <Column
-                            category="Pack and Hold"
-                            borderTopColor="#77C135"
-                            amount_in_category={packAndHoldArray.length}
-                          >
-                            <>
-                              {packAndHoldArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
-                                <JobCard
-                                  job_number={job.jobNumber}
-                                  time={job.time}
-                                  backgroundColor={job.late && "#D64045"}
-                                  displayLateIcon={job.late && "block"}
-                                  layout={layout}
-                                  cardHeight={
-                                    layout === "extended" ? "150px" : "50px"
-                                  }
-                                  ceta="12 August 2022"
-                                  statusColor={job.late ? "white" : "#83E884"}
-
-                                  circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
-                                  circleBackground={job.pinned && "gold"}
-                                  user_name={job.user_name}
-                                  defaultUser={defaultUser}
-                                />
-                              ))}
-                            </>
-                          </Column>
-                        )}
-
-
-
-                      {columns.to_send_tracking_label.visible &&
-                        department === "all" && (
-                          <Column
-                            category="To Send Tracking Label"
-                            borderTopColor="#77C135"
-                            amount_in_category={toSendTrackingArray.length}
-                          >
-                            <>
-                              {toSendTrackingArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
-                                <JobCard
-                                  job_number={job.jobNumber}
-                                  time={job.time}
-                                  backgroundColor={job.late && "#D64045"}
-                                  displayLateIcon={job.late && "block"}
-                                  layout={layout}
-                                  cardHeight={
-                                    layout === "extended" ? "150px" : "50px"
-                                  }
-                                  ceta="12 August 2022"
-                                  statusColor={job.late ? "white" : "#83E884"}
-
-                                  circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
-                                  circleBackground={job.pinned && "gold"}
-                                  user_name={job.user_name}
-                                  defaultUser={defaultUser}
-                                />
-                              ))}
-                            </>
-                          </Column>
-                        )}
-
-                      {columns.in_transit.visible && department === "all" && (
+                    {columns.ior_required.visible &&
+                      (department === "all" ||
+                        department === "global_trade") && (
                         <Column
-                          category="In Transit"
+                          category="IOR Required"
                           borderTopColor="#77C135"
-                          amount_in_category={inTransitArray.length}
+                          amount_in_category={IORRequiredArray.length}
+                          width={!columns.ior_required.extended && "79px"}
+                          extendedContent={
+                            !columns.ior_required.extended && "none"
+                          }
+                          changeSize={() => toggleColumnSize("ior_required")}
+                          writingMode={
+                            !columns.ior_required.extended && "vertical-rl"
+                          }
                         >
                           <>
-                            {inTransitArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
+                            {IORRequiredArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
+                              <JobCard
+                                job_number={job.jobNumber}
+                                time={job.time}
+                                backgroundColor={job.late && "#D64045"}
+                                displayLateIcon={job.late && "block"}
+                                layout={layout}
+                                cardHeight={
+                                  layout === "extended" ? "150px" : "50px"
+                                }
+                                ceta="12 August 2022"
+                                statusColor={job.late ? "white" : "#83E884"}
+                                fraction="3/6"
+                                suffix="ARRIVED"
+                                circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
+                                circleBackground={job.pinned && "gold"}
+                                user_name={job.user_name}
+                                defaultUser={defaultUser}
+                              />
+                            ))}
+                          </>
+                        </Column>
+                      )}
+
+                    {columns.awaiting_confirmation.visible &&
+                      department === "all" && (
+                        <Column
+                          category="Awaiting Confirmation"
+                          borderTopColor="#77C135"
+                          amount_in_category={inboundArray.length}
+                          width={
+                            !columns.awaiting_confirmation.extended && "79px"
+                          }
+                          extendedContent={
+                            !columns.awaiting_confirmation.extended && "none"
+                          }
+                          changeSize={() =>
+                            toggleColumnSize("awaiting_confirmation")
+                          }
+                          writingMode={
+                            !columns.awaiting_confirmation.extended &&
+                            "vertical-rl"
+                          }
+                        >
+                          <>
+                            {awaitingConfirmationArray.map((job, index) => (
+                              <JobCard
+                                job_number={job.jobNumber}
+                                time={job.time}
+                                backgroundColor={job.late && "#D64045"}
+                                displayLateIcon={job.late && "block"}
+                                layout={layout}
+                                cardHeight={
+                                  layout === "extended" ? "150px" : "50px"
+                                }
+                                ceta="12 August 2022"
+                                statusColor={job.late ? "white" : "#83E884"}
+                                fraction="3/6"
+                                suffix="ARRIVED"
+                                circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
+                                circleBackground={job.pinned && "gold"}
+                                user_name={job.user_name}
+                                defaultUser={defaultUser}
+                              />
+                            ))}
+                          </>
+                        </Column>
+                      )}
+
+                    {columns.awaiting_tracking_number.visible &&
+                      department === "all" && (
+                        <Column
+                          category="Awaiting Tracking Number"
+                          borderTopColor="#77C135"
+                          amount_in_category={awaitingTrackingNumberArray.length}
+
+                          width={
+                            !columns.awaiting_tracking_number.extended && "79px"
+                          }
+                          extendedContent={
+                            !columns.awaiting_tracking_number.extended && "none"
+                          }
+                          changeSize={() =>
+                            toggleColumnSize("awaiting_tracking_number")
+                          }
+                          writingMode={
+                            !columns.awaiting_tracking_number.extended &&
+                            "vertical-rl"
+                          }
+                        >
+                          <>
+                            {awaitingTrackingNumberArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
+                              <JobCard
+                                job_number={job.jobNumber}
+                                time={job.time}
+                                backgroundColor={job.late && "#D64045"}
+                                displayLateIcon={job.late && "block"}
+                                layout={layout}
+                                cardHeight={
+                                  layout === "extended" ? "150px" : "50px"
+                                }
+                                ceta="12 August 2022"
+                                statusColor={job.late ? "white" : "#83E884"}
+                                fraction="3/6"
+                                suffix="ARRIVED"
+                                circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
+                                circleBackground={job.pinned && "gold"}
+                                user_name={job.user_name}
+                                defaultUser={defaultUser}
+                              />
+                            ))}
+                          </>
+                        </Column>
+                      )}
+
+                    {columns.due_into_warehouse.visible &&
+                      (department === "all" ||
+                        department === "warehouse_all" ||
+                        department === "warehouse_inbound" ||
+                        department === "warehouse_problem_resolution") && (
+                        <Column
+                          category="Due in to Warehouse"
+                          borderTopColor="#77C135"
+                          amount_in_category={dueIntoWarehouseArray.length}
+
+                          width={
+                            !columns.due_into_warehouse.extended && "79px"
+                          }
+                          extendedContent={
+                            !columns.due_into_warehouse.extended && "none"
+                          }
+                          changeSize={() =>
+                            toggleColumnSize("due_into_warehouse")
+                          }
+                          writingMode={
+                            !columns.due_into_warehouse.extended &&
+                            "vertical-rl"
+                          }
+                        >
+                          <>
+                            {dueIntoWarehouseArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
+                              <JobCard
+                                job_number={job.jobNumber}
+                                time={job.time}
+                                backgroundColor={job.late && "#D64045"}
+                                displayLateIcon={job.late && "block"}
+                                layout={layout}
+                                cardHeight={
+                                  layout === "extended" ? "150px" : "50px"
+                                }
+                                ceta="12 August 2022"
+                                statusColor={job.late ? "white" : "#83E884"}
+                                fraction="3/6"
+                                suffix="ARRIVED"
+                                circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
+                                circleBackground={job.pinned && "gold"}
+                                user_name={job.user_name}
+                                defaultUser={defaultUser}
+                              />
+                            ))}
+                          </>
+                        </Column>
+                      )}
+
+
+
+
+                    {columns.arrived.visible &&
+                      (department === "all" ||
+                        department === "warehouse_all" ||
+                        department === "warehouse_inbound" ||
+                        department === "warehouse_problem_resolution") && (
+                        <Column
+                          category="Arrived"
+                          borderTopColor="#77C135"
+                          amount_in_category={arrivedArray.length}
+                        >
+                          <>
+                            {arrivedArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
+                              <JobCard
+                                job_number={job.jobNumber}
+                                time={job.time}
+                                backgroundColor={job.late && "#D64045"}
+                                displayLateIcon={job.late && "block"}
+                                layout={layout}
+                                cardHeight={
+                                  layout === "extended" ? "150px" : "50px"
+                                }
+                                ceta="12 August 2022"
+                                statusColor={job.late ? "white" : "#83E884"}
+                                fraction="3/6"
+                                suffix="ARRIVED"
+                                circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
+                                circleBackground={job.pinned && "gold"}
+                                user_name={job.user_name}
+                                defaultUser={defaultUser}
+                              />
+                            ))}
+                          </>
+                        </Column>
+                      )}
+
+
+
+                    {columns.inbounding.visible &&
+                      (department === "all" ||
+                        department === "warehouse_all" ||
+                        department === "warehouse_inbound" ||
+                        department === "warehouse_problem_resolution") && (
+                        <Column
+                          category="Inbound"
+                          borderTopColor="#77C135"
+                          amount_in_category={inboundArray.length}
+                        >
+                          <>
+                            {inboundArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
+                              <JobCard
+                                job_number={job.jobNumber}
+                                time={job.time}
+                                backgroundColor={job.late && "#D64045"}
+                                displayLateIcon={job.late && "block"}
+                                layout={layout}
+                                cardHeight={
+                                  layout === "extended" ? "150px" : "50px"
+                                }
+                                ceta="12 August 2022"
+                                statusColor={job.late ? "white" : "#83E884"}
+                                fraction="3/6"
+                                suffix="ARRIVED"
+                                circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
+                                circleBackground={job.pinned && "gold"}
+                                user_name={job.user_name}
+                                defaultUser={defaultUser}
+                              />
+                            ))}
+                          </>
+                        </Column>
+                      )}
+
+                    {columns.awaiting_parts.visible &&
+                      (department === "all" ||
+                        department === "warehouse_all" ||
+                        department === "warehouse_inbound") && (
+                        <Column
+                          category="Awaiting Parts"
+                          borderTopColor="#77C135"
+                          amount_in_category={awaitingPartsArray.length}
+                        >
+                          <>
+                            {awaitingPartsArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
+                              <JobCard
+                                job_number={job.jobNumber}
+                                time={job.time}
+                                backgroundColor={job.late && "#D64045"}
+                                displayLateIcon={job.late && "block"}
+                                layout={layout}
+                                cardHeight={
+                                  layout === "extended" ? "150px" : "50px"
+                                }
+                                ceta="12 August 2022"
+                                statusColor={job.late ? "white" : "#83E884"}
+                                fraction="3/6"
+                                suffix="ARRIVED"
+                                circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
+                                circleBackground={job.pinned && "gold"}
+                                user_name={job.user_name}
+                                defaultUser={defaultUser}
+                              />
+                            ))}
+                          </>
+                        </Column>
+                      )}
+
+                    {columns.transit_pallet.visible &&
+                      (department === "all" ||
+                        department === "warehouse_all" ||
+                        department === "warehouse_inbound" ||
+                        department === "warehouse_outbound") && (
+                        <Column
+                          category="Transit Pallet"
+                          borderTopColor="#77C135"
+                          amount_in_category={transitPalletArray.length}
+                        >
+                          <>
+                            {transitPalletArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
                               <JobCard
                                 job_number={job.jobNumber}
                                 time={job.time}
@@ -1067,83 +919,20 @@ const App = () => {
                         </Column>
                       )}
 
-                      {columns.non_trackable_courier.visible &&
-                        department === "all" && (
-                          <Column
-                            category="Non Trackable Courier"
-                            borderTopColor="#77C135"
-                            amount_in_category={nonTrackableCourierArray.length}
-                          >
-                            <>
-                              {nonTrackableCourierArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
-                                <JobCard
-                                  job_number={job.jobNumber}
-                                  time={job.time}
-                                  backgroundColor={job.late && "#D64045"}
-                                  displayLateIcon={job.late && "block"}
-                                  layout={layout}
-                                  cardHeight={
-                                    layout === "extended" ? "150px" : "50px"
-                                  }
-                                  ceta="12 August 2022"
-                                  statusColor={job.late ? "white" : "#83E884"}
-
-                                  circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
-                                  circleBackground={job.pinned && "gold"}
-                                  user_name={job.user_name}
-                                  defaultUser={defaultUser}
-                                />
-                              ))}
-                            </>
-                          </Column>
-                        )}
-                    </div>
-
-
-                    <div className="column-container">
-
-                      {columns.exception.visible &&
-                        (department === "all" ||
-                          department === "global_trade") && (
-                          <Column
-                            category="Exception"
-                            borderTopColor="#77C135"
-                            amount_in_category={exceptionArray.length}
-                          >
-                            <>
-                              {exceptionArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
-                                <JobCard
-                                  job_number={job.jobNumber}
-                                  time={job.time}
-                                  backgroundColor={job.late && "#D64045"}
-                                  displayLateIcon={job.late && "block"}
-                                  layout={layout}
-                                  cardHeight={
-                                    layout === "extended" ? "150px" : "50px"
-                                  }
-                                  ceta="12 August 2022"
-                                  statusColor={job.late ? "white" : "#83E884"}
-
-                                  circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
-                                  circleBackground={job.pinned && "gold"}
-                                  user_name={job.user_name}
-                                  defaultUser={defaultUser}
-                                />
-                              ))}
-                            </>
-                          </Column>
-                        )}
 
 
 
-                      {columns.to_send_pod.visible && department === "all" && (
+                    {columns.problem_shelf.visible &&
+                      (department === "all" ||
+                        department === "warehouse_all" ||
+                        department === "warehouse_outbound") && (
                         <Column
-                          category="To Send POD"
+                          category="Problem Shelf"
                           borderTopColor="#77C135"
-                          amount_in_category={toSendPODArray.length}
+                          amount_in_category={problemShelfArray.length}
                         >
                           <>
-                            {toSendPODArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
+                            {problemShelfArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
                               <JobCard
                                 job_number={job.jobNumber}
                                 time={job.time}
@@ -1166,69 +955,368 @@ const App = () => {
                         </Column>
                       )}
 
-                      {columns.still_to_action.visible &&
-                        department === "all" && (
-                          <Column
-                            category="Still to Action"
-                            borderTopColor="#77C135"
-                            amount_in_category={stillToActionArray.length}
-                          >
-                            <>
-                              {stillToActionArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
-                                <JobCard
-                                  job_number={job.jobNumber}
-                                  time={job.time}
-                                  backgroundColor={job.late && "#D64045"}
-                                  displayLateIcon={job.late && "block"}
-                                  layout={layout}
-                                  cardHeight={
-                                    layout === "extended" ? "150px" : "50px"
-                                  }
-                                  ceta="12 August 2022"
-                                  statusColor={job.late ? "white" : "#83E884"}
 
-                                  circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
-                                  circleBackground={job.pinned && "gold"}
-                                  user_name={job.user_name}
-                                  defaultUser={defaultUser}
-                                />
-                              ))}
-                            </>
-                          </Column>
-                        )}
 
-                      {columns.last_column.visible &&
-                        (department === "all" ||
-                          department === "global_trade") && (
-                          <Column
-                            category="Last Column"
-                            borderTopColor="#77C135"
-                            amount_in_category={lastColumnArray.length}
-                          >
-                            <>
-                              {lastColumnArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
-                                <JobCard
-                                  job_number={job.jobNumber}
-                                  time={job.time}
-                                  backgroundColor={job.late && "#D64045"}
-                                  displayLateIcon={job.late && "block"}
-                                  layout={layout}
-                                  cardHeight={
-                                    layout === "extended" ? "150px" : "50px"
-                                  }
-                                  ceta="12 August 2022"
-                                  statusColor={job.late ? "white" : "#83E884"}
+                    {columns.preparing_to_ship.visible &&
+                      (department === "all" ||
+                        department === "warehouse_all" ||
+                        department === "warehouse_outbound") && (
+                        <Column
+                          category="Preparing to ship"
+                          borderTopColor="#77C135"
+                          amount_in_category={preparingToShipArray.length}
+                        >
+                          <>
+                            {preparingToShipArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
+                              <JobCard
+                                job_number={job.jobNumber}
+                                time={job.time}
+                                backgroundColor={job.late && "#D64045"}
+                                displayLateIcon={job.late && "block"}
+                                layout={layout}
+                                cardHeight={
+                                  layout === "extended" ? "150px" : "50px"
+                                }
+                                ceta="12 August 2022"
+                                statusColor={job.late ? "white" : "#83E884"}
 
-                                  circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
-                                  circleBackground={job.pinned && "gold"}
-                                  user_name={job.user_name}
-                                  defaultUser={defaultUser}
-                                />
-                              ))}
-                            </>
-                          </Column>
-                        )}
-                    </div>
+                                circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
+                                circleBackground={job.pinned && "gold"}
+                                user_name={job.user_name}
+                                defaultUser={defaultUser}
+                              />
+                            ))}
+                          </>
+                        </Column>
+                      )}
+
+                    {columns.buy_shipping_label.visible &&
+                      (department === "all" ||
+                        department === "warehouse_all" ||
+                        department === "warehouse_outbound") && (
+                        <Column
+                          category="Buy Shipping Label"
+                          borderTopColor="#77C135"
+                          amount_in_category={buyShippingLabelArray.length}
+                        >
+                          <>
+                            {buyShippingLabelArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
+                              <JobCard
+                                job_number={job.jobNumber}
+                                time={job.time}
+                                backgroundColor={job.late && "#D64045"}
+                                displayLateIcon={job.late && "block"}
+                                layout={layout}
+                                cardHeight={
+                                  layout === "extended" ? "150px" : "50px"
+                                }
+                                ceta="12 August 2022"
+                                statusColor={job.late ? "white" : "#83E884"}
+
+                                circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
+                                circleBackground={job.pinned && "gold"}
+                                user_name={job.user_name}
+                                defaultUser={defaultUser}
+                              />
+                            ))}
+                          </>
+                        </Column>
+                      )}
+
+                    {columns.customer_collection.visible &&
+                      (department === "all" ||
+                        department === "warehouse_all" ||
+                        department === "warehouse_outbound" ||
+                        department === "global_trade") && (
+                        <Column
+                          category="Customer Collection"
+                          borderTopColor="#77C135"
+                          amount_in_category={customerCollectionArray.length}
+                        >
+                          <>
+                            {customerCollectionArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
+                              <JobCard
+                                job_number={job.jobNumber}
+                                time={job.time}
+                                backgroundColor={job.late && "#D64045"}
+                                displayLateIcon={job.late && "block"}
+                                layout={layout}
+                                cardHeight={
+                                  layout === "extended" ? "150px" : "50px"
+                                }
+                                ceta="12 August 2022"
+                                statusColor={job.late ? "white" : "#83E884"}
+
+                                circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
+                                circleBackground={job.pinned && "gold"}
+                                user_name={job.user_name}
+                                defaultUser={defaultUser}
+                              />
+                            ))}
+                          </>
+                        </Column>
+                      )}
+
+
+
+                    {columns.pack_and_hold.visible &&
+                      (department === "all" ||
+                        department === "warehouse_all" ||
+                        department === "global_trade") && (
+                        <Column
+                          category="Pack and Hold"
+                          borderTopColor="#77C135"
+                          amount_in_category={packAndHoldArray.length}
+                        >
+                          <>
+                            {packAndHoldArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
+                              <JobCard
+                                job_number={job.jobNumber}
+                                time={job.time}
+                                backgroundColor={job.late && "#D64045"}
+                                displayLateIcon={job.late && "block"}
+                                layout={layout}
+                                cardHeight={
+                                  layout === "extended" ? "150px" : "50px"
+                                }
+                                ceta="12 August 2022"
+                                statusColor={job.late ? "white" : "#83E884"}
+
+                                circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
+                                circleBackground={job.pinned && "gold"}
+                                user_name={job.user_name}
+                                defaultUser={defaultUser}
+                              />
+                            ))}
+                          </>
+                        </Column>
+                      )}
+
+
+
+                    {columns.to_send_tracking_label.visible &&
+                      department === "all" && (
+                        <Column
+                          category="To Send Tracking Label"
+                          borderTopColor="#77C135"
+                          amount_in_category={toSendTrackingArray.length}
+                        >
+                          <>
+                            {toSendTrackingArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
+                              <JobCard
+                                job_number={job.jobNumber}
+                                time={job.time}
+                                backgroundColor={job.late && "#D64045"}
+                                displayLateIcon={job.late && "block"}
+                                layout={layout}
+                                cardHeight={
+                                  layout === "extended" ? "150px" : "50px"
+                                }
+                                ceta="12 August 2022"
+                                statusColor={job.late ? "white" : "#83E884"}
+
+                                circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
+                                circleBackground={job.pinned && "gold"}
+                                user_name={job.user_name}
+                                defaultUser={defaultUser}
+                              />
+                            ))}
+                          </>
+                        </Column>
+                      )}
+
+                    {columns.in_transit.visible && department === "all" && (
+                      <Column
+                        category="In Transit"
+                        borderTopColor="#77C135"
+                        amount_in_category={inTransitArray.length}
+                      >
+                        <>
+                          {inTransitArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
+                            <JobCard
+                              job_number={job.jobNumber}
+                              time={job.time}
+                              backgroundColor={job.late && "#D64045"}
+                              displayLateIcon={job.late && "block"}
+                              layout={layout}
+                              cardHeight={
+                                layout === "extended" ? "150px" : "50px"
+                              }
+                              ceta="12 August 2022"
+                              statusColor={job.late ? "white" : "#83E884"}
+
+                              circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
+                              circleBackground={job.pinned && "gold"}
+                              user_name={job.user_name}
+                              defaultUser={defaultUser}
+                            />
+                          ))}
+                        </>
+                      </Column>
+                    )}
+
+                    {columns.non_trackable_courier.visible &&
+                      department === "all" && (
+                        <Column
+                          category="Non Trackable Courier"
+                          borderTopColor="#77C135"
+                          amount_in_category={nonTrackableCourierArray.length}
+                        >
+                          <>
+                            {nonTrackableCourierArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
+                              <JobCard
+                                job_number={job.jobNumber}
+                                time={job.time}
+                                backgroundColor={job.late && "#D64045"}
+                                displayLateIcon={job.late && "block"}
+                                layout={layout}
+                                cardHeight={
+                                  layout === "extended" ? "150px" : "50px"
+                                }
+                                ceta="12 August 2022"
+                                statusColor={job.late ? "white" : "#83E884"}
+
+                                circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
+                                circleBackground={job.pinned && "gold"}
+                                user_name={job.user_name}
+                                defaultUser={defaultUser}
+                              />
+                            ))}
+                          </>
+                        </Column>
+                      )}
+
+
+
+
+
+                    {columns.exception.visible &&
+                      (department === "all" ||
+                        department === "global_trade") && (
+                        <Column
+                          category="Exception"
+                          borderTopColor="#77C135"
+                          amount_in_category={exceptionArray.length}
+                        >
+                          <>
+                            {exceptionArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
+                              <JobCard
+                                job_number={job.jobNumber}
+                                time={job.time}
+                                backgroundColor={job.late && "#D64045"}
+                                displayLateIcon={job.late && "block"}
+                                layout={layout}
+                                cardHeight={
+                                  layout === "extended" ? "150px" : "50px"
+                                }
+                                ceta="12 August 2022"
+                                statusColor={job.late ? "white" : "#83E884"}
+
+                                circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
+                                circleBackground={job.pinned && "gold"}
+                                user_name={job.user_name}
+                                defaultUser={defaultUser}
+                              />
+                            ))}
+                          </>
+                        </Column>
+                      )}
+
+
+
+                    {columns.to_send_pod.visible && department === "all" && (
+                      <Column
+                        category="To Send POD"
+                        borderTopColor="#77C135"
+                        amount_in_category={toSendPODArray.length}
+                      >
+                        <>
+                          {toSendPODArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
+                            <JobCard
+                              job_number={job.jobNumber}
+                              time={job.time}
+                              backgroundColor={job.late && "#D64045"}
+                              displayLateIcon={job.late && "block"}
+                              layout={layout}
+                              cardHeight={
+                                layout === "extended" ? "150px" : "50px"
+                              }
+                              ceta="12 August 2022"
+                              statusColor={job.late ? "white" : "#83E884"}
+
+                              circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
+                              circleBackground={job.pinned && "gold"}
+                              user_name={job.user_name}
+                              defaultUser={defaultUser}
+                            />
+                          ))}
+                        </>
+                      </Column>
+                    )}
+
+                    {columns.still_to_action.visible &&
+                      department === "all" && (
+                        <Column
+                          category="Still to Action"
+                          borderTopColor="#77C135"
+                          amount_in_category={stillToActionArray.length}
+                        >
+                          <>
+                            {stillToActionArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
+                              <JobCard
+                                job_number={job.jobNumber}
+                                time={job.time}
+                                backgroundColor={job.late && "#D64045"}
+                                displayLateIcon={job.late && "block"}
+                                layout={layout}
+                                cardHeight={
+                                  layout === "extended" ? "150px" : "50px"
+                                }
+                                ceta="12 August 2022"
+                                statusColor={job.late ? "white" : "#83E884"}
+
+                                circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
+                                circleBackground={job.pinned && "gold"}
+                                user_name={job.user_name}
+                                defaultUser={defaultUser}
+                              />
+                            ))}
+                          </>
+                        </Column>
+                      )}
+
+                    {columns.last_column.visible &&
+                      (department === "all" ||
+                        department === "global_trade") && (
+                        <Column
+                          category="Last Column"
+                          borderTopColor="#77C135"
+                          amount_in_category={lastColumnArray.length}
+                        >
+                          <>
+                            {lastColumnArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
+                              <JobCard
+                                job_number={job.jobNumber}
+                                time={job.time}
+                                backgroundColor={job.late && "#D64045"}
+                                displayLateIcon={job.late && "block"}
+                                layout={layout}
+                                cardHeight={
+                                  layout === "extended" ? "150px" : "50px"
+                                }
+                                ceta="12 August 2022"
+                                statusColor={job.late ? "white" : "#83E884"}
+
+                                circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
+                                circleBackground={job.pinned && "gold"}
+                                user_name={job.user_name}
+                                defaultUser={defaultUser}
+                              />
+                            ))}
+                          </>
+                        </Column>
+                      )}
+
                   </div>
                 </>
               ) : (

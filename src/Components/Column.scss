@@ -4,7 +4,8 @@
   margin: 0 auto;
   display: flex;
   min-height: 100%;
-  overflow: hidden;
+  overflow-x: scroll;
+  overflow-y: hidden;
 
   @media only screen and (max-width: 600px) {
     flex-direction: column;
@@ -12,19 +13,11 @@
   }
 }
 
-.column-container {
-  min-height: 100% !important;
-  min-width: 100%;
-  display: flex;
 
-  &:empty {
-    min-width: 0;
-  }
-}
 
 .Column {
   background: #262c3f;
-  width: 100%;
+  min-width: 300px;
   border-top: solid 6px;
   border-radius: 5px;
   padding-top: 30px;
@@ -38,9 +31,7 @@
   align-items: center;
   transition: 0.2s ease-in-out;
 
-  &:nth-child(4n) {
-    margin-right: 0px;
-  }
+
 
   &:hover {
     background: #2c3248;
@@ -70,15 +61,48 @@
   margin-top: 30px;
 }
 
-.title-container{
+.title-container {
   display: flex;
   gap: 10px;
-
 }
 
 .category-title {
   font-weight: bold;
   display: block;
+}
+
+.pin-amount-wrap {
+  display: flex;
+  align-items: center;
+
+  .pin-container {
+    min-width: 30px;
+    min-height: 30px;
+    transition: 0.2s ease-in-out;
+
+    svg {
+      transition: 0.3s ease-in-out;
+    }
+
+
+    &:hover {
+      background: #407ceb;
+
+      svg {
+        transform: rotate(20deg);
+      }
+
+
+    }
+
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 500px;
+    margin-right: 10px;
+
+  }
 }
 
 .left-button {
@@ -117,11 +141,11 @@
   overflow-y: scroll;
 }
 
-.pinned-container{
+.pinned-container {
   margin-bottom: 15px;
 
 
-  &:empty{
+  &:empty {
     display: none;
   }
 }

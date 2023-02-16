@@ -48,6 +48,8 @@ const Sidebar = ({
   dropdownLabel,
   department,
   setDepartment,
+  handleGlobalToggle
+
 }) => {
   const sidebarRef = useRef(null);
 
@@ -317,7 +319,7 @@ const Sidebar = ({
         </div>
         </div>
 
-        <div className="layout-container" onClick={setExtended}>
+        <div className="layout-container" onClick={handleGlobalToggle}>
           <div
             className="extended-container layout-outer"
             style={{
@@ -336,7 +338,7 @@ const Sidebar = ({
           </span>
         </div>
 
-        <div className="layout-container" onClick={setCondensed}>
+        <div className="layout-container" onClick={handleGlobalToggle}>
           <div
             className="extended-container layout-outer"
             style={{
