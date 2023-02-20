@@ -32,7 +32,7 @@ const Column = ({
       <div className="column-header bold" style={{ writingMode: writingMode }}>
         <div className="title-container">
           <span className="category-title">{category}</span>
-          {pinDisplay && (<FontAwesomeIcon icon={faThumbTack} />)}
+          {pinDisplay && (<FontAwesomeIcon icon={faThumbTack} onClick={pinClicked}/>)}
         </div>
 
         <div className="pin-amount-wrap">
