@@ -21,7 +21,8 @@ const Column = ({
   pinDisplay,
   background,
   pinFilterDisplay,
-  pinClicked
+  pinClicked,
+  pinFilterBackground
 }) => {
   return (
     <div
@@ -36,7 +37,7 @@ const Column = ({
         </div>
 
         <div className="pin-amount-wrap">
-          <div className="pin-container" style={{display: pinFilterDisplay}} onClick={pinClicked}>
+          <div className="pin-container" style={{display: pinFilterDisplay, background: pinFilterBackground}} onClick={pinClicked}>
           <FontAwesomeIcon icon={faThumbTack} />
           </div>
           <span>{amount_in_category}</span>

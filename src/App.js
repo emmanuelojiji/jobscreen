@@ -40,41 +40,35 @@ const App = () => {
     setAllExpanded(!expanded);
   };
 
-  const filterPinnedByColumnArray = []
 
-  const columnSpecificFilter = (array) => {
-   
-    filterPinnedByColumnArray.push(...array)
 
-    console.log(filterPinnedByColumnArray)
-  }
 
 
   const [columns, setColumns] = useState({
-    pinned: { visible: true, extended: true },
-    to_order: { visible: true, extended: true },
-    commercial_invoice_req: { visible: true, extended: true },
-    export_docs_req: { visible: true, extended: true },
-    ior_required: { visible: true, extended: true },
-    awaiting_confirmation: { visible: true, extended: true },
-    awaiting_tracking_number: { visible: true, extended: true },
-    due_into_warehouse: { visible: true, extended: true },
-    arrived: { visible: true, extended: true },
-    inbounding: { visible: true, extended: true },
-    awaiting_parts: { visible: true, extended: true },
-    transit_pallet: { visible: true, extended: true },
-    problem_shelf: { visible: true, extended: true },
-    preparing_to_ship: { visible: true, extended: true },
-    buy_shipping_label: { visible: true, extended: true },
-    customer_collection: { visible: true, extended: true },
-    pack_and_hold: { visible: true, extended: true },
-    to_send_tracking_label: { visible: true, extended: true },
-    in_transit: { visible: true, extended: true },
-    non_trackable_courier: { visible: true, extended: true },
-    exception: { visible: true, extended: true },
-    to_send_pod: { visible: true, extended: true },
-    still_to_action: { visible: true, extended: true },
-    last_column: { visible: true, extended: true },
+    pinned: { visible: true, extended: true, pinnedFilterActive: false },
+    to_order: { visible: true, extended: true, pinnedFilterActive: false },
+    commercial_invoice_req: { visible: true, extended: true, pinnedFilterActive: false },
+    export_docs_req: { visible: true, extended: true, pinnedFilterActive: false },
+    ior_required: { visible: true, extended: true, pinnedFilterActive: false },
+    awaiting_confirmation: { visible: true, extended: true, pinnedFilterActive: false },
+    awaiting_tracking_number: { visible: true, extended: true, pinnedFilterActive: false },
+    due_into_warehouse: { visible: true, extended: true, pinnedFilterActive: false },
+    arrived: { visible: true, extended: true, pinnedFilterActive: false },
+    inbounding: { visible: true, extended: true, pinnedFilterActive: false },
+    awaiting_parts: { visible: true, extended: true, pinnedFilterActive: false },
+    transit_pallet: { visible: true, extended: true, pinnedFilterActive: false },
+    problem_shelf: { visible: true, extended: true, pinnedFilterActive: false },
+    preparing_to_ship: { visible: true, extended: true, pinnedFilterActive: false },
+    buy_shipping_label: { visible: true, extended: true, pinnedFilterActive: false },
+    customer_collection: { visible: true, extended: true, pinnedFilterActive: false },
+    pack_and_hold: { visible: true, extended: true, pinnedFilterActive: false },
+    to_send_tracking_label: { visible: true, extended: true, pinnedFilterActive: false },
+    in_transit: { visible: true, extended: true, pinnedFilterActive: false },
+    non_trackable_courier: { visible: true, extended: true, pinnedFilterActive: false },
+    exception: { visible: true, extended: true, pinnedFilterActive: false },
+    to_send_pod: { visible: true, extended: true, pinnedFilterActive: false },
+    still_to_action: { visible: true, extended: true, pinnedFilterActive: false },
+    last_column: { visible: true, extended: true, pinnedFilterActive: false },
   });
 
 
@@ -95,9 +89,32 @@ const App = () => {
 
   const pinnedArray = jobs.filter(job => job.pinned && (showLateJobs || !job.late));
 
+  const [pinnedJobs, setPinnedJobs] = useState([])
 
+  const pinnedJobsFunction = (array, columnName) => {
+    setColumns((prevColumns) => {
+      const updatedColumns = {
+        ...prevColumns,
+        [columnName]: {
+          ...prevColumns[columnName],
+          pinnedFilterActive: !prevColumns[columnName].pinnedFilterActive,
+        },
+      };
+      return updatedColumns;
+    });
 
+    if (!columns[columnName].pinnedFilterActive) {
+      // Add pinned jobs for this column
+      const pinnedJobsForColumn = array.filter(job => job.pinned);
+      setPinnedJobs((prevPinnedJobs) => [...prevPinnedJobs, ...pinnedJobsForColumn]);
+    } else {
+      // Remove pinned jobs for this column
+      setPinnedJobs((prevPinnedJobs) =>
+        prevPinnedJobs.filter((job) => job.category !== columnName)
+      );
+    }
 
+  };
 
 
 
@@ -154,8 +171,6 @@ const App = () => {
       };
     });
   };
-
-
 
   const togglePin = (jobNumber) => {
     setJobs(prevArray => {
@@ -390,7 +405,7 @@ const App = () => {
                         category="Pinned"
                         borderTopColor="#d3d347"
                         opacity={pinnedArray.length === 0 && "0.5"}
-                        amount_in_category={pinnedArray.length}
+                        amount_in_category={pinnedJobs.length}
                         writingMode={
                           !columns.pinned.extended && "vertical-rl"
                         }
@@ -400,9 +415,9 @@ const App = () => {
 
 
                       >
-                        {pinnedArray.length < 1 && (<p className="no-jobs light">No jobs to show</p>)}
+                        {pinnedJobs.length < 1 && (<p className="no-jobs light">No jobs to show</p>)}
                         <>
-                          {filterPinnedByColumnArray.map((job, index) => (
+                          {pinnedJobs.map((job, index) => (
                             <JobCard
                               job_number={job.jobNumber}
                               time={job.time}
@@ -445,7 +460,8 @@ const App = () => {
                             !columns.to_order.extended && "vertical-rl"
                           }
                           pinFilterDisplay={!columns.to_order.extended && "none"}
-                          pinClicked={columnSpecificFilter(toOrderArray)}
+                          pinClicked={(e) => { pinnedJobsFunction(toOrderArray, 'to_order'); e.stopPropagation() }}
+                          pinFilterBackground={columns.to_order.pinnedFilterActive && "#407ceb"}
                         >
                           <>
                             {showPinnedJobs && <div className="pinned-container">
@@ -525,7 +541,8 @@ const App = () => {
                           }
                           pinFilterDisplay={!columns.commercial_invoice_req.extended && "none"}
 
-                          pinClicked={columnSpecificFilter(commercialInvoiceReqArray)}
+                          pinFilterBackground={columns.commercial_invoice_req.pinnedFilterActive && "#407ceb"}
+                          pinClicked={(e) => { pinnedJobsFunction(commercialInvoiceReqArray, 'commercial_invoice_req'); e.stopPropagation() }}
                         >
 
                           {showPinnedJobs && <div className="pinned-container">
