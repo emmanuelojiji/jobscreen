@@ -40,8 +40,13 @@ const App = () => {
     setAllExpanded(!expanded);
   };
 
-  const columnSpecificFilter = () => {
+  const filterPinnedByColumnArray = []
 
+  const columnSpecificFilter = (array) => {
+   
+    filterPinnedByColumnArray.push(...array)
+
+    console.log(filterPinnedByColumnArray)
   }
 
 
@@ -87,7 +92,12 @@ const App = () => {
     return jobs.filter((job) => job.category.includes(category))
   }
 
+
   const pinnedArray = jobs.filter(job => job.pinned && (showLateJobs || !job.late));
+
+
+
+
 
 
 
@@ -184,6 +194,20 @@ const App = () => {
     console.log(visibleColumns);
   });
 
+  const calculateColumnAmount = (array, showPinnedJobs, showLateJobs) => {
+    let amount = array.length;
+
+    if (!showPinnedJobs) {
+      amount -= array.filter(job => job.pinned).length;
+    }
+
+    if (!showLateJobs) {
+      amount -= array.filter(job => job.late).length;
+    }
+
+    return amount;
+  }
+
   return (
     <div className="App">
       <SwitchModal
@@ -236,6 +260,8 @@ const App = () => {
         warehouseInboundDepartment={() => setDepartment("warehouse_inbound")}
         warehouseOutboundDepartment={() => setDepartment("warehouse_outbound")}
       />
+
+
 
       <header>
         <div className="header-wrap page-width">
@@ -376,7 +402,7 @@ const App = () => {
                       >
                         {pinnedArray.length < 1 && (<p className="no-jobs light">No jobs to show</p>)}
                         <>
-                          {pinnedArray.map((job, index) => (
+                          {filterPinnedByColumnArray.map((job, index) => (
                             <JobCard
                               job_number={job.jobNumber}
                               time={job.time}
@@ -393,7 +419,7 @@ const App = () => {
                               jobNumberColor={job.late && "white"}
                               displayTime="none"
                               category={job.category_display}
-                              
+
                             />
                           ))}
                         </>
@@ -407,7 +433,9 @@ const App = () => {
                         <Column
                           category="To Order"
                           borderTopColor="#DC6942"
-                          amount_in_category={!showLateJobs ? toOrderArray.length - toOrderArray.filter(job => job.late).length : toOrderArray.length}
+                          amount_in_category={
+                            calculateColumnAmount(toOrderArray, showPinnedJobs, showLateJobs)
+                          }
                           width={!columns.to_order.extended && "79px"}
                           extendedContent={
                             !columns.to_order.extended && "none"
@@ -417,6 +445,7 @@ const App = () => {
                             !columns.to_order.extended && "vertical-rl"
                           }
                           pinFilterDisplay={!columns.to_order.extended && "none"}
+                          pinClicked={columnSpecificFilter(toOrderArray)}
                         >
                           <>
                             {showPinnedJobs && <div className="pinned-container">
@@ -478,7 +507,9 @@ const App = () => {
                           category="Commercial Invoice Required"
                           borderTopColor="#1B90E6"
                           opacity={commercialInvoiceReqArray.length == 0 || (commercialInvoiceReqArray.length == 1 && !showLateJobs) && "0.5"}
-                          amount_in_category={!showLateJobs ? commercialInvoiceReqArray.length - commercialInvoiceReqArray.filter(job => job.late).length : commercialInvoiceReqArray.length}
+                          amount_in_category={
+                            calculateColumnAmount(commercialInvoiceReqArray, showPinnedJobs, showLateJobs)
+                          }
                           width={
                             !columns.commercial_invoice_req.extended && "79px"
                           }
@@ -493,6 +524,8 @@ const App = () => {
                             "vertical-rl"
                           }
                           pinFilterDisplay={!columns.commercial_invoice_req.extended && "none"}
+
+                          pinClicked={columnSpecificFilter(commercialInvoiceReqArray)}
                         >
 
                           {showPinnedJobs && <div className="pinned-container">
