@@ -41,9 +41,6 @@ const App = () => {
   };
 
 
-
-
-
   const [columns, setColumns] = useState({
     pinned: { visible: true, extended: true, pinnedFilterActive: false },
     to_order: { visible: true, extended: true, pinnedFilterActive: false },
@@ -71,6 +68,8 @@ const App = () => {
     last_column: { visible: true, extended: true, pinnedFilterActive: false },
   });
 
+  const allPinnedFilterActiveAreFalse = Object.values(columns).every(column => column.pinnedFilterActive === false);
+
 
 
   const [user, setUser] = useState("default");
@@ -86,10 +85,28 @@ const App = () => {
     return jobs.filter((job) => job.category.includes(category))
   }
 
+  const togglePin = (jobNumber) => {
+    setJobs(prevArray => {
+      return prevArray.map(job => {
+        if (job.jobNumber === jobNumber) {
+          return { ...job, pinned: !job.pinned };
+        }
+        return job;
+      });
+    });
+  };
+
 
   const pinnedArray = jobs.filter(job => job.pinned && (showLateJobs || !job.late));
 
   const [pinnedJobs, setPinnedJobs] = useState([])
+
+  useMemo(() => {
+    const filteredJobs = jobs.filter(job => job.pinned && (showLateJobs || !job.late));
+
+    setPinnedJobs(allPinnedFilterActiveAreFalse ? jobs.filter(job => job.pinned) : filteredJobs);
+  }, [jobs, showLateJobs]);
+
 
   const pinnedJobsFunction = (array, columnName) => {
     setColumns((prevColumns) => {
@@ -115,6 +132,8 @@ const App = () => {
     }
 
   };
+
+
 
 
 
@@ -172,16 +191,6 @@ const App = () => {
     });
   };
 
-  const togglePin = (jobNumber) => {
-    setJobs(prevArray => {
-      return prevArray.map(job => {
-        if (job.jobNumber === jobNumber) {
-          return { ...job, pinned: !job.pinned };
-        }
-        return job;
-      });
-    });
-  };
 
   const [noJobs, setNoJobs] = useState(false);
 
@@ -404,7 +413,7 @@ const App = () => {
                       <Column
                         category="Pinned"
                         borderTopColor="#d3d347"
-                        opacity={pinnedArray.length === 0 && "0.5"}
+                        opacity={pinnedJobs.length === 0 && "0.5"}
                         amount_in_category={pinnedJobs.length}
                         writingMode={
                           !columns.pinned.extended && "vertical-rl"
