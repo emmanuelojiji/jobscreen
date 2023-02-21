@@ -41,6 +41,8 @@ const App = () => {
   };
 
 
+
+
   const [columns, setColumns] = useState({
     pinned: { visible: true, extended: true, pinnedFilterActive: false },
     to_order: { visible: true, extended: true, pinnedFilterActive: false },
@@ -70,6 +72,13 @@ const App = () => {
 
   const allPinnedFilterActiveAreFalse = Object.values(columns).every(column => column.pinnedFilterActive === false);
 
+  const filteredColumns = Object.keys(columns).filter((column) => {
+    return columns[column].pinnedFilterActive;
+  });
+
+  const numberOfActivePinnedFilters = filteredColumns.length;
+
+
 
 
   const [user, setUser] = useState("default");
@@ -85,6 +94,12 @@ const App = () => {
     return jobs.filter((job) => job.category.includes(category))
   }
 
+  useEffect(() => {
+    setPinnedJobs(jobs.filter(job => job.pinned && (showLateJobs || !job.late)));
+  }, [jobs, showLateJobs]);
+
+
+
   const togglePin = (jobNumber) => {
     setJobs(prevArray => {
       return prevArray.map(job => {
@@ -94,6 +109,20 @@ const App = () => {
         return job;
       });
     });
+
+    setPinnedJobs(prevPinnedJobs => {
+      const updatedPinnedJobs = [...prevPinnedJobs];
+      const jobIndex = updatedPinnedJobs.findIndex(job => job.jobNumber === jobNumber);
+      if (jobIndex > -1) {
+        updatedPinnedJobs.splice(jobIndex, 1);
+      } else {
+        const newJob = jobs.find(job => job.jobNumber === jobNumber);
+        if (newJob.pinned && (showLateJobs || !newJob.late)) {
+          updatedPinnedJobs.push(newJob);
+        }
+      }
+      return updatedPinnedJobs;
+    });
   };
 
 
@@ -101,14 +130,33 @@ const App = () => {
 
   const [pinnedJobs, setPinnedJobs] = useState([])
 
-  useMemo(() => {
-    const filteredJobs = jobs.filter(job => job.pinned && (showLateJobs || !job.late));
 
-    setPinnedJobs(allPinnedFilterActiveAreFalse ? jobs.filter(job => job.pinned) : filteredJobs);
-  }, [jobs, showLateJobs]);
+  const allPinnedJobs = jobs.filter(job => job.pinned && (showLateJobs || !job.late))
 
 
-  const pinnedJobsFunction = (array, columnName) => {
+  const filterPinnedJobs = (array) => {
+    let pinnedJobsForColumn = [];
+
+    if (numberOfActivePinnedFilters === 0) {
+      pinnedJobsForColumn = allPinnedJobs;
+    } else {
+      pinnedJobsForColumn = array.filter(job => job.pinned);
+      if (numberOfActivePinnedFilters > 1) {
+        pinnedJobsForColumn = [...pinnedJobsForColumn, ...allPinnedJobs.filter(job => !pinnedJobsForColumn.includes(job))];
+      }
+    }
+
+    setPinnedJobs(prevPinnedJobs => {
+      const newPinnedJobs = [
+        ...prevPinnedJobs.filter(job => !pinnedJobsForColumn.includes(job)),
+        ...pinnedJobsForColumn
+      ];
+      return newPinnedJobs;
+    });
+  };
+
+
+  const pinFilterClicked = (columnName) => {
     setColumns((prevColumns) => {
       const updatedColumns = {
         ...prevColumns,
@@ -119,19 +167,15 @@ const App = () => {
       };
       return updatedColumns;
     });
+  }
 
-    if (!columns[columnName].pinnedFilterActive) {
-      // Add pinned jobs for this column
-      const pinnedJobsForColumn = array.filter(job => job.pinned);
-      setPinnedJobs((prevPinnedJobs) => [...prevPinnedJobs, ...pinnedJobsForColumn]);
-    } else {
-      // Remove pinned jobs for this column
-      setPinnedJobs((prevPinnedJobs) =>
-        prevPinnedJobs.filter((job) => job.category !== columnName)
-      );
-    }
 
-  };
+
+
+
+  /*  // Add pinned jobs for this column
+  const pinnedJobsForColumn = array.filter(job => job.pinned);
+  setPinnedJobs((prevPinnedJobs) => [...prevPinnedJobs, ...pinnedJobsForColumn]); */
 
 
 
@@ -160,6 +204,12 @@ const App = () => {
   const toSendPODArray = getJobsByCategory(jobs, "to_send_pod")
   const stillToActionArray = getJobsByCategory(jobs, "still_to_action")
   const lastColumnArray = getJobsByCategory(jobs, "last_column")
+
+  let array = []
+
+  useEffect(() => {
+    filterPinnedJobs(array);
+  }, [columns, array, filterPinnedJobs]);
 
 
 
@@ -214,8 +264,10 @@ const App = () => {
 
   const [visibleColumns, setVisibleColumns] = useState(8);
 
+
+
   useEffect(() => {
-    console.log(visibleColumns);
+    console.log(numberOfActivePinnedFilters);
   });
 
   const calculateColumnAmount = (array, showPinnedJobs, showLateJobs) => {
@@ -428,6 +480,7 @@ const App = () => {
                         <>
                           {pinnedJobs.map((job, index) => (
                             <JobCard
+
                               job_number={job.jobNumber}
                               time={job.time}
                               layout={layout}
@@ -469,7 +522,7 @@ const App = () => {
                             !columns.to_order.extended && "vertical-rl"
                           }
                           pinFilterDisplay={!columns.to_order.extended && "none"}
-                          pinClicked={(e) => { pinnedJobsFunction(toOrderArray, 'to_order'); e.stopPropagation() }}
+                          pinClicked={(e) => { pinFilterClicked('to_order'); filterPinnedJobs(toOrderArray); e.stopPropagation() }}
                           pinFilterBackground={columns.to_order.pinnedFilterActive && "#407ceb"}
                         >
                           <>
@@ -490,6 +543,7 @@ const App = () => {
                                   displayContent={layout === "extended" ? "flex" : "none"}
                                   jobNumberColor={job.late && "white"}
                                   circleBorder={job.late && "solid 1px white"}
+
 
 
                                 />
@@ -551,7 +605,7 @@ const App = () => {
                           pinFilterDisplay={!columns.commercial_invoice_req.extended && "none"}
 
                           pinFilterBackground={columns.commercial_invoice_req.pinnedFilterActive && "#407ceb"}
-                          pinClicked={(e) => { pinnedJobsFunction(commercialInvoiceReqArray, 'commercial_invoice_req'); e.stopPropagation() }}
+                          pinClicked={(e) => { pinFilterClicked('commercial_invoice_req'); filterPinnedJobs(commercialInvoiceReqArray); e.stopPropagation() }}
                         >
 
                           {showPinnedJobs && <div className="pinned-container">
