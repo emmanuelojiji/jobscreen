@@ -127,27 +127,29 @@ const App = () => {
   const [pinnedJobs, setPinnedJobs] = useState([])
 
   useEffect(() => {
-    setPinnedJobs(allPinnedJobs);
+    if (numberOfActivePinnedFilters === 0) {
+      allPinnedJobs = jobs.filter(job => job.pinned && (showLateJobs || !job.late));
+      setPinnedJobs(allPinnedJobs);
+    } else {
+      setPinnedJobs(allPinnedJobs.filter(job => columns[job.category].pinnedFilterActive));
+    }
+  }, [jobs, showLateJobs, columns, numberOfActivePinnedFilters]);
 
-  }, [jobs, showLateJobs]);
+
+
 
   const testFunction = (array, columnName) => {
-
-
     if (numberOfActivePinnedFilters === 0 && !columns[columnName]?.pinnedFilterActive) {
-      const filteredArray = array.filter(job => job.pinned);
-      allPinnedJobs = filteredArray
-      setPinnedJobs(allPinnedJobs)
-      console.log(columnName + "just turned on")
+      allPinnedJobs = array.filter(job => job.pinned);
+      setPinnedJobs(allPinnedJobs);
+      console.log(columnName + " just turned on");
     } else if (numberOfActivePinnedFilters > 0) {
       const filteredArray = array.filter(job => 
         activePinFilters.includes(job.columnName) && job.pinned && (!job.late || showLateJobs)
       );
-      allPinnedJobs = jobs.filter(job => job.pinned && (showLateJobs || !job.late))
-      setPinnedJobs(allPinnedJobs)
+      allPinnedJobs = jobs.filter(job => job.pinned && (showLateJobs || !job.late));
+      setPinnedJobs(filteredArray.filter(job => columns[job.category].pinnedFilterActive));
     }
-
-    
   }
 
   useEffect(() => {
@@ -625,7 +627,7 @@ const App = () => {
                                 ceta={job.ceta && job.ceta}
                                 fraction="3/6"
                                 suffix="Ordered"
-                                circleOnClick={(e) => { togglePin(job.jobNumber); testFunction(commercialInvoiceReqArray, 'commercial_invoice_req');  e.stopPropagation() }}
+                                circleOnClick={(e) => { togglePin(job.jobNumber); testFunction(commercialInvoiceReqArray, 'commercial_invoice_req'); e.stopPropagation() }}
                                 circleBackground={job.pinned && "gold"}
                                 user_name={job.user_name}
                                 defaultUser={defaultUser}
