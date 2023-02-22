@@ -135,16 +135,23 @@ const App = () => {
     }
   }, [jobs, showLateJobs, columns, numberOfActivePinnedFilters]);
 
+  useEffect(() => {
+    if (numberOfActivePinnedFilters === 0) {
+      allPinnedJobs = jobs.filter(job => job.pinned && (showLateJobs || !job.late));
+      setPinnedJobs(allPinnedJobs);
+    } else {
+      setPinnedJobs(allPinnedJobs.filter(job => columns[job.category].pinnedFilterActive));
+    }
+  }, [jobs, showLateJobs, columns, numberOfActivePinnedFilters]);
 
 
-
-  const testFunction = (array, columnName) => {
+  const filterPinnedJobs = (array, columnName) => {
     if (numberOfActivePinnedFilters === 0 && !columns[columnName]?.pinnedFilterActive) {
       allPinnedJobs = array.filter(job => job.pinned);
       setPinnedJobs(allPinnedJobs);
       console.log(columnName + " just turned on");
     } else if (numberOfActivePinnedFilters > 0) {
-      const filteredArray = array.filter(job => 
+      const filteredArray = array.filter(job =>
         activePinFilters.includes(job.columnName) && job.pinned && (!job.late || showLateJobs)
       );
       allPinnedJobs = jobs.filter(job => job.pinned && (showLateJobs || !job.late));
@@ -158,9 +165,6 @@ const App = () => {
 
 
 
-  const filterPinnedJobs = (array) => {
-
-  };
 
 
   const pinFilterClicked = (columnName) => {
@@ -212,11 +216,6 @@ const App = () => {
   const stillToActionArray = getJobsByCategory(jobs, "still_to_action")
   const lastColumnArray = getJobsByCategory(jobs, "last_column")
 
-  let array = []
-
-  useEffect(() => {
-    filterPinnedJobs(array);
-  }, [columns, array, filterPinnedJobs]);
 
 
 
@@ -529,7 +528,7 @@ const App = () => {
                             !columns.to_order.extended && "vertical-rl"
                           }
                           pinFilterDisplay={!columns.to_order.extended && "none"}
-                          pinClicked={(e) => { pinFilterClicked('to_order'); testFunction(toOrderArray, 'to_order'); e.stopPropagation() }}
+                          pinClicked={(e) => { pinFilterClicked('to_order'); filterPinnedJobs(toOrderArray, 'to_order'); e.stopPropagation() }}
                           pinFilterBackground={columns.to_order.pinnedFilterActive && "#407ceb"}
                         >
                           <>
@@ -572,7 +571,7 @@ const App = () => {
                                 displayLateIcon={job.late && "block"}
                                 statusColor={job.late ? "white" : "#83E884"}
                                 cetaDisplay="none"
-                                circleOnClick={(e) => { togglePin(job.jobNumber); testFunction(toOrderArray, 'to_order'); e.stopPropagation() }}
+                                circleOnClick={(e) => { togglePin(job.jobNumber); filterPinnedJobs(toOrderArray, 'to_order');; e.stopPropagation() }}
                                 circleBackground={job.pinned && "gold"}
                                 user_name={job.user_name}
                                 defaultUser={defaultUser}
@@ -612,7 +611,7 @@ const App = () => {
                           pinFilterDisplay={!columns.commercial_invoice_req.extended && "none"}
 
                           pinFilterBackground={columns.commercial_invoice_req.pinnedFilterActive && "#407ceb"}
-                          pinClicked={(e) => { pinFilterClicked('commercial_invoice_req'); testFunction(commercialInvoiceReqArray, 'commercial_invoice_req'); e.stopPropagation() }}
+                          pinClicked={(e) => { pinFilterClicked('commercial_invoice_req'); filterPinnedJobs(commercialInvoiceReqArray, 'commercial_invoice');; e.stopPropagation() }}
                         >
 
                           {showPinnedJobs && <div className="pinned-container">
@@ -627,7 +626,7 @@ const App = () => {
                                 ceta={job.ceta && job.ceta}
                                 fraction="3/6"
                                 suffix="Ordered"
-                                circleOnClick={(e) => { togglePin(job.jobNumber); testFunction(commercialInvoiceReqArray, 'commercial_invoice_req'); e.stopPropagation() }}
+                                circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
                                 circleBackground={job.pinned && "gold"}
                                 user_name={job.user_name}
                                 defaultUser={defaultUser}
@@ -691,6 +690,7 @@ const App = () => {
                             !columns.export_docs_req.extended && "vertical-rl"
                           }
                           pinFilterDisplay={!columns.export_docs_req.extended && "none"}
+                          pinClicked={(e) => { pinFilterClicked('export_docs_req'); filterPinnedJobs(exportDocsReqArray, 'export_docs_req'); e.stopPropagation() }}
                         >
                           <>
 
@@ -759,6 +759,7 @@ const App = () => {
                             !columns.ior_required.extended && "vertical-rl"
                           }
                           pinFilterDisplay={!columns.ior_required.extended && "none"}
+                          pinClicked={(e) => { pinFilterClicked('ior_required'); filterPinnedJobs(IORRequiredArray, 'ior_required'); e.stopPropagation() }}
                         >
                           <>
                             {IORRequiredArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
@@ -805,6 +806,7 @@ const App = () => {
                             "vertical-rl"
                           }
                           pinFilterDisplay={!columns.awaiting_confirmation.extended && "none"}
+                          pinClicked={(e) => { pinFilterClicked('awaiting_confirmation'); filterPinnedJobs(awaitingConfirmationArray, 'awaiting_confirmation'); e.stopPropagation() }}
                         >
                           <>
                             {awaitingConfirmationArray.map((job, index) => (
@@ -852,6 +854,7 @@ const App = () => {
                             "vertical-rl"
                           }
                           pinFilterDisplay={!columns.awaiting_tracking_number.extended && "none"}
+                          pinClicked={(e) => { pinFilterClicked('awaiting_tracking_number'); filterPinnedJobs(awaitingTrackingNumberArray, 'awaiting_tracking_number'); e.stopPropagation() }}
                         >
                           <>
                             {awaitingTrackingNumberArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
@@ -902,6 +905,7 @@ const App = () => {
                             "vertical-rl"
                           }
                           pinFilterDisplay={!columns.due_into_warehouse.extended && "none"}
+                          pinClicked={(e) => { pinFilterClicked('due_into_warehouse'); filterPinnedJobs(dueIntoWarehouseArray, 'due_into_warehouse'); e.stopPropagation() }}
                         >
                           <>
                             {dueIntoWarehouseArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
@@ -940,6 +944,7 @@ const App = () => {
                           category="Arrived"
                           borderTopColor="#77C135"
                           amount_in_category={arrivedArray.length}
+                          pinClicked={(e) => { pinFilterClicked('arrived'); filterPinnedJobs(arrivedArray, 'arrived'); e.stopPropagation() }}
 
                         >
                           <>
@@ -978,6 +983,7 @@ const App = () => {
                           category="Inbound"
                           borderTopColor="#77C135"
                           amount_in_category={inboundArray.length}
+                          pinClicked={(e) => { pinFilterClicked('inbound'); filterPinnedJobs(inboundArray, 'inbound'); e.stopPropagation() }}
                         >
                           <>
                             {inboundArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
@@ -1012,6 +1018,7 @@ const App = () => {
                           category="Awaiting Parts"
                           borderTopColor="#77C135"
                           amount_in_category={awaitingPartsArray.length}
+                          pinClicked={(e) => { pinFilterClicked('awaiting_parts'); filterPinnedJobs(awaitingPartsArray, 'awaiting_parts'); e.stopPropagation() }}
                         >
                           <>
                             {awaitingPartsArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
@@ -1047,6 +1054,7 @@ const App = () => {
                           category="Transit Pallet"
                           borderTopColor="#77C135"
                           amount_in_category={transitPalletArray.length}
+                          pinClicked={(e) => { pinFilterClicked('transit_pallet'); filterPinnedJobs(transitPalletArray, 'transit_pallet'); e.stopPropagation() }}
                         >
                           <>
                             {transitPalletArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
@@ -1083,6 +1091,7 @@ const App = () => {
                           category="Problem Shelf"
                           borderTopColor="#77C135"
                           amount_in_category={problemShelfArray.length}
+                          pinClicked={(e) => { pinFilterClicked('problem_shelf'); filterPinnedJobs(problemShelfArray, 'problem_shelf'); e.stopPropagation() }}
                         >
                           <>
                             {problemShelfArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
@@ -1118,6 +1127,7 @@ const App = () => {
                           category="Preparing to ship"
                           borderTopColor="#77C135"
                           amount_in_category={preparingToShipArray.length}
+                          pinClicked={(e) => { pinFilterClicked('preparing_to_ship'); filterPinnedJobs(preparingToShipArray, 'preparing_to_ship'); e.stopPropagation() }}
                         >
                           <>
                             {preparingToShipArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
@@ -1151,6 +1161,7 @@ const App = () => {
                           category="Buy Shipping Label"
                           borderTopColor="#77C135"
                           amount_in_category={buyShippingLabelArray.length}
+                          pinClicked={(e) => { pinFilterClicked('buy_shipping_label'); filterPinnedJobs(buyShippingLabelArray, 'buy_shipping_label'); e.stopPropagation() }}
                         >
                           <>
                             {buyShippingLabelArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
@@ -1185,6 +1196,7 @@ const App = () => {
                           category="Customer Collection"
                           borderTopColor="#77C135"
                           amount_in_category={customerCollectionArray.length}
+                          pinClicked={(e) => { pinFilterClicked('customer_collection'); filterPinnedJobs(customerCollectionArray, 'customer_collection'); e.stopPropagation() }}
                         >
                           <>
                             {customerCollectionArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
@@ -1220,6 +1232,7 @@ const App = () => {
                           category="Pack and Hold"
                           borderTopColor="#77C135"
                           amount_in_category={packAndHoldArray.length}
+                          pinClicked={(e) => { pinFilterClicked('pack_and_hold'); filterPinnedJobs(packAndHoldArray, 'pack_and_hold'); e.stopPropagation() }}
                         >
                           <>
                             {packAndHoldArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
@@ -1253,6 +1266,7 @@ const App = () => {
                           category="To Send Tracking Label"
                           borderTopColor="#77C135"
                           amount_in_category={toSendTrackingArray.length}
+                          pinClicked={(e) => { pinFilterClicked('to_send_tracking'); filterPinnedJobs(toSendTrackingArray, 'to_send_tracking'); e.stopPropagation() }}
                         >
                           <>
                             {toSendTrackingArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
@@ -1283,6 +1297,7 @@ const App = () => {
                         category="In Transit"
                         borderTopColor="#77C135"
                         amount_in_category={inTransitArray.length}
+                        pinClicked={(e) => { pinFilterClicked('in_transit'); filterPinnedJobs(inTransitArray, 'in_transit'); e.stopPropagation() }}
                       >
                         <>
                           {inTransitArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
@@ -1314,6 +1329,7 @@ const App = () => {
                           category="Non Trackable Courier"
                           borderTopColor="#77C135"
                           amount_in_category={nonTrackableCourierArray.length}
+                          pinClicked={(e) => { pinFilterClicked('non_trackable_courier'); filterPinnedJobs(nonTrackableCourierArray, 'non_trackable_courier');; e.stopPropagation() }}
                         >
                           <>
                             {nonTrackableCourierArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
@@ -1350,6 +1366,7 @@ const App = () => {
                           category="Exception"
                           borderTopColor="#77C135"
                           amount_in_category={exceptionArray.length}
+                          pinClicked={(e) => { pinFilterClicked('exception'); filterPinnedJobs(exceptionArray, 'exception'); e.stopPropagation() }}
                         >
                           <>
                             {exceptionArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
@@ -1382,6 +1399,7 @@ const App = () => {
                         category="To Send POD"
                         borderTopColor="#77C135"
                         amount_in_category={toSendPODArray.length}
+                        pinClicked={(e) => { pinFilterClicked('to_send_pod'); filterPinnedJobs(toSendPODArray, 'to_send_pod'); e.stopPropagation() }}
                       >
                         <>
                           {toSendPODArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
@@ -1413,6 +1431,7 @@ const App = () => {
                           category="Still to Action"
                           borderTopColor="#77C135"
                           amount_in_category={stillToActionArray.length}
+                          pinClicked={(e) => { pinFilterClicked('still_to_action'); filterPinnedJobs(stillToActionArray, 'still_to_action'); e.stopPropagation() }}
                         >
                           <>
                             {stillToActionArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
@@ -1445,6 +1464,7 @@ const App = () => {
                           category="Last Column"
                           borderTopColor="#77C135"
                           amount_in_category={lastColumnArray.length}
+                          pinClicked={(e) => { pinFilterClicked('last_column'); filterPinnedJobs(lastColumnArray, 'last_column'); e.stopPropagation() }}
                         >
                           <>
                             {lastColumnArray.filter(job => (showLateJobs || !job.late)).map((job, index) => (
