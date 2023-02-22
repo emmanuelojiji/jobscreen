@@ -94,10 +94,6 @@ const App = () => {
     return jobs.filter((job) => job.category.includes(category))
   }
 
-  useEffect(() => {
-    setPinnedJobs(jobs.filter(job => job.pinned && (showLateJobs || !job.late)));
-  }, [jobs, showLateJobs]);
-
 
 
   const togglePin = (jobNumber) => {
@@ -125,34 +121,43 @@ const App = () => {
     });
   };
 
+  //const allPinnedJobs = jobs.filter(job => job.pinned && (showLateJobs || !job.late))
 
-  const pinnedArray = jobs.filter(job => job.pinned && (showLateJobs || !job.late));
-
+  let allPinnedJobs = jobs.filter(job => job.pinned && (showLateJobs || !job.late))
   const [pinnedJobs, setPinnedJobs] = useState([])
 
+  useEffect(() => {
+    setPinnedJobs(allPinnedJobs);
 
-  const allPinnedJobs = jobs.filter(job => job.pinned && (showLateJobs || !job.late))
+  }, [jobs, showLateJobs]);
+
+  const testFunction = (array, columnName) => {
+
+
+    if (numberOfActivePinnedFilters === 0 && !columns[columnName]?.pinnedFilterActive) {
+      const filteredArray = array.filter(job => job.pinned);
+      allPinnedJobs = filteredArray
+      setPinnedJobs(allPinnedJobs)
+      console.log(columnName + "just turned on")
+    } else if (numberOfActivePinnedFilters > 0) {
+      const filteredArray = array.filter(job => 
+        activePinFilters.includes(job.columnName) && job.pinned && (!job.late || showLateJobs)
+      );
+      allPinnedJobs = jobs.filter(job => job.pinned && (showLateJobs || !job.late))
+      setPinnedJobs(allPinnedJobs)
+    }
+
+    
+  }
+
+  useEffect(() => {
+    console.log(pinnedJobs)
+  })
+
 
 
   const filterPinnedJobs = (array) => {
-    let pinnedJobsForColumn = [];
 
-    if (numberOfActivePinnedFilters === 0) {
-      pinnedJobsForColumn = allPinnedJobs;
-    } else {
-      pinnedJobsForColumn = array.filter(job => job.pinned);
-      if (numberOfActivePinnedFilters > 1) {
-        pinnedJobsForColumn = [...pinnedJobsForColumn, ...allPinnedJobs.filter(job => !pinnedJobsForColumn.includes(job))];
-      }
-    }
-
-    setPinnedJobs(prevPinnedJobs => {
-      const newPinnedJobs = [
-        ...prevPinnedJobs.filter(job => !pinnedJobsForColumn.includes(job)),
-        ...pinnedJobsForColumn
-      ];
-      return newPinnedJobs;
-    });
   };
 
 
@@ -165,21 +170,21 @@ const App = () => {
           pinnedFilterActive: !prevColumns[columnName].pinnedFilterActive,
         },
       };
+      if (activePinFilters.includes(columnName)) {
+        setActivePinFilters(activePinFilters.filter((name) => name !== columnName));
+      } else {
+        setActivePinFilters([...activePinFilters, columnName]);
+      }
       return updatedColumns;
     });
   }
 
-
-
+  const [activePinFilters, setActivePinFilters] = useState([]);
 
 
   /*  // Add pinned jobs for this column
   const pinnedJobsForColumn = array.filter(job => job.pinned);
   setPinnedJobs((prevPinnedJobs) => [...prevPinnedJobs, ...pinnedJobsForColumn]); */
-
-
-
-
 
   const toOrderArray = getJobsByCategory(jobs, "to_order")
   const commercialInvoiceReqArray = getJobsByCategory(jobs, "commercial_invoice_req")
@@ -522,7 +527,7 @@ const App = () => {
                             !columns.to_order.extended && "vertical-rl"
                           }
                           pinFilterDisplay={!columns.to_order.extended && "none"}
-                          pinClicked={(e) => { pinFilterClicked('to_order'); filterPinnedJobs(toOrderArray); e.stopPropagation() }}
+                          pinClicked={(e) => { pinFilterClicked('to_order'); testFunction(toOrderArray, 'to_order'); e.stopPropagation() }}
                           pinFilterBackground={columns.to_order.pinnedFilterActive && "#407ceb"}
                         >
                           <>
@@ -565,7 +570,7 @@ const App = () => {
                                 displayLateIcon={job.late && "block"}
                                 statusColor={job.late ? "white" : "#83E884"}
                                 cetaDisplay="none"
-                                circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
+                                circleOnClick={(e) => { togglePin(job.jobNumber); testFunction(toOrderArray, 'to_order'); e.stopPropagation() }}
                                 circleBackground={job.pinned && "gold"}
                                 user_name={job.user_name}
                                 defaultUser={defaultUser}
@@ -605,7 +610,7 @@ const App = () => {
                           pinFilterDisplay={!columns.commercial_invoice_req.extended && "none"}
 
                           pinFilterBackground={columns.commercial_invoice_req.pinnedFilterActive && "#407ceb"}
-                          pinClicked={(e) => { pinFilterClicked('commercial_invoice_req'); filterPinnedJobs(commercialInvoiceReqArray); e.stopPropagation() }}
+                          pinClicked={(e) => { pinFilterClicked('commercial_invoice_req'); testFunction(commercialInvoiceReqArray, 'commercial_invoice_req'); e.stopPropagation() }}
                         >
 
                           {showPinnedJobs && <div className="pinned-container">
@@ -620,7 +625,7 @@ const App = () => {
                                 ceta={job.ceta && job.ceta}
                                 fraction="3/6"
                                 suffix="Ordered"
-                                circleOnClick={(e) => { togglePin(job.jobNumber); e.stopPropagation() }}
+                                circleOnClick={(e) => { togglePin(job.jobNumber); testFunction(commercialInvoiceReqArray, 'commercial_invoice_req');  e.stopPropagation() }}
                                 circleBackground={job.pinned && "gold"}
                                 user_name={job.user_name}
                                 defaultUser={defaultUser}
